@@ -1,4 +1,3 @@
-"use client"
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
