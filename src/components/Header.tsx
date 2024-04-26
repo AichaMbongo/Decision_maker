@@ -11,10 +11,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MoreIcon from '@mui/icons-material/MoreVert';
 import { Button, Container } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import theme from '../theme/theme';
-
+import Search from './Search';
+import User from './Users'
 import { Avatar } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {MoreVert as MoreVertIcon} from '@mui/icons-material'
