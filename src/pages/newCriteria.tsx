@@ -30,11 +30,17 @@ const newCriteria = () => {
                         <Link
                             underline="hover"
                             color="inherit"
-                            href="/material-ui/getting-started/installation/"
+                            href="/"
                         >
                             Decision
                         </Link>
-                        <Typography color="text.primary">Decision Model</Typography>
+                        <Link
+                            underline="hover"
+                            color="inherit"
+                            href="/decisionModel"
+                        >
+                            Decision Model
+                        </Link>
                         <Typography color="text.primary">AHP Model</Typography>
                         <Typography color="text.primary">New Criteria</Typography>
                     </Breadcrumbs>
