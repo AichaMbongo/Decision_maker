@@ -3,13 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Landing from './pages/landing';
+import NewCriteria from './pages/newCriteria';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<App/>} />
+        <Route path='/newCriteria' element={<NewCriteria/>} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
