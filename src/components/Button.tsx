@@ -9,36 +9,40 @@ interface CustomButtonProps{
     startIcon?: React.ReactNode;
     endIcon?: React.ReactNode;
     disabled?:boolean; //disabled prop
+    width?: string | number; // Add the new width property
+    marginTop?: string | number;
 }
 
-
-//declare constant 'button' which represents our button component
-const CustomButton =({onClick, children, startIcon, endIcon, disabled }: CustomButtonProps) =>{
+const CustomButton =({onClick, children, startIcon, endIcon, disabled, width }: CustomButtonProps) =>{
 
     return(
-        <Button variant="contained" onClick={onClick}  className='custom-button' disabled={disabled}>
-           
+        <Button
+            variant="contained"
+            onClick={onClick}
+            className='custom-button'
+            disabled={disabled}
+            sx={{
+                width: width ?? '100%', // Use the width prop or default to 100%
+            }}
+        >
             {startIcon && (
                 <IconButton>
                     {startIcon}
                 </IconButton>
             )}
-           
-            
-          
-           <Typography>{children}</Typography> 
 
-           {endIcon && (
+            <Typography>{children}</Typography>
+
+            {endIcon && (
                 <IconButton>
                     {endIcon}
                 </IconButton>
             )}
-           
-
         </Button>
-        );
-        
+    );
 };
+
+export default CustomButton;
 
 
 
@@ -70,7 +74,6 @@ const CustomButton =({onClick, children, startIcon, endIcon, disabled }: CustomB
 //         Disabled Button without Icon
 //       </CustomButton>  
 
-export default CustomButton;
 
 
 

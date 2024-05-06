@@ -10,8 +10,6 @@ interface Field {
     label: string;
     variant: 'outlined' | 'filled' | 'standard';
     defaultValue?: string;
-    
-
 }
 
 interface Props {
@@ -24,7 +22,7 @@ export default function BasicTextField({fields}: Props){
         <Box
         component="form"
         sx={{
-            '& > :not(style)': { m: 1, width: '25ch'},
+            '& > :not(style)': { m: 1, width: '70ch'},
         }}
         noValidate
         autoComplete="off"
@@ -50,10 +48,10 @@ export default function BasicTextField({fields}: Props){
 
 // export default function MyForm() {
 //   const fields = [
-//     { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
-//     { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
-//     { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
+    // { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
+    // { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
+    // { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
 //   ];
 
-//   return <BasicTextFields fields={fields} />;
+//   return <BasicTextField fields={fields} />;
 // }

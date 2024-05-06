@@ -9,8 +9,8 @@ const theme =  createTheme({
 		},
 
 		secondary :{
-			// main: '#337357' ,
-			main: '#071e22' ,
+			main: '#337357' ,
+			// main: '#071e22' ,
 
 
 		},

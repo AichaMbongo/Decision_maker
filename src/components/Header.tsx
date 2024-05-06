@@ -128,10 +128,13 @@ export default function Header(){
 
     return (
         <AppBar
+      
         sx={{
-            background: theme.palette.background.default,
-            color: theme.palette.primary.main
-        }}>
+          background: 'rgba(0, 0, 0, 0)',
+          color: theme.palette.primary.main,
+          boxShadow: 'none'
+        }}
+      >
             <Container maxWidth= 'xl'>
             <Toolbar sx={{
                  display: 'flex',

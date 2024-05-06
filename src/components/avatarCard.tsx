@@ -28,7 +28,8 @@ const ProfileCard:React.FC<Props> = ({ profile }) => {
 
 export default ProfileCard;
 
-// how to use in <code>const profile = {
+// how to use in <code>
+// const profile = {
 //     name: 'John Doe',
 //     role: 'Software Engineer',
 //     avatarUrl: 'https://example.com/avatar.jpg',
