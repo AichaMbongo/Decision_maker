@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/landing';
 import NewCriteria from './pages/newCriteria';
+import OtherNewCriteria from './pages/otherNewCriteria';
+import DecisionModel from './pages/DecisionModel';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,8 +16,10 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App/>} />
-        <Route path='/newCriteria' element={<NewCriteria/>} />
+        <Route path='/' element={<App />} />
+        <Route path='/newCriteria' element={<NewCriteria />} />
+        <Route path='/othernewCriteria' element={<OtherNewCriteria />} />
+        <Route path='/decisionModel' element={<DecisionModel/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
