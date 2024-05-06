@@ -6,28 +6,51 @@ import { ThemeProvider } from '@mui/material/styles';
 import Sidebar from './components/Sidebar';
 import CustomButton from './components/Button';
 import PersonOutlineSharpIcon from '@mui/icons-material/PersonOutlineSharp';
+import { Stack, Button, } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 
 
 function App() {
   const handleClick = () => {
-    console.log("Button clicked!");}
+    console.log("Button clicked!");
+  }
   return (
     <ThemeProvider theme={theme}>
-      
+
       <div className="App">
         <header className="App-header">
           <h1>
             DECISION MAKING APP
           </h1>
           <h2>Testing</h2>
-     
+
           <CustomButton onClick={handleClick} startIcon={<PersonOutlineSharpIcon />}>
-            Hello</CustomButton>        
+            Hello</CustomButton>
+
         </header>
-      </div>
-      <div>
-        <Sidebar/>
+
+        <div>
+          <Sidebar />
+        </div>
+
+        <div>
+          <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
+
+            <NavLink to={'/'} style={{ textDecoration: 'none' }}>
+              <Stack width={80} alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Main</Button>
+              </Stack>
+            </NavLink>
+
+            <NavLink to={'/newCriteria'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Criteria</Button>
+              </Stack>
+            </NavLink>
+
+          </Stack>
+        </div>
       </div>
 
     </ThemeProvider>
