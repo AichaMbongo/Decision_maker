@@ -1,9 +1,13 @@
 import React from 'react'
+import HeroSection from './HeroSection'
 //add some temporary links here to enable viewing of pages
-const landing = () => {
+function landing () {
   return (
-    <div>landing</div>
+    <>
+    <HeroSection />
+    </>
   )
 }
 
 export default landing
+
