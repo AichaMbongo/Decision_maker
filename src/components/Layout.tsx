@@ -4,6 +4,7 @@ import Footer from './Footer';
 import theme from '../theme/theme';
 import { ThemeProvider } from '@emotion/react';
 
+
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -12,7 +13,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <Header />
+      <div className='layout'>
       {children}
+      </div> 
       <Footer />
     </ThemeProvider>
   );
