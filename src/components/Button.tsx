@@ -1,7 +1,8 @@
 import React, {ReactNode}  from 'react';
-import  Button  from "@mui/material/Button";
 import  IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Button, { ButtonProps } from '@mui/material/Button';
+import { borderRadius } from '@mui/system';
 
 interface CustomButtonProps{
     onClick: () => void;
@@ -11,18 +12,22 @@ interface CustomButtonProps{
     disabled?:boolean; //disabled prop
     width?: string | number; // Add the new width property
     marginTop?: string | number;
+    variant?: 'text' | 'outlined' | 'contained';
+    borderRadius?: string | number;
 }
 
-const CustomButton =({onClick, children, startIcon, endIcon, disabled, width }: CustomButtonProps) =>{
+const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, variant, borderRadius }: CustomButtonProps) => {
 
     return(
         <Button
-            variant="contained"
+
+            variant={variant || "contained"} 
             onClick={onClick}
             className='custom-button'
             disabled={disabled}
             sx={{
-                width: width ?? '100%', // Use the width prop or default to 100%
+                width: width ?? '50%', // Use the width prop or default to 100%
+                borderRadius: borderRadius ?? '16px',
             }}
         >
             {startIcon && (
