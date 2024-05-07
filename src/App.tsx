@@ -4,70 +4,70 @@ import './App.css';
 import theme from './theme/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import Sidebar from './components/Sidebar';
-import CustomButton from './components/Button';
-import PersonOutlineSharpIcon from '@mui/icons-material/PersonOutlineSharp';
 import Header from './components/Header';
-import ProfileCard from './components/avatarCard';
-import Menusmall from './components/Menu/MenuSmall';
-import NavbarMenu from './components/Menu/NavbarMenu';
-import Icon from './components/Icon';
-import Search from '@mui/icons-material/Search';
-import User from './components/Users';
-import BasicTextField from './components/input-field';
-import HeroSection from './components/HeroSection';
-import Footer from './components/Footer';
-import LinearColor from './components/LinearColor';
+import HeroSection from './pages/HeroSection';
+import { Stack, Button, } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import Layout from './components/Layout'
+import newCriteria from './pages/newCriteria';
+import otherNewCriteria from './pages/otherNewCriteria';
+import PreviousDecision from './pages/PreviousDecision';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { Theme } from '@mui/material';
+import landing from './pages/Landing';
 
 
 function App() {
-  const handleClick = () => {
-    console.log("Button clicked!");}
-
-
-    const profile = {
-      name: 'John Doe',
-      role: 'Software Engineer',
-      avatarUrl: 'https://example.com/avatar.jpg',
-      profileUrl: 'https://example.com/profile', // Add profileUrl property
-    };
-
-    // const fields = [
-    //   { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
-    //   { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
-    //   { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
-    // ];
-  
-    interface Field {
-      id: string;
-      label: string;
-      variant: 'outlined' | 'filled' | 'standard';
-      defaultValue?: string;
-  }
-
-    const fields: Field[] = [
-      { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
-      { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
-      { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
-  ];
-  
-  
-
+  interface HeroSectionProps {
+    theme: Theme;
+  } 
   return (
-    <ThemeProvider theme={theme}>
-      
-      
-      <div className="App">
-        <>
+    
+      <Layout>
+        <div className="App">
+         
+          
+          <HeroSection />
+                <div>
+          
+          </div>
+          <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
+            <NavLink to={'/'} style={{ textDecoration: 'none' }}>
+              <Stack width={80} alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Main</Button>
+              </Stack>
+            </NavLink>
+            <NavLink to={'/newCriteria'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Criteria</Button>
+              </Stack>
+            </NavLink>
+            <NavLink to={'/othernewCriteria'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Other New Criteria</Button>
+              </Stack>
+            </NavLink>
+            <NavLink to={'/decisionModel'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Decision Model</Button>
+              </Stack>
+            </NavLink>
+          </Stack>
 
-        <Header/>
-        <HeroSection/>
-             
-        </>
-      </div>
-      
+         
+        </div> 
 
-    </ThemeProvider>
+        
+      </Layout>
+   
   );
 }
 
 export default App;
+
+
+
+          {/* <PreviousDecision /> */}

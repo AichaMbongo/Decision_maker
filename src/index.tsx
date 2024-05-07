@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/landing';
 import NewCriteria from './pages/newCriteria';
 import OtherNewCriteria from './pages/otherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
