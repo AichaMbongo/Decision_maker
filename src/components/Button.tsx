@@ -3,18 +3,8 @@ import  IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { borderRadius } from '@mui/system';
+import CustomButtonProps from './interfaces/ButtonInterface';
 
-interface CustomButtonProps{
-    onClick: () => void;
-    children: ReactNode;
-    startIcon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    disabled?:boolean; //disabled prop
-    width?: string | number; // Add the new width property
-    marginTop?: string | number;
-    variant?: 'text' | 'outlined' | 'contained';
-    borderRadius?: string | number;
-}
 
 const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, variant, borderRadius }: CustomButtonProps) => {
 

@@ -3,18 +3,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import  TextField  from '@mui/material/TextField';
+import { Field } from './interfaces/InputFieldProps';
+import { Props } from './interfaces/InputFieldProps';
 
-
-interface Field {
-    id: string;
-    label: string;
-    variant: 'outlined' | 'filled' | 'standard';
-    defaultValue?: string;
-}
-
-interface Props {
-    fields: Field[];
-}
 
 
 export default function BasicTextField({fields}: Props){
@@ -45,9 +36,11 @@ export default function BasicTextField({fields}: Props){
 // How to use component in the main File
 
 // import BasicTextFields from './BasicTextFields';
+// import Field from '../components/interfaces/InputFieldProps';
+
 
 // export default function MyForm() {
-//   const fields = [
+//   const fields: Field[] = [
     // { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
     // { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
     // { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
