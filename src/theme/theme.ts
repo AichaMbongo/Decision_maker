@@ -33,7 +33,13 @@ const theme =  createTheme({
 			fontWeight: 200,
 		  },
 
-		  subtitle1: {
+		h3: {
+			fontSize: 35,
+			color: '#071e22',
+			fontWeight: 300,
+		  },
+
+		subtitle1: {
 			fontSize: 18,
 			color: '#071e22',
 			fontWeight: 500,
