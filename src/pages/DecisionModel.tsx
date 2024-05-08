@@ -25,7 +25,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Layout from '../components/Layout';
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -90,7 +89,7 @@ function DecisionModel(){
     };
 
     return (
-            < Layout>
+        <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
                 <div> <Header /></div>
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
@@ -251,8 +250,8 @@ function DecisionModel(){
                 <Button sx={{ width: '200px' }} variant="contained"><ArrowBackIosIcon style={{ marginRight: '3px' }} />Back to Homepage</Button>
                 <Button sx={{ width: '200px' }} variant="contained">Enter Criteria<ArrowForwardIosIcon style={{ marginLeft: '4px' }} /></Button>
             </Stack>
-            </Layout>
-        // </ThemeProvider>
+            <Footer />
+        </ThemeProvider>
     )
 }
 

@@ -11,9 +11,6 @@ import TextField from '@mui/material/TextField';
 import Footer from '../components/Footer';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import Layout from '../components/Layout';
-
-
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -22,8 +19,7 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 
 const newCriteria = () => {
     return (
-      
-        < Layout>
+        <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
                 <div> <Header /></div>
                 <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
@@ -68,10 +64,8 @@ const newCriteria = () => {
                 </Box>
                 <Button variant="contained">Create New Criteria</Button>
             </Stack>
-           
-        
-        </Layout>
-       
+            <Footer />
+        </ThemeProvider>
 
     )
 }

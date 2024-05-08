@@ -23,9 +23,6 @@ import User from './Users'
 import { Avatar } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {MoreVert as MoreVertIcon} from '@mui/icons-material'
-import { Link } from 'react-router-dom';
-
-
 
 const pages = ['Categories', 'New Decision', 'How To', 'About'];
 const searchBoxStyles = {
@@ -131,12 +128,10 @@ export default function Header(){
 
     return (
         <AppBar
-      
         sx={{
-          background: theme.palette.background.default,
-          color: theme.palette.primary.main
-      }}
-      >
+            background: theme.palette.background.default,
+            color: theme.palette.primary.main
+        }}>
             <Container maxWidth= 'xl'>
             <Toolbar sx={{
                  display: 'flex',
@@ -144,7 +139,6 @@ export default function Header(){
                  gap: '2.5rem'
                 
                  }}>
-                 
                 <Typography 
                     variant='h6'
                     sx = {{
@@ -152,7 +146,6 @@ export default function Header(){
                     }}
                 >DecisionMaker
                 </Typography>
-            
 
            <Box sx={{ flexGrow: 1, gap: '1.75rem' ,display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

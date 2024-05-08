@@ -16,9 +16,6 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
-import Layout from '../components/Layout';
-
-
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -35,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const otherNewCriteria = () => {
     return (
-        < Layout>
+        <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
                 <div> <Header /></div>
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
@@ -137,8 +134,8 @@ const otherNewCriteria = () => {
                 <Button sx={{ width: '200px' }} variant="contained">Yes</Button>
                 <Button sx={{ width: '200px' }} variant="contained">No</Button>
             </Stack>
-            
-        </Layout>
+            <Footer />
+        </ThemeProvider>
     )
 }
 
