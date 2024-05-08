@@ -1,44 +1,43 @@
 import React, {ReactNode}  from 'react';
-import  Button  from "@mui/material/Button";
 import  IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
-interface CustomButtonProps{
-    onClick: () => void;
-    children: ReactNode;
-    startIcon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    disabled?:boolean; //disabled prop
-}
+import Button, { ButtonProps } from '@mui/material/Button';
+import { borderRadius } from '@mui/system';
+import CustomButtonProps from './interfaces/ButtonInterface';
 
 
-//declare constant 'button' which represents our button component
-const CustomButton =({onClick, children, startIcon, endIcon, disabled }: CustomButtonProps) =>{
+const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, variant, borderRadius }: CustomButtonProps) => {
 
     return(
-        <Button variant="contained" onClick={onClick}  className='custom-button' disabled={disabled}>
-           
+        <Button
+
+            variant={variant || "contained"} 
+            onClick={onClick}
+            className='custom-button'
+            disabled={disabled}
+            sx={{
+                width: width ?? '50%', // Use the width prop or default to 100%
+                borderRadius: borderRadius ?? '16px',
+            }}
+        >
             {startIcon && (
                 <IconButton>
                     {startIcon}
                 </IconButton>
             )}
-           
-            
-          
-           <Typography>{children}</Typography> 
 
-           {endIcon && (
+            <Typography>{children}</Typography>
+
+            {endIcon && (
                 <IconButton>
                     {endIcon}
                 </IconButton>
             )}
-           
-
         </Button>
-        );
-        
+    );
 };
+
+export default CustomButton;
 
 
 
@@ -70,7 +69,6 @@ const CustomButton =({onClick, children, startIcon, endIcon, disabled }: CustomB
 //         Disabled Button without Icon
 //       </CustomButton>  
 
-export default CustomButton;
 
 
 
