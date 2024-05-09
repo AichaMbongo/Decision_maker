@@ -8,6 +8,7 @@ import Landing from './pages/landing';
 import NewCriteria from './pages/newCriteria';
 import OtherNewCriteria from './pages/otherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
+import NewOption from './pages/newOption';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,6 +18,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />} />
+        <Route path='/newOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
         <Route path='/othernewCriteria' element={<OtherNewCriteria />} />
         <Route path='/decisionModel' element={<DecisionModel/>} />
