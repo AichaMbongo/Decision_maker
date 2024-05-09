@@ -11,7 +11,6 @@ import { NavLink } from 'react-router-dom';
 import Layout from './components/Layout'
 import newCriteria from './pages/newCriteria';
 import otherNewCriteria from './pages/otherNewCriteria';
-import PreviousDecision from './pages/PreviousDecision';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
