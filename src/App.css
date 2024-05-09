@@ -1,3 +1,8 @@
+
+body{
+  background-color: #fafafc; /* Optional: Set background color */
+
+}
 .App {
   text-align: center;
 }
@@ -87,7 +92,8 @@
 .layout{
   height: 100vh;
   justify-content: center;
-  background-color: #fafafc; /* Optional: Set background color */
+  margin-top: 8vh;
+  
 
 }
 
