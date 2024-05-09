@@ -55,6 +55,11 @@ function App() {
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Decision Model</Button>
               </Stack>
             </NavLink>
+             <NavLink to={'/newOption'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Option</Button>
+              </Stack>
+            </NavLink>
           </Stack>
 
          
