@@ -9,6 +9,8 @@ import CustomButtonProps from './interfaces/ButtonInterface';
 const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, variant, borderRadius }: CustomButtonProps) => {
 
     return(
+
+        
         <Button
 
             variant={variant || "contained"} 
@@ -16,7 +18,7 @@ const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, va
             className='custom-button'
             disabled={disabled}
             sx={{
-                width: width ?? '50%', // Use the width prop or default to 100%
+                width: width ?? '100%', // Use the width prop or default to 100%
                 borderRadius: borderRadius ?? '16px',
             }}
         >
