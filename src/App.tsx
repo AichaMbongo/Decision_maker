@@ -16,7 +16,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Theme } from '@mui/material';
-import landing from './pages/Landing';
+import LandingPage from './pages/landing';
 
 
 function App() {
