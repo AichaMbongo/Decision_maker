@@ -92,7 +92,7 @@ function DecisionModel(){
     return (
             < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
+                
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -120,7 +120,7 @@ function DecisionModel(){
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
-                <Typography variant='h4' align="center">Pick a decision model</Typography>
+                <Typography variant='h3' align="center">Pick a decision model</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
             </Stack>
             <Stack sx={{ p: 1 }} gap={4} direction="column">
@@ -140,7 +140,7 @@ function DecisionModel(){
                                     display: 'flex',
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Typography variant="h5" sx={{
+                                    <Typography variant="subtitle1" sx={{
 
                                         textAlign: 'center'
                                     }} >
@@ -180,7 +180,7 @@ function DecisionModel(){
                                     display: 'flex',
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Typography variant="h5" sx={{
+                                    <Typography variant="subtitle1" sx={{
 
                                         textAlign: 'center'
                                     }} >
@@ -220,7 +220,7 @@ function DecisionModel(){
                                     display: 'flex',
                                     justifyContent: 'space-between'
                                 }}>
-                                    <Typography variant="h5" sx={{
+                                    <Typography variant="subtitle1" sx={{
 
                                         textAlign: 'center'
                                     }} >

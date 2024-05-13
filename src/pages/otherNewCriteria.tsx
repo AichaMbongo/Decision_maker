@@ -37,7 +37,7 @@ const otherNewCriteria = () => {
     return (
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
+                
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -72,7 +72,7 @@ const otherNewCriteria = () => {
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
-                <Typography variant='h4' align="center">Do you want to Add Another Criteria?</Typography>
+                <Typography variant='h3' align="center">Do you want to Add Another Criteria?</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
                 <Box
                     component="form"
