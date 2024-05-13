@@ -17,7 +17,7 @@ import '@fontsource/roboto/700.css';
 import { Theme } from '@mui/material';
 
 
-import otherNewOption from './pages/otherNewOption';
+import otherNewOption from './pages/OtherNewOption';
 
 
 
