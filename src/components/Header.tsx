@@ -24,10 +24,19 @@ import { Avatar } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {MoreVert as MoreVertIcon} from '@mui/icons-material'
 import { Link } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+
+
+const pages = [''];
+// Inside the Toolbar component
+{pages.map((page) => (
+  <NavLink key={page} to={`/${page.toLowerCase().replace(/\s+/g, '-')}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Button>{page}</Button>
+  </NavLink>
+))}
 
 
 
-const pages = ['Categories', 'New Decision', 'How To', 'About'];
 const searchBoxStyles = {
   backgroundColor: '#C3C3C3',
   borderRadius: '9px',
@@ -150,9 +159,40 @@ export default function Header(){
                     sx = {{
                       
                     }}
-                >DecisionMaker
+                >
+                   <NavLink
+                to="/"
+                // style={({ isActive }) => {
+                // return isActive ? { color: "plum" } : {};
+                // }}
+                >
+                  DecisionMaker
+                  </NavLink>
                 </Typography>
-            
+
+
+                <Typography 
+                    variant='button'
+                    sx = {{
+                      
+                    }}>
+               <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+  <Button>New Decision</Button>
+</NavLink>
+
+<NavLink to="/PreviousDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+  <Button>Previous Decisions</Button>
+</NavLink>
+
+<NavLink to="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+  <Button>Help</Button>
+</NavLink>
+
+<NavLink to="#" style={{ textDecoration: 'none', color: 'inherit' }}>
+  <Button>About</Button>
+</NavLink>
+
+                </Typography>
 
            <Box sx={{ flexGrow: 1, gap: '1.75rem' ,display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

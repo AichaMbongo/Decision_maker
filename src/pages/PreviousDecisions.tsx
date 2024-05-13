@@ -2,13 +2,12 @@ import React from 'react'
 import { Box, Typography, Grid, Stack, TextField, Breadcrumbs, Link, Button, Paper, styled } from '@mui/material'
 import Layout from '../components/Layout'
 import SearchBox from '../components/Search'
+import CustomButton from '../components/Button'
 import AddIcon from '@mui/icons-material/Add';
 import Header from '../components/Header'
 import BackButton from '../components/BackButton'
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
-import { NavLink } from 'react-router-dom'
-import CustomButton from '../components/Button'
 
 
 const PreviousDecisions: React.FC = () => {
@@ -16,13 +15,13 @@ const PreviousDecisions: React.FC = () => {
     const handleClick = () => {
         console.log("Button is Clicked");
       }
-
+      
       const handleSearchSubmit = (query: string) => {
         console.log('Search query:', query);
         // Implement your search functionality here
       };
 
-
+      
       const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -36,20 +35,16 @@ const PreviousDecisions: React.FC = () => {
         name: string;
         description: string; // New property for description
       }
-
+      
       const decisionData: Decision[] = [
         { id: 1, name: 'Buy House', description: 'Purchase a residential property to live in or as an investment.' },
         { id: 2, name: 'Investment Stock', description: 'Invest in stocks or securities to generate financial returns.' },
         { id: 3, name: 'Buy Car', description: 'Acquire a vehicle for personal or professional use.' },
         { id: 4, name: 'Tourist Destination', description: 'Visit a location for leisure, exploration, or vacation.' },
       ];
-
-      interface SearchBoxProps {
-        onSubmit: (query: string) => void;
-      }
-
+      
       return (
-
+       
         <Layout>
 
 <Stack sx={{ p: 2 }} gap={9} direction="column">
@@ -94,23 +89,16 @@ const PreviousDecisions: React.FC = () => {
                     List of Previous Decisions
                   </Typography>
                 <Box
-
+                  
                 >
 <SearchBox onSubmit={handleSearchSubmit} />                    
-
+                   
                 </Box>
                 <Box>
-
-                <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                <CustomButton onClick={handleClick} endIcon={<AddIcon />}>
-                Add New Decision
-                </CustomButton>
-                </NavLink>
-               
-
+                <Button variant="contained" endIcon={<AddIcon />}>Add New Decision</Button>
+                
                 </Box>
-
+                
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {decisionData.map((decision) => (
                 <Grid item xs={4}  key={decision.id}>
@@ -120,7 +108,7 @@ const PreviousDecisions: React.FC = () => {
                     <Stack>
                         <Typography variant='subtitle1'>{decision.name}</Typography>
                         <Typography variant='body1'>{decision.description}</Typography>
-                        <CustomButton onClick={handleClick}>Edit decision</CustomButton>
+                        <Button variant="contained">Edit decision</Button>
                     </Stack>
                     </Stack>
                 </Item>
@@ -131,7 +119,7 @@ const PreviousDecisions: React.FC = () => {
             </Stack>
         </Layout>
       );
-
+      
       }
 
 export default PreviousDecisions
