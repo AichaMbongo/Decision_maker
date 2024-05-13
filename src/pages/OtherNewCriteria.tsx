@@ -26,6 +26,7 @@ import CustomButton from '../components/Button';
 //     event.preventDefault();
 //     console.info('You clicked a breadcrumb.');
 // }
+const criteria = ["Cost", "Comfort", "Safety", "Good Insurance", "Comfy Seats","Nice Speakers"]
 
 const handleClick = () => {
     console.log("Button is Clicked");
@@ -77,6 +78,7 @@ const OtherNewCriteria = () => {
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
+
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
                 <Typography variant='h3' align="center">Do you want to Add Another Criteria?</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
@@ -91,52 +93,23 @@ const OtherNewCriteria = () => {
                     <TextField id="filled-basic" label="Type in something...." variant="filled" />
                 </Box>
             </Stack>
+
             <Stack sx={{ p: 1 }} gap={4} direction="column">
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    <Grid item xs={3}>
+                  {criteria.map((crit) => (
+                    <Grid item xs={4}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                 <Stack>
-                                    <Typography variant='body1'>Criteria 1</Typography>
+                                    <Typography variant='body1'>{crit}</Typography>
                                     <Button variant="contained">Edit Criteria</Button>
                                 </Stack>
                             </Stack>
                         </Item>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
-                                <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
-                                <Stack>
-                                    <Typography variant='body1'>Criteria 2</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
-                                </Stack>
-                            </Stack>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
-                                <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
-                                <Stack>
-                                    <Typography variant='body1'>Criteria 3</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
-                                </Stack>
-                            </Stack>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
-                                <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
-                                <Stack>
-                                    <Typography variant='body1'>Criteria 4</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
-                                </Stack>
-                            </Stack>
-                        </Item>
-                    </Grid>
+                  ))}
+               
                 </Grid>
             </Stack>
             <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
