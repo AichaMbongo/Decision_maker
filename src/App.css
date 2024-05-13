@@ -85,7 +85,7 @@
 }
 
 .layout{
-  height: 100vh;
+  min-height: 100vh;
   justify-content: center;
   background-color: #fafafc; /* Optional: Set background color */
 

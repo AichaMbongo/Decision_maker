@@ -11,13 +11,22 @@ import TextField from '@mui/material/TextField';
 import Footer from '../components/Footer';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import { NavLink } from 'react-router-dom';
+import CustomButton from '../components/Button';
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
 
-const newOption = () => {
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//     event.preventDefault();
+//     console.info('You clicked a breadcrumb.');
+// }
+
+const handleClick = () => {
+    console.log("Button is Clicked");
+  }
+  
+
+
+const NewOption = () => {
     return (
         <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
@@ -62,7 +71,14 @@ const newOption = () => {
                 >
                     <TextField id="filled-basic" label="ie. BMW, Mercedes" variant="filled" />
                 </Box>
-                <Button variant="contained">Proceed</Button>
+                
+                <NavLink to="/otherNewOption" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                    <CustomButton onClick={handleClick}>
+                    PROCEED
+                    </CustomButton>
+                </NavLink>
+
             </Stack>
             <Footer />
         </ThemeProvider>
@@ -70,4 +86,4 @@ const newOption = () => {
     )
 }
 
-export default newOption;
+export default NewOption;

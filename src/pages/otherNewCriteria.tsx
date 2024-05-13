@@ -17,13 +17,19 @@ import { styled } from '@mui/material/styles';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 import Layout from '../components/Layout';
+import { NavLink } from 'react-router-dom';
+import CustomButton from '../components/Button';
 
 
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//     event.preventDefault();
+//     console.info('You clicked a breadcrumb.');
+// }
+
+const handleClick = () => {
+    console.log("Button is Clicked");
+  }
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -33,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const otherNewCriteria = () => {
+const OtherNewCriteria = () => {
     return (
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
@@ -134,12 +140,24 @@ const otherNewCriteria = () => {
                 </Grid>
             </Stack>
             <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-                <Button sx={{ width: '200px' }} variant="contained">Yes</Button>
-                <Button sx={{ width: '200px' }} variant="contained">No</Button>
+            <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+            <CustomButton onClick={handleClick}  >
+            Yes
+            </CustomButton>
+            </NavLink>
+
+            <NavLink to="/EvaluateCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+            <CustomButton onClick={handleClick} >
+            No
+            </CustomButton>
+            </NavLink>
+               
             </Stack>
             
         </Layout>
     )
 }
 
-export default otherNewCriteria
+export default OtherNewCriteria
