@@ -31,7 +31,7 @@ const newCriteria = () => {
       
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
+                
                 <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -58,7 +58,7 @@ const newCriteria = () => {
             </Stack>
             <Stack>
                 <div style={{marginLeft:'30px'}}> <BackButton /></div>
-                <div><Typography variant='h4' align="center">Type in a New Criteria</Typography></div>
+                <div><Typography variant='h3' align="center">Type in a New Criteria</Typography></div>
             </Stack>
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '78px' , padding:3, marginTop:'10px' }}>
                 < FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
