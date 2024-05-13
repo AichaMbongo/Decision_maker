@@ -10,6 +10,10 @@ import DecisionModel from './pages/DecisionModel';
 import LandingPage from './pages/landing';
 import PreviousDecisions from './pages/PreviousDecisions';
 
+import OtherNewOption from './pages/otherNewOption';
+import NewOption from './pages/newOption';
+
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -18,10 +22,12 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />} />
+        <Route path='/newOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
         <Route path='/othernewCriteria' element={<OtherNewCriteria />} />
         <Route path='/decisionModel' element={<DecisionModel/>} />
         <Route path='/Landing' element={<LandingPage/>} />
+        <Route path='/othernewOption' element={<OtherNewOption/>} />
         <Route path='/PreviousDecisons' element={<PreviousDecisions/>} />
       </Routes>
     </BrowserRouter>

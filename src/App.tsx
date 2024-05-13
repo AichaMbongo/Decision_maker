@@ -16,7 +16,11 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Theme } from '@mui/material';
+
+
+import otherNewOption from './pages/otherNewOption';
 import LandingPage from './pages/landing';
+
 
 
 function App() {
@@ -52,6 +56,19 @@ function App() {
             <NavLink to={'/decisionModel'} style={{ textDecoration: 'none' }}>
               <Stack alignItems="center">
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Decision Model</Button>
+              </Stack>
+            </NavLink>
+
+            <NavLink to={'/othernewOption'} style={{ textDecoration: 'none' }}>
+
+              <Stack alignItems="center">
+
+
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Other New Option</Button>
+             <NavLink to={'/newOption'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Option</Button>
+
               </Stack>
             </NavLink>
           </Stack>
