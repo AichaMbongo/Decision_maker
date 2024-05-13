@@ -14,6 +14,9 @@ import NewOption from './pages/NewOption';
 import PreviousDecision from './pages/PreviousDecision';
 import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';  
+import ResultsPage from './pages/ResultsPage';
+import CriteriaPage  from './pages/CriteriaPage';
+
 
 
 
@@ -28,6 +31,7 @@ root.render(
         <Route path='/NewOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
 
+
         <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
         <Route path='/DecisionModel' element={<DecisionModel/>} />
         <Route path='/NewDecision' element={<NewDecision/>} />
@@ -35,7 +39,10 @@ root.render(
         <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
         <Route path='/contactUs' element={<ContactUs/>} />
         <Route path='/aboutUs' element={<AboutUs/>} />
+        <Route path='/resultsPage' element= {<ResultsPage/>}/>
+        <Route  path='/criteriaPage' element = {<CriteriaPage/>}/>
         </Routes>
+
     </BrowserRouter>
   </React.StrictMode>
 );
