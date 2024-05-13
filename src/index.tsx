@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NewCriteria from './pages/NewCriteria';
 import OtherNewCriteria from './pages/OtherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
-import LandingPage from './pages/landing';
+
 import PreviousDecisions from './pages/PreviousDecisions';
 import NewDecision from './pages/NewDecision';
 
