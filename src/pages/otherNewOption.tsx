@@ -16,11 +16,16 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
+import CustomButton from '../components/Button';
+import { NavLink } from 'react-router-dom';
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//     event.preventDefault();
+//     console.info('You clicked a breadcrumb.');
+// }
+const handleClick = () => {
+    console.log("Button is Clicked");
+  }
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -30,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const otherNewOption = () => {
+const OtherNewOption = () => {
     return (
         <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
@@ -131,12 +136,25 @@ const otherNewOption = () => {
                 </Grid>
             </Stack>
             <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-                <Button sx={{ width: '200px' }} variant="contained">Yes</Button>
-                <Button sx={{ width: '200px' }} variant="contained">No</Button>
+
+            <NavLink to="/newOption" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+            <CustomButton onClick={handleClick} >
+            Yes
+            </CustomButton>
+            </NavLink>
+
+            <NavLink to="/EvaluateOptions" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+            <CustomButton onClick={handleClick} >
+            No
+            </CustomButton>
+            </NavLink>
+                
             </Stack>
-            <Footer />
+            <Footer /> 
         </ThemeProvider>
     )
 }
 
-export default otherNewOption;
+export default OtherNewOption;

@@ -12,13 +12,19 @@ import Footer from '../components/Footer';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Layout from '../components/Layout';
+import CustomButton from '../components/Button';
+import { NavLink } from 'react-router-dom';
 
 
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//     event.preventDefault();
+//     console.info('You clicked a breadcrumb.');
+// }
+
+const handleClick = () => {
+    console.log("Button is Clicked");
+  }
 
 const newCriteria = () => {
     return (
@@ -66,7 +72,13 @@ const newCriteria = () => {
                 >
                     <TextField id="filled-basic" label="ie. Cost, Comfort" variant="filled" />
                 </Box>
-                <Button variant="contained">Create New Criteria</Button>
+                <NavLink to="/otherNewCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                <CustomButton onClick={handleClick}>
+                Create New Criteria
+                </CustomButton>
+                </NavLink>
+                
             </Stack>
            
         

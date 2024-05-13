@@ -9,8 +9,7 @@ import HeroSection from './pages/HeroSection';
 import { Stack, Button, } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Layout from './components/Layout'
-import newCriteria from './pages/newCriteria';
-import otherNewCriteria from './pages/otherNewCriteria';
+
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -19,7 +18,7 @@ import { Theme } from '@mui/material';
 
 
 import otherNewOption from './pages/otherNewOption';
-import LandingPage from './pages/landing';
+
 
 
 
@@ -28,15 +27,10 @@ function App() {
     theme: Theme;
   } 
   return (
-    
-      <Layout>
-        <div className="App">
-         
-          
-          <HeroSection />
-                <div>
-          
-          </div>
+    <Layout>
+      <div className="App">
+        <HeroSection />
+        <div>
           <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
             <NavLink to={'/'} style={{ textDecoration: 'none' }}>
               <Stack width={80} alignItems="center">
@@ -58,32 +52,21 @@ function App() {
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Decision Model</Button>
               </Stack>
             </NavLink>
-
             <NavLink to={'/othernewOption'} style={{ textDecoration: 'none' }}>
-
               <Stack alignItems="center">
-
-
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Other New Option</Button>
-             <NavLink to={'/newOption'} style={{ textDecoration: 'none' }}>
+              </Stack>
+            </NavLink>
+            <NavLink to={'/newOption'} style={{ textDecoration: 'none' }}>
               <Stack alignItems="center">
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Option</Button>
-
               </Stack>
             </NavLink>
           </Stack>
-
-         
-        </div> 
-
-        
-      </Layout>
-   
+        </div>
+      </div>
+    </Layout>
   );
 }
 
 export default App;
-
-
-
-          {/* <PreviousDecision /> */}
