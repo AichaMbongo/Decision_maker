@@ -62,6 +62,17 @@ function App() {
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Option</Button>
               </Stack>
             </NavLink>
+            <NavLink to={'/contactUs'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Contact Us</Button>
+              </Stack>
+            </NavLink>
+
+            <NavLink to={'/aboutUs'} style={{ textDecoration: 'none' }}>
+              <Stack alignItems="center">
+                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>About Us</Button>
+              </Stack>
+            </NavLink>
           </Stack>
         </div>
       </div>
