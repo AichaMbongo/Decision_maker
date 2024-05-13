@@ -4,13 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NewCriteria from './pages/newCriteria';
-import OtherNewCriteria from './pages/otherNewCriteria';
+import NewCriteria from './pages/NewCriteria';
+import OtherNewCriteria from './pages/OtherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
-import LandingPage from './pages/Landing';
-import NewOption from './pages/newOption';
+import PreviousDecisions from './pages/PreviousDecisions';
+import NewDecision from './pages/NewDecision';
+import OtherNewOption from './pages/OtherNewOption';
+import NewOption from './pages/NewOption';
+import PreviousDecision from './pages/PreviousDecision';
 import ContactUs from './pages/ContactUs';
-import AboutUs from './pages/AboutUs';
+import AboutUs from './pages/AboutUs';  
+
 
 
 const root = ReactDOM.createRoot(
@@ -21,14 +25,17 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />} />
-        <Route path='/newOption' element={<NewOption />} />
+        <Route path='/NewOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
-        <Route path='/othernewCriteria' element={<OtherNewCriteria />} />
-        <Route path='/decisionModel' element={<DecisionModel/>} />
-        <Route path='/Landing' element={<LandingPage/>} />
+
+        <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
+        <Route path='/DecisionModel' element={<DecisionModel/>} />
+        <Route path='/NewDecision' element={<NewDecision/>} />
+        <Route path='/OtherNewOption' element={<OtherNewOption/>} />
+        <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
         <Route path='/contactUs' element={<ContactUs/>} />
         <Route path='/aboutUs' element={<AboutUs/>} />
-      </Routes>
+        </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

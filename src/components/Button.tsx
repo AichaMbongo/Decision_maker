@@ -6,19 +6,23 @@ import { borderRadius } from '@mui/system';
 import CustomButtonProps from './interfaces/ButtonInterface';
 
 
-const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, variant, borderRadius }: CustomButtonProps) => {
-
-    return(
+const CustomButton = ({ onClick, children, startIcon, endIcon, disabled, variant, borderRadius, ...rest }: CustomButtonProps) => {
+    return (
         <Button
-
-            variant={variant || "contained"} 
+            variant={variant || "contained"}
             onClick={onClick}
             className='custom-button'
             disabled={disabled}
             sx={{
-                width: width ?? '50%', // Use the width prop or default to 100%
-                borderRadius: borderRadius ?? '16px',
+                borderRadius: borderRadius || '16px',
+                
+                paddingRight: 2,
+                paddingLeft: 2,
+                marginBottom: 2,
+                // Apply width directly here if needed
+                minWidth: '200px', // Adjust the width as desired
             }}
+            {...rest} // Spread any additional props to the Button component
         >
             {startIcon && (
                 <IconButton>
@@ -36,6 +40,7 @@ const CustomButton =({onClick, children, startIcon, endIcon, disabled, width, va
         </Button>
     );
 };
+
 
 export default CustomButton;
 

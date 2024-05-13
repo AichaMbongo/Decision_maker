@@ -12,20 +12,26 @@ import Footer from '../components/Footer';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Layout from '../components/Layout';
+import CustomButton from '../components/Button';
+import { NavLink } from 'react-router-dom';
 
 
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
+// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+//     event.preventDefault();
+//     console.info('You clicked a breadcrumb.');
+// }
+
+const handleClick = () => {
+    console.log("Button is Clicked");
+  }
 
 const newCriteria = () => {
     return (
       
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
+                
                 <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -52,7 +58,7 @@ const newCriteria = () => {
             </Stack>
             <Stack>
                 <div style={{marginLeft:'30px'}}> <BackButton /></div>
-                <div><Typography variant='h4' align="center">Type in a New Criteria</Typography></div>
+                <div><Typography variant='h3' align="center">Type in a New Criteria</Typography></div>
             </Stack>
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '78px' , padding:3, marginTop:'10px' }}>
                 < FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
@@ -66,7 +72,13 @@ const newCriteria = () => {
                 >
                     <TextField id="filled-basic" label="ie. Cost, Comfort" variant="filled" />
                 </Box>
-                <Button variant="contained">Create New Criteria</Button>
+                <NavLink to="/otherNewCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                <CustomButton onClick={handleClick}>
+                Create New Criteria
+                </CustomButton>
+                </NavLink>
+                
             </Stack>
            
         

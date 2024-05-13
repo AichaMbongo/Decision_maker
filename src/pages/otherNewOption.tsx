@@ -1,5 +1,5 @@
-import React from 'react'
-import Header from '../components/Header'
+import React from 'react';
+import Header from '../components/Header';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
 import BackButton from '../components/BackButton';
@@ -16,17 +16,13 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
-import Layout from '../components/Layout';
-import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
-
-
+import { NavLink } from 'react-router-dom';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
 //     console.info('You clicked a breadcrumb.');
 // }
-
 const handleClick = () => {
     console.log("Button is Clicked");
   }
@@ -39,11 +35,11 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const OtherNewCriteria = () => {
+const OtherNewOption = () => {
     return (
-        < Layout>
+        <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                
+                <div> <Header /></div>
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -67,9 +63,9 @@ const OtherNewCriteria = () => {
                         <Link
                             underline="hover"
                             color="inherit"
-                            href="/othernewCriteria"
+                            href="/othernewOption"
                         >
-                            More Criteria
+                            More Options
                         </Link>
                     </Breadcrumbs>
                 </div>
@@ -78,7 +74,7 @@ const OtherNewCriteria = () => {
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
-                <Typography variant='h3' align="center">Do you want to Add Another Criteria?</Typography>
+                <Typography variant='h4' align="center">Do you want to Add Another Option?</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
                 <Box
                     component="form"
@@ -93,46 +89,46 @@ const OtherNewCriteria = () => {
             </Stack>
             <Stack sx={{ p: 1 }} gap={4} direction="column">
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                 <Stack>
-                                    <Typography variant='body1'>Criteria 1</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
+                                    <Typography variant='body1'>Option 1</Typography>
+                                    <Button variant="contained">Edit Option</Button>
                                 </Stack>
                             </Stack>
                         </Item>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                 <Stack>
-                                    <Typography variant='body1'>Criteria 2</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
+                                    <Typography variant='body1'>Option 2</Typography>
+                                    <Button variant="contained">Edit Option</Button>
                                 </Stack>
                             </Stack>
                         </Item>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                 <Stack>
-                                    <Typography variant='body1'>Criteria 3</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
+                                    <Typography variant='body1'>Option 3</Typography>
+                                    <Button variant="contained">Edit Option</Button>
                                 </Stack>
                             </Stack>
                         </Item>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                 <Stack>
-                                    <Typography variant='body1'>Criteria 4</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
+                                    <Typography variant='body1'>Option 4</Typography>
+                                    <Button variant="contained">Edit Option</Button>
                                 </Stack>
                             </Stack>
                         </Item>
@@ -140,24 +136,25 @@ const OtherNewCriteria = () => {
                 </Grid>
             </Stack>
             <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-            <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-            <CustomButton onClick={handleClick}  >
+            <NavLink to="/newOption" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+            <CustomButton onClick={handleClick} >
             Yes
             </CustomButton>
             </NavLink>
 
-            <NavLink to="/EvaluateCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <NavLink to="/EvaluateOptions" style={{ textDecoration: 'none', color: 'inherit' }}>
 
             <CustomButton onClick={handleClick} >
             No
             </CustomButton>
             </NavLink>
-               
+                
             </Stack>
-            
-        </Layout>
+            <Footer /> 
+        </ThemeProvider>
     )
 }
 
-export default OtherNewCriteria
+export default OtherNewOption;

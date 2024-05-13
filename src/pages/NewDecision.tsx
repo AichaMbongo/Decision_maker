@@ -6,11 +6,12 @@ import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import CustomButton from '../components/Button';
 import BasicTextField from '../components/input-field';
 import {Field} from '../components/interfaces/InputFieldProps';
+import { NavLink } from 'react-router-dom';
 
 //add some temporary links here to enable viewing of pages
 
 
-const LandingPage: React.FC = () =>  {
+const NewDecision: React.FC = () =>  {
 
 const fields: Field[] = [
   { id: 'filled-basic', label: 'E.g. "To Buy a Car"', variant: 'filled', defaultValue: '' },
@@ -23,7 +24,8 @@ const handleClick = () => {
   return (
     
     <Layout >
-      <Box className='hero-section'>
+      <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
+                
         <Grid lg={6}>
         <Box>
       <Typography variant='h3'>
@@ -46,18 +48,25 @@ What is Your Goal?
       <Box>
         <BasicTextField fields={fields} />
       </Box>
-      <Box mt={2}>
-        <CustomButton onClick={handleClick}>
-          PROCEED
-          </CustomButton>
+      <Box mt={2} width={100} alignItems="center">
+      
+
+
       </Box>
       </Grid>
-      </Box>
+      
+      <NavLink to="/DecisionModel" style={{ textDecoration: 'none', color: 'inherit' }}>
 
+<CustomButton onClick={handleClick}>
+  PROCEED
+  </CustomButton>
+  </NavLink>
+     
+  </Stack>
     </Layout>
    
   )
 }
 
-export default LandingPage
+export default NewDecision
 
