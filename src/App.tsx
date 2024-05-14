@@ -9,6 +9,7 @@ import HeroSection from './pages/HeroSection';
 import { Stack, Button, } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Layout from './components/Layout'
+import { useState } from 'react';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -18,65 +19,68 @@ import { Theme } from '@mui/material';
 
 
 import otherNewOption from './pages/OtherNewOption';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NewCriteria from './pages/NewCriteria';
+import OtherNewCriteria from './pages/OtherNewCriteria';
+import DecisionModel from './pages/DecisionModel';
+import PreviousDecisions from './pages/PreviousDecisions';
+import NewDecision from './pages/NewDecision';
+import OtherNewOption from './pages/OtherNewOption';
+import NewOption from './pages/NewOption';
+import PreviousDecision from './pages/PreviousDecision';
+import ContactUs from './pages/ContactUs';
+import AboutUs from './pages/AboutUs';  
+import ResultsPage from './pages/ResultsPage';
+import CriteriaPage  from './pages/CriteriaPage';
+import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
+import { DecisionStateContext } from './contexts/DecisionStateContext';
+import Home from './pages/Home';
+import DecisionState from './components/interfaces/DecisionState';
 
 
 
 
 function App() {
+  const [decisionState, setDecisionState] = useState<DecisionState>({
+    model: '',
+    criteria: [],
+    criteriaComparisons: [],
+    options: [],
+    optionComparisons: [],
+});
+
+  const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
+    setDecisionState(prevState => ({
+      ...prevState,
+      ...updatedProperties,
+    }));
+  };
+
   interface HeroSectionProps {
     theme: Theme;
   } 
   return (
-    <Layout>
-      <div className="App">
-        <HeroSection />
-        <div>
-          <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
-            <NavLink to={'/'} style={{ textDecoration: 'none' }}>
-              <Stack width={80} alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Main</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/newCriteria'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Criteria</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/othernewCriteria'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Other New Criteria</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/decisionModel'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Decision Model</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/othernewOption'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Other New Option</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/newOption'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>New Option</Button>
-              </Stack>
-            </NavLink>
-            <NavLink to={'/contactUs'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Contact Us</Button>
-              </Stack>
-            </NavLink>
+    <>
+    <DecisionStateContext.Provider value={{ decisionState, setDecisionState}}>
+     <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/NewOption' element={<NewOption />} />
+        <Route path='/newCriteria' element={<NewCriteria />} />
 
-            <NavLink to={'/aboutUs'} style={{ textDecoration: 'none' }}>
-              <Stack alignItems="center">
-                <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>About Us</Button>
-              </Stack>
-            </NavLink>
-          </Stack>
-        </div>
-      </div>
-    </Layout>
+
+        <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
+        <Route path='/DecisionModel' element={<DecisionModel/>} />
+        <Route path='/NewDecision' element={<NewDecision/>} />
+        <Route path='/OtherNewOption' element={<OtherNewOption/>} />
+        <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
+        <Route path='/contactUs' element={<ContactUs/>} />
+        <Route path='/aboutUs' element={<AboutUs/>} />
+        <Route path='/resultsPage' element= {<ResultsPage/>}/>
+        <Route  path='/criteriaPage' element = {<CriteriaPage/>}/>
+        </Routes>
+
+        </DecisionStateContext.Provider>
+    </>
   );
 }
 

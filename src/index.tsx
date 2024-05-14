@@ -16,6 +16,8 @@ import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';  
 import ResultsPage from './pages/ResultsPage';
 import CriteriaPage  from './pages/CriteriaPage';
+import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
+import { DecisionStateContext } from './contexts/DecisionStateContext';
 
 
 
@@ -25,8 +27,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+  
     <BrowserRouter>
-      <Routes>
+
+      <App/>
+      {/* <Routes>
         <Route path='/' element={<App />} />
         <Route path='/NewOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
@@ -41,9 +46,10 @@ root.render(
         <Route path='/aboutUs' element={<AboutUs/>} />
         <Route path='/resultsPage' element= {<ResultsPage/>}/>
         <Route  path='/criteriaPage' element = {<CriteriaPage/>}/>
-        </Routes>
+        </Routes> */}
 
     </BrowserRouter>
+
   </React.StrictMode>
 );
 
