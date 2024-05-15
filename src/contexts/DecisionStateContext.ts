@@ -12,12 +12,12 @@ const defaultDecisionState: DecisionState = {
 
 interface DecisionStateContextProps{
     decisionState: DecisionState;
-    updateDecisionState: any;
+    setDecisionState: any;
 }
 
 export const DecisionStateContext = createContext({
     decisionState: defaultDecisionState,
-    updateDecisionState: () => {}
+    setDecisionState: (property: any) => {}
 });
 
 // export default DecisionStateContext;
