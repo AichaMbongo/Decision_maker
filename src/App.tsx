@@ -66,8 +66,6 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/NewOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
-
-
         <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
         <Route path='/DecisionModel' element={<DecisionModel/>} />
         <Route path='/NewDecision' element={<NewDecision/>} />
