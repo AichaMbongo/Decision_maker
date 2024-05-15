@@ -31,7 +31,6 @@ import ContactUs from './ContactUs';
 import AboutUs from './AboutUs';  
 import ResultsPage from './ResultsPage';
 import CriteriaPage  from './CriteriaPage';
-import DecisionStateProvider from '../components/interfaces/DecisionStateProvider';
 import { DecisionStateContext } from '../contexts/DecisionStateContext';
 
 

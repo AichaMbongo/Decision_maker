@@ -1,44 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import theme from './theme/theme';
-import { ThemeProvider } from '@mui/material/styles';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import HeroSection from './pages/HeroSection';
-import { Stack, Button, } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import Layout from './components/Layout'
-import { useState } from 'react';
-
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { Theme } from '@mui/material';
-
-
-import otherNewOption from './pages/OtherNewOption';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme/theme';
+import { DecisionStateContext } from './contexts/DecisionStateContext';
+import DecisionState from './components/interfaces/DecisionState';
+
+import Home from './pages/Home';
+import NewOption from './pages/NewOption';
 import NewCriteria from './pages/NewCriteria';
 import OtherNewCriteria from './pages/OtherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
-import PreviousDecisions from './pages/PreviousDecisions';
 import NewDecision from './pages/NewDecision';
 import OtherNewOption from './pages/OtherNewOption';
-import NewOption from './pages/NewOption';
 import PreviousDecision from './pages/PreviousDecision';
 import ContactUs from './pages/ContactUs';
-import AboutUs from './pages/AboutUs';  
+import AboutUs from './pages/AboutUs';
 import ResultsPage from './pages/ResultsPage';
-import CriteriaPage  from './pages/CriteriaPage';
-import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
-import { DecisionStateContext } from './contexts/DecisionStateContext';
-import Home from './pages/Home';
-import DecisionState from './components/interfaces/DecisionState';
-
-
-
+import CriteriaPage from './pages/CriteriaPage';
 
 function App() {
   const [decisionState, setDecisionState] = useState<DecisionState>({
@@ -47,7 +25,7 @@ function App() {
     criteriaComparisons: [],
     options: [],
     optionComparisons: [],
-});
+  });
 
   const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
     setDecisionState(prevState => ({
@@ -56,31 +34,27 @@ function App() {
     }));
   };
 
-  interface HeroSectionProps {
-    theme: Theme;
-  } 
   return (
-    <>
-    <DecisionStateContext.Provider value={{ decisionState, setDecisionState}}>
-     <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/NewOption' element={<NewOption />} />
-        <Route path='/newCriteria' element={<NewCriteria />} />
-
-
-        <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
-        <Route path='/DecisionModel' element={<DecisionModel/>} />
-        <Route path='/NewDecision' element={<NewDecision/>} />
-        <Route path='/OtherNewOption' element={<OtherNewOption/>} />
-        <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
-        <Route path='/contactUs' element={<ContactUs/>} />
-        <Route path='/aboutUs' element={<AboutUs/>} />
-        <Route path='/resultsPage' element= {<ResultsPage/>}/>
-        <Route  path='/criteriaPage' element = {<CriteriaPage/>}/>
-        </Routes>
-
-        </DecisionStateContext.Provider>
-    </>
+    <ThemeProvider theme={theme}>
+      <DecisionStateContext.Provider value={{ decisionState, setDecisionState }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/newOption' element={<NewOption />} />
+            <Route path='/newCriteria' element={<NewCriteria />} />
+            <Route path='/otherNewCriteria' element={<OtherNewCriteria />} />
+            <Route path='/decisionModel' element={<DecisionModel />} />
+            <Route path='/newDecision' element={<NewDecision />} />
+            <Route path='/otherNewOption' element={<OtherNewOption />} />
+            <Route path='/previousDecision' element={<PreviousDecision />} />
+            <Route path='/contactUs' element={<ContactUs />} />
+            <Route path='/aboutUs' element={<AboutUs />} />
+            <Route path='/resultsPage' element={<ResultsPage />} />
+            <Route path='/criteriaPage' element={<CriteriaPage />} />
+          </Routes>
+        </BrowserRouter>
+      </DecisionStateContext.Provider>
+    </ThemeProvider>
   );
 }
 

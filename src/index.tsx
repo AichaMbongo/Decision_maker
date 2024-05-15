@@ -16,7 +16,6 @@ import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';  
 import ResultsPage from './pages/ResultsPage';
 import CriteriaPage  from './pages/CriteriaPage';
-import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
 import { DecisionStateContext } from './contexts/DecisionStateContext';
 
 

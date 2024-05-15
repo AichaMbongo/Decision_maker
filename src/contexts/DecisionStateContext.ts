@@ -1,24 +1,23 @@
-import React from 'react'
-import DecisionState from '../components/interfaces/DecisionState'
-import { createContext } from 'react';
+import React, { createContext } from 'react';
+import DecisionState from '../components/interfaces/DecisionState'; // Adjust the path as necessary
 
+// Define the default state
 const defaultDecisionState: DecisionState = {
-    model: '',
-    criteria: [],
-    criteriaComparisons: [],
-    options: [],
-    optionComparisons: [],
-  };
+  model: '',
+  criteria: [],
+  criteriaComparisons: [],
+  options: [],
+  optionComparisons: [],
+};
 
-interface DecisionStateContextProps{
-    decisionState: DecisionState;
-    updateDecisionState: any;
+// Define the interface for the context properties
+interface DecisionStateContextProps {
+  decisionState: DecisionState;
+  setDecisionState: React.Dispatch<React.SetStateAction<DecisionState>>;
 }
 
-export const DecisionStateContext = createContext({
-    decisionState: defaultDecisionState,
-    updateDecisionState: () => {}
+// Create the context with default values
+export const DecisionStateContext = createContext<DecisionStateContextProps>({
+  decisionState: defaultDecisionState,
+  setDecisionState: () => {},
 });
-
-// export default DecisionStateContext;
-
