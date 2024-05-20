@@ -1,5 +1,6 @@
-import { Box, Container, Stack } from '@mui/material';
-import React from 'react';
+
+import { Box, Container,Stack } from '@mui/material';
+import React, { useContext } from 'react';
 import Typography from '@mui/material/Typography';
 // import { error } from 'console';
 import Button from '@mui/material/Button';
@@ -8,11 +9,18 @@ import AdsClickIcon from '@mui/icons-material/AdsClick';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import BackButton from '../components/BackButton';
+import { DecisionStateContext } from '../contexts/DecisionStateContext';
+import constructWithOptions from 'styled-components/dist/constructors/constructWithOptions';
 
 const options = ["Mercedes", "Audi", "BMW"]
 const optionComparisons = []
 
 const ResultsPage = () => {
+
+    const { decisionState, setDecisionState } = useContext(DecisionStateContext);
+    console.log(decisionState)
+    console.log("It didn't work")
+    
 
     return (
         <Layout>
