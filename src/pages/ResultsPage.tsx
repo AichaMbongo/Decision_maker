@@ -1,3 +1,4 @@
+
 import { Box, Container,Stack } from '@mui/material';
 import React, { useContext } from 'react';
 import Typography from '@mui/material/Typography';
@@ -11,134 +12,136 @@ import BackButton from '../components/BackButton';
 import { DecisionStateContext } from '../contexts/DecisionStateContext';
 import constructWithOptions from 'styled-components/dist/constructors/constructWithOptions';
 
-const options =  ["Mercedes", "Audi", "BMW"]
+const options = ["Mercedes", "Audi", "BMW"]
 const optionComparisons = []
 
 const ResultsPage = () => {
+
     const { decisionState, setDecisionState } = useContext(DecisionStateContext);
     console.log(decisionState)
     console.log("It didn't work")
     
+
     return (
         <Layout>
-        <Stack sx={{ p: 2 , mt: 2 }} gap={9} direction="column">
-                
-        {/* <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}> */}
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/">
-                    Home
-                </Link>
-                <Link
-                    underline="hover"
-                    color="inherit"
-                    href="/"
-                >
-                    Decision
-                </Link>
+            <Stack sx={{ p: 2, mt: 2 }} gap={9} direction="column">
 
-                <Link
-                    underline="hover"
-                    color="inherit"
-                    href="/decisionModel"
-                >
-                    Decision Model
-                </Link>
-            </Breadcrumbs>
-        {/* </div> */}
-    </Stack>
-    <Stack>
-        <div style={{ marginLeft: '30px' }}> <BackButton /></div>
-    </Stack>
-    <Container
-            sx={{
-                display: '100vh',
-                paddingTop: '2',
-            }}
+                {/* <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}> */}
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" color="inherit" href="/">
+                        Home
+                    </Link>
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        href="/"
+                    >
+                        Decision
+                    </Link>
 
-        >
-        <Box
-            sx={{
-                
-                display:"grid",
-                height: '80vh',
-                width: '100%',
-                
-                gap: 1,
-                padding:2,
-                
-                
-                gridTemplate: 
-                `"result result result result option"
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        href="/decisionModel"
+                    >
+                        Decision Model
+                    </Link>
+                </Breadcrumbs>
+                {/* </div> */}
+            </Stack>
+            <Stack>
+                <div style={{ marginLeft: '30px' }}> <BackButton /></div>
+            </Stack>
+            <Container
+                sx={{
+                    display: '100vh',
+                    paddingTop: '2',
+                }}
+
+            >
+                <Box
+                    sx={{
+
+                        display: "grid",
+                        height: '80vh',
+                        width: '100%',
+
+                        gap: 1,
+                        padding: 2,
+
+
+                        gridTemplate:
+                            `"result result result result option"
                 "result result result result ranking"
                 "result result result result ranking"
                 ". . save save ranking"
                 `,
-            }}
-        >
-            <Box
-                sx={{
-                    gridArea: "result"
-                }}
-            >
-                {/* <Typography variant ="h5"></Typography>
+                    }}
+                >
+                    <Box
+                        sx={{
+                            gridArea: "result"
+                        }}
+                    >
+                        {/* <Typography variant ="h5"></Typography>
                 <Typography></Typography> */}
 
-            
-            </Box>
-            <Box
-                            sx={{
-                                gridArea: "option",
-                                border: 1,
-                                borderRadius: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                       
-                            }}
-            >
 
-            <Button variant="contained">Add New Option</Button>  
-            
-            </Box>
-            <Box
+                    </Box>
+                    <Box
+                        sx={{
+                            gridArea: "option",
+                            border: 1,
+                            borderRadius: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+
+                        }}
+                    >
+
+                        <Button variant="contained">Add New Option</Button>
+
+                    </Box>
+                    <Box
                         sx={{
                             gridArea: "ranking",
                             border: 1,
                             borderRadius: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            
+
                             gap: 2,
                             padding: 2.5
 
-                            
+
                         }}>
-                        
-                        <Typography variant ="body1" alignSelf="flex-start" >Criteria</Typography>
+
+                        <Typography variant="body1" alignSelf="flex-start" >Criteria</Typography>
                         {options.map((option) => (
                             <Stack gap={3} direction="column" justifyContent="center">
-                            <Stack gap={2} direction="row" alignItems="center" justifyContent="flex-start">
-                                <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
-                                <Stack>
-                                    <Typography variant='body1'>{option}</Typography>
-                                    <Button variant="contained">Edit Criteria</Button>
+                                <Stack gap={2} direction="row" alignItems="center" justifyContent="flex-start">
+                                    <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
+                                    <Stack>
+                                        <Typography variant='body1'>{option}</Typography>
+                                        <Button variant="contained">Edit Criteria</Button>
+                                    </Stack>
                                 </Stack>
                             </Stack>
-                        </Stack>
                         ))}
-            </Box>
-            <Box
+                    </Box>
+                    <Box
                         sx={{
                             gridArea: "save"
                         }}>
-                <Button variant="contained">Proceed</Button>     
-                        </Box>
+                        <Button variant="contained">Proceed</Button>
+                    </Box>
 
 
-        </Box>
-        </Container>
-    </Layout>
-  )
+                </Box>
+            </Container>
+        </Layout>
+    )
 }
 
 export default ResultsPage
