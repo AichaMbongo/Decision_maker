@@ -7,7 +7,7 @@ import CustomButtonProps from './interfaces/ButtonInterface';
 
 
 const CustomButton = ({ onClick, children, startIcon, endIcon, disabled, variant, borderRadius, ...rest }: CustomButtonProps) => {
-    return (
+       return (
         <Button
             variant={variant || "contained"}
             onClick={onClick}
