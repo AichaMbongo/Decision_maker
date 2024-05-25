@@ -10,6 +10,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import Footer from '../components/Footer';
 import Layout from '../components/Layout';
 import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 const NewCriteria = () => {
     const [formData, setFormData] = useState({ newCriteria: '' });
@@ -26,33 +27,23 @@ const NewCriteria = () => {
         navigate('/otherNewCriteria'); // Replace '/newPage' with the path you want to redirect to
     };
 
+    const { handleNavigation } = useBreadcrumbs();
+    const addOtherCriteria = () => {
+      handleNavigation('/OtherNewCriteria', 'Add Another Criteria');
+    };
     return (
         <Layout>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div role="presentation" style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link underline="hover" color="inherit" href="/">
-                            Decision
-                        </Link>
-                        <Link underline="hover" color="inherit" href="/decisionModel">
-                            Decision Model
-                        </Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Typography color="text.primary">New Criteria</Typography>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
-            <Stack>
+          
+         
                 <div style={{ marginLeft: '30px' }}>
                     <BackButton />
                 </div>
-                <div>
+                 
+                <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
                     <Typography variant='h3' align="center">Type in a New Criteria</Typography>
-                </div>
-            </Stack>
+               
+            
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '78px', padding: 3, marginTop: '10px' }}>
                 <FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
                 <form onSubmit={handleSubmit} style={{alignItems:'center', display:'flex', flexDirection:'column'}}>
@@ -71,16 +62,25 @@ const NewCriteria = () => {
                                 onChange={handleChange} />
                         </FormControl>
                     </Box>
-                    <Button variant="contained" sx={{
-                        borderRadius: '16px',
-                        paddingRight: 2,
-                        paddingLeft: 2,
-                        marginBottom: 2,
-                        minWidth: '200px', // Adjust the width as desired
-                    }} type="submit">
+                    <Button
+                        variant="contained"
+                        sx={{
+                            borderRadius: '16px',
+                            paddingRight: 2,
+                            paddingLeft: 2,
+                            marginBottom: 2,
+                            minWidth: '200px', // Adjust the width as desired
+                        }}
+                        onClick={addOtherCriteria}
+                        type="submit"
+                        >
                         Enter New Criteria
-                    </Button>
+                        </Button>
+                        
+
                 </form>
+                </Stack>
+            </Stack>
             </Stack>
         </Layout>
     );

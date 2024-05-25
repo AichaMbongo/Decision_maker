@@ -10,6 +10,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import Button, { ButtonProps } from '@mui/material/Button';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+
+
+
+
+
+
+  
+
 
 interface Field {
   id: string;
@@ -44,8 +53,13 @@ const HeroSection: React.FC = () => {
   const StyledIcon = styled('span')({
     color: '#337357', // Use the primary color from the theme
   });
+  const { handleNavigation } = useBreadcrumbs();
+  const goToNewDecision = () => {
+    handleNavigation('/NewDecision', 'New Decision');
+  };
 
   return (
+    
     <Grid item xs={12} md={8} lg={6}>
       <Box
         className={`hero-section ${heroImage}`}
@@ -105,14 +119,20 @@ const HeroSection: React.FC = () => {
               <Box justifyContent="center" mt={5}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} lg={4}>
-                    <CustomButton onClick={() => {}} disabled={false} width="100%">
+
+                  <NavLink to="/newDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <CustomButton onClick={goToNewDecision} disabled={false} width="100%">
                       Get Started
                     </CustomButton>
+                  </NavLink>
                   </Grid>
                   <Grid item xs={12} lg={4}>
+                  <NavLink to="/aboutUs" style={{ textDecoration: 'none', color: 'inherit' }}>
+
                     <CustomButton variant="outlined" onClick={() => {}} disabled={false} width="100%">
                       About Us
                     </CustomButton>
+                    </NavLink>
                   </Grid>
                 </Grid>
               </Box>

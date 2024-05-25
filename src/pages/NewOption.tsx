@@ -13,6 +13,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
+import Layout from '../components/Layout';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -26,39 +28,20 @@ const handleClick = () => {
   
 
 
+
 const NewOption = () => {
+    const { handleNavigation } = useBreadcrumbs();
+    const addOtherNewOption = () => {
+      handleNavigation('/OtherNewOption', 'Other New Option');
+    };
     return (
-        <ThemeProvider theme={theme}>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
-                <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Decision
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Typography color="text.primary">Options</Typography>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
-            <Stack>
-                <div style={{marginLeft:'30px'}}> <BackButton /></div>
+        <Layout>
+            <div style={{marginLeft:'30px'}}> <BackButton /></div>
+            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
+                
                 <div><Typography variant='h4' align="center">Enter Your Option</Typography></div>
-            </Stack>
+           
             <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
                 < FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
                 <Box
@@ -74,14 +57,14 @@ const NewOption = () => {
                 
                 <NavLink to="/otherNewOption" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                    <CustomButton onClick={handleClick}>
+                    <CustomButton onClick={addOtherNewOption}>
                     PROCEED
                     </CustomButton>
                 </NavLink>
-
+                </Stack>
             </Stack>
-            <Footer />
-        </ThemeProvider>
+            </Stack>
+        </Layout>
 
     )
 }

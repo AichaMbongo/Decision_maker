@@ -1,10 +1,4 @@
-import React from 'react';
-import logo from './logo.svg';
 import '../App.css';
-import theme from '../theme/theme';
-import { ThemeProvider } from '@mui/material/styles';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import HeroSection from './HeroSection';
 import { Stack, Button, } from '@mui/material';
 import { NavLink } from 'react-router-dom';
@@ -17,22 +11,6 @@ import '@fontsource/roboto/700.css';
 import { Theme } from '@mui/material';
 
 
-import otherNewOption from './OtherNewOption';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NewCriteria from './NewCriteria';
-import OtherNewCriteria from './OtherNewCriteria';
-import DecisionModel from './DecisionModel';
-import PreviousDecisions from './PreviousDecisions';
-import NewDecision from './NewDecision';
-import OtherNewOption from './OtherNewOption';
-import NewOption from './NewOption';
-import PreviousDecision from './PreviousDecision';
-import ContactUs from './ContactUs';
-import AboutUs from './AboutUs';  
-import ResultsPage from './ResultsPage';
-import CriteriaPage  from './CriteriaPage';
-import DecisionStateProvider from '../components/interfaces/DecisionStateProvider';
-import { DecisionStateContext } from '../contexts/DecisionStateContext';
 
 
 
@@ -41,6 +19,8 @@ function Home() {
   interface HeroSectionProps {
     theme: Theme;
   } 
+
+
   return (
     <Layout>
     
