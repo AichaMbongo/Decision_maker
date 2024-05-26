@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
-import Header from '../components/Header'
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
+import React from 'react'
 import BackButton from '../components/BackButton';
-import { Button, Stack, Typography } from '@mui/material';
-import Footer from '../components/Footer';
+import { Stack, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -15,19 +11,15 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Layout from '../components/Layout';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
@@ -78,6 +70,8 @@ const defaultProps: Partial<MyComponentProps> = {
 const collapsible = []
 
 
+
+
 function DecisionModel() {
     const [expanded, setExpanded] = React.useState(false);
 
@@ -122,6 +116,12 @@ function DecisionModel() {
         }
     ]
     
+
+    const { handleNavigation } = useBreadcrumbs();
+  const EnterNewCriteria = () => {
+    handleNavigation('/newCriteria', 'New Criteria');
+  };
+  
     return (
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
@@ -214,7 +214,7 @@ function DecisionModel() {
                 </NavLink>
                 <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                    <CustomButton onClick={handleClick} endIcon={<ArrowForwardIosIcon />}>
+                    <CustomButton onClick={EnterNewCriteria} endIcon={<ArrowForwardIosIcon />}>
                         Enter Criteria
                     </CustomButton>
                 </NavLink>

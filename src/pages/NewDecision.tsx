@@ -7,6 +7,7 @@ import CustomButton from '../components/Button';
 import BasicTextField from '../components/input-field';
 import {Field} from '../components/interfaces/InputFieldProps';
 import { NavLink } from 'react-router-dom';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 //add some temporary links here to enable viewing of pages
 
@@ -21,11 +22,16 @@ const handleClick = () => {
   console.log("Button is Clicked");
 }
 
+const { handleNavigation } = useBreadcrumbs();
+const EnterNewCriteria = () => {
+  handleNavigation('/newCriteria', 'New Criteria');
+};
+
   return (
     
     <Layout >
       <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
-                
+      <Stack className="stack-container">      
         <Grid lg={6}>
         <Box>
       <Typography variant='h3'>
@@ -55,13 +61,13 @@ What is Your Goal?
       </Box>
       </Grid>
       
-      <NavLink to="/DecisionModel" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-<CustomButton onClick={handleClick}>
+<CustomButton onClick={EnterNewCriteria}>
   PROCEED
   </CustomButton>
   </NavLink>
-     
+  </Stack>    
   </Stack>
     </Layout>
    

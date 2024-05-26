@@ -18,6 +18,8 @@ import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 import CustomButton from '../components/Button';
 import { NavLink } from 'react-router-dom';
+import Layout from '../components/Layout';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
@@ -35,48 +37,26 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
+
+
+
 const OtherNewOption = () => {
+const { handleNavigation } = useBreadcrumbs();
+const EvaluateOptions = () => {
+  handleNavigation('/EvaluateOptionsPage', 'Evaluate Options');
+};
     return (
-        <ThemeProvider theme={theme}>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
-                <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Decision
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/othernewOption"
-                        >
-                            More Options
-                        </Link>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
+
+        <Layout>
+           
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
-            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
+            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
                 <Typography variant='h4' align="center">Do you want to Add Another Option?</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
-                <Box
+                {/* <Box
                     component="form"
                     sx={{
                         '& > :not(style)': { m: 1, width: '50ch' },
@@ -85,7 +65,26 @@ const OtherNewOption = () => {
                     autoComplete="off"
                 >
                     <TextField id="filled-basic" label="Type in something...." variant="filled" />
-                </Box>
+                </Box> */}
+
+                <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
+
+                <NavLink to="/newOption" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                <CustomButton onClick={handleClick} >
+                Yes
+                </CustomButton>
+                </NavLink>
+
+                <NavLink to="/EvaluateOptionsPage" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                <CustomButton onClick={EvaluateOptions} >
+                No
+                </CustomButton>
+                </NavLink>
+                    
+                </Stack>
+            </Stack>
             </Stack>
             <Stack sx={{ p: 1 }} gap={4} direction="column">
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -122,7 +121,7 @@ const OtherNewOption = () => {
                             </Stack>
                         </Item>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <Item>
                             <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                 <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
@@ -135,25 +134,9 @@ const OtherNewOption = () => {
                     </Grid>
                 </Grid>
             </Stack>
-            <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-
-            <NavLink to="/newOption" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-            <CustomButton onClick={handleClick} >
-            Yes
-            </CustomButton>
-            </NavLink>
-
-            <NavLink to="/EvaluateOptions" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-            <CustomButton onClick={handleClick} >
-            No
-            </CustomButton>
-            </NavLink>
-                
-            </Stack>
-            <Footer /> 
-        </ThemeProvider>
+            
+        
+        </Layout>
     )
 }
 

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
 import { Button, Stack, Typography, Box, TextField, Breadcrumbs, Link, Grid, Paper, FormControl } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
@@ -11,9 +9,7 @@ import { NavLink } from 'react-router-dom';
 import Layout from '../components/Layout';
 import BackButton from '../components/BackButton';
 import CustomButton from '../components/Button';
-import Header from '../components/Header';
-import TitleSection from '../components/Title-section';
-import Footer from '../components/Footer';
+import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
 
 const criteria = ["Cost", "Comfort", "Safety", "Good Insurance", "Comfy Seats", "Nice Speakers"];
 
@@ -43,24 +39,23 @@ const OtherNewCriteria: React.FC = () => {
         console.log(formData);
     };
 
+
+   
+
+    const { handleNavigation } = useBreadcrumbs();
+    const EvaluateCriteria = () => {
+      handleNavigation('/EvaluateCriteriaPage', 'Evaluate Criteria');
+    };
+
     return (
         <Layout>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">Home</Link>
-                        <Link underline="hover" color="inherit" href="/">Decision</Link>
-                        <Link underline="hover" color="inherit" href="/decisionModel">Decision Model</Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Link underline="hover" color="inherit" href="/othernewCriteria">More Criteria</Link>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
+           
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
 
-            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
+            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
                 <Typography variant='h3' align="center">Do you want to Add Another Criteria?</Typography>
                 <PsychologyAltIcon style={{ fontSize: '56px', padding: '2' }} />
                 <Box
@@ -71,12 +66,24 @@ const OtherNewCriteria: React.FC = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         '& > :not(style)': { m: 1, width: { xs: '100%', sm: '75%', md: '75%' } },
+                        
                     }}
                     noValidate
                     autoComplete="off"
                     onSubmit={handleSubmit}
                 >
-                    <FormControl variant="standard">
+                  
+                </Box>
+
+                <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
+                <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <CustomButton onClick={handleClick}>Yes</CustomButton>
+                </NavLink>
+                <NavLink to="/EvaluateCriteriaPage" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <CustomButton onClick={EvaluateCriteria}>No</CustomButton>
+                </NavLink>
+            </Stack>
+            <FormControl variant="standard">
                         <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                             <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                             <TextField
@@ -88,13 +95,13 @@ const OtherNewCriteria: React.FC = () => {
                             />
                         </Box>
                     </FormControl>
-                </Box>
+            </Stack>
             </Stack>
 
-            <Stack sx={{ p: 1 }} gap={4} direction="column">
+            <Stack sx={{ p: 1, }} gap={4} direction="column">
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {criteria.map((crit, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Grid item xs={12} sm={6} md={3} key={index}>
                             <Item>
                                 <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                                     <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
@@ -107,15 +114,9 @@ const OtherNewCriteria: React.FC = () => {
                         </Grid>
                     ))}
                 </Grid>
-            </Stack>
+           
 
-            <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-                <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <CustomButton onClick={handleClick}>Yes</CustomButton>
-                </NavLink>
-                <NavLink to="/EvaluateCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <CustomButton onClick={handleClick}>No</CustomButton>
-                </NavLink>
+          
             </Stack>
         </Layout>
     );

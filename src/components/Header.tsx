@@ -138,96 +138,70 @@ export default function Header(){
     </Box>
     ]
 
+    const navItems = [
+      { label: 'DecisionMaker', path: '/' },
+      { label: 'New Decision', path: '/NewDecision' },
+      { label: 'Previous Decisions', path: '/PreviousDecision' },
+      { label: 'Help', path: '#' },
+      { label: 'About', path: '/aboutUs' },
+      { label: 'Contact Us', path: '/contactUs' },
+    ];
+
     return (
-        <AppBar
-      
-        sx={{
-          background: theme.palette.background.default,
-          color: theme.palette.primary.main
+      <AppBar
+      sx={{
+        background: theme.palette.background.default,
+        color: theme.palette.primary.main
       }}
-      >
-            <Container maxWidth= 'xl'>
-            <Toolbar sx={{
-                 display: 'flex',
-                 justifyContent: 'space-around',
-                 gap: '2.5rem'
-                
-                 }}>
-                 
-                <Typography 
-                    variant='h6'
-                    sx = {{
-                      
-                    }}
-                >
-                   <NavLink
-                to="/"
-                // style={({ isActive }) => {
-                // return isActive ? { color: "plum" } : {};
-                // }}
-                >
-                  DecisionMaker
-                  </NavLink>
-                </Typography>
+    >
+      <Container maxWidth='xl'>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            gap: '2.5rem'
+          }}
+        >
+          <Typography variant='h6'>
+            <NavLink
+              to="/"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              DecisionMaker
+            </NavLink>
+          </Typography>
 
-
-                <Typography 
-                    variant='button'
-                    sx = {{
-                      
-                    }}>
-               <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-  <Button>New Decision</Button>
-</NavLink>
-
-<NavLink to="/PreviousDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-  <Button>Previous Decisions</Button>
-</NavLink>
-
-<NavLink to="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-  <Button>Help</Button>
-</NavLink>
-
-<NavLink to="#" style={{ textDecoration: 'none', color: 'inherit' }}>
-  <Button>About</Button>
-</NavLink>
-
-                </Typography>
-
-           <Box sx={{ flexGrow: 1, gap: '1.75rem' ,display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                sx={{ 
-
-                }}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-around', gap: '1.75rem' }}>
+            {navItems.slice(1).map((item, index) => (
+              <NavLink
+                key={index}
+                to={item.path}
+                style={{ textDecoration: 'none', color: 'inherit' }}
               >
-                {page}
-              </Button>
+                <Button>{item.label}</Button>
+              </NavLink>
             ))}
           </Box>
 
-      
           <Box sx={searchBoxStyles}>
-        <IconButton type="submit" aria-label="search">
-          <MoreVertIcon />
-        </IconButton>
-        <InputBase
-          placeholder="Search anything"
-          sx={{ flex: 1, borderRadius: '4px' }}
-        />
-        <IconButton type="submit" aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Box>
-      <Box>
-            {auth ? authenticated : unauthenticated}
-      </Box>
-      
-            </Toolbar>
+            <IconButton type="submit" aria-label="search">
+              <MoreVertIcon />
+            </IconButton>
+            <InputBase
+              placeholder="Search anything"
+              sx={{ flex: 1, borderRadius: '4px' }}
+            />
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Box>
 
-            </Container>
-        </AppBar>
-    );
+          <Box>
+            {auth ? authenticated : unauthenticated}
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+        );
 
 }
