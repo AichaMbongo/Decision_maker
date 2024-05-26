@@ -11,6 +11,7 @@ interface BreadcrumbsContextType {
   handleNavigation: (path: string, label: string) => void;
   updateBreadcrumbs: (path: string) => void;
   handleBackNavigation: () => void;
+  resetBreadcrumbs: () => void;
 }
 
 const BreadcrumbsContext = createContext<BreadcrumbsContextType | undefined>(undefined);
@@ -27,8 +28,18 @@ const BreadcrumbsProvider = ({ children }: { children: ReactNode }) => {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>(() => {
     // Load breadcrumbs from local storage on initial state setup
     const savedBreadcrumbs = localStorage.getItem('breadcrumbs');
-    return savedBreadcrumbs ? JSON.parse(savedBreadcrumbs) : [];
+    if (savedBreadcrumbs) {
+      const parsedBreadcrumbs = JSON.parse(savedBreadcrumbs);
+      // Ensure the landing page breadcrumb is included
+      if (!parsedBreadcrumbs.find((crumb: Breadcrumb) => crumb.path === '/')) {
+        return [{ path: '/', label: 'Home' }, ...parsedBreadcrumbs];
+      }
+      return parsedBreadcrumbs;
+    }
+    // Initialize with the landing page breadcrumb if none are saved
+    return [{ path: '/', label: 'Home' }];
   });
+
   const navigate = useNavigate();
 
   // Save breadcrumbs to local storage whenever they change
@@ -70,8 +81,12 @@ const BreadcrumbsProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const resetBreadcrumbs = () => {
+    setBreadcrumbs([{ path: '/', label: 'Home' }]);
+  };
+
   return (
-    <BreadcrumbsContext.Provider value={{ breadcrumbs, handleNavigation, updateBreadcrumbs, handleBackNavigation }}>
+    <BreadcrumbsContext.Provider value={{ breadcrumbs, handleNavigation, updateBreadcrumbs, handleBackNavigation, resetBreadcrumbs }}>
       {children}
     </BreadcrumbsContext.Provider>
   );

@@ -1,5 +1,5 @@
 import '../App.css';
-import HeroSection from './HeroSection';
+import HeroSection from '../components/HeroSection';
 import { Stack, Button, } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Layout from '../components/Layout'
@@ -27,7 +27,7 @@ function Home() {
       <div className="App">
         <HeroSection />
         <div>
-          <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
+          {/* <Stack sx={{ bgcolor: 'white', mt: "10px", p: 2 }} direction="row" gap={3}>
             <NavLink to={'/'} style={{ textDecoration: 'none' }}>
               <Stack width={80} alignItems="center">
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>Main</Button>
@@ -69,7 +69,7 @@ function Home() {
                 <Button variant="contained" sx={{ bgcolor: 'secondary.main' }}>About Us</Button>
               </Stack>
             </NavLink>
-          </Stack>
+          </Stack> */}
         </div>
       </div>
     </Layout>

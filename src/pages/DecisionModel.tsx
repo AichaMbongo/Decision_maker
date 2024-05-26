@@ -19,7 +19,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Layout from '../components/Layout';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
@@ -121,7 +121,7 @@ function DecisionModel() {
   const EnterNewCriteria = () => {
     handleNavigation('/newCriteria', 'New Criteria');
   };
-  
+
     return (
         < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">

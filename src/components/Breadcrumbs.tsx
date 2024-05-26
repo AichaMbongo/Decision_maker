@@ -43,7 +43,7 @@
 import React from 'react';
 import { Breadcrumbs, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 const BreadCrumbs_component: React.FC = () => {
   const { breadcrumbs, updateBreadcrumbs } = useBreadcrumbs();
@@ -55,7 +55,7 @@ const BreadCrumbs_component: React.FC = () => {
   };
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: '1rem' }}>
+    <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: '1rem', backgroundColor: 'transparent' }}>
       {breadcrumbs.map((crumb) => (
         <Link
           key={crumb.path}
