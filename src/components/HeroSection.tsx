@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, useMediaQuery, styled, Divider } from '@mui/material';
-import CustomButton from '../components/Button';
-import BasicTextField from '../components/input-field';
-import GolfCourseTwoToneIcon from '@mui/icons-material/GolfCourseTwoTone';
-import LinearProgress from '@mui/material/LinearProgress';
+import { Box, Typography, Grid, useMediaQuery, styled } from '@mui/material';
+import CustomButton from './Button';
 import { NavLink } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
-import Button, { ButtonProps } from '@mui/material/Button';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 
 
@@ -57,6 +53,11 @@ const HeroSection: React.FC = () => {
   const goToNewDecision = () => {
     handleNavigation('/NewDecision', 'New Decision');
   };
+
+  const goToAboutUs = () => {
+    handleNavigation('/AboutUs', 'About Us');
+  };
+
 
   return (
     
@@ -129,7 +130,7 @@ const HeroSection: React.FC = () => {
                   <Grid item xs={12} lg={4}>
                   <NavLink to="/aboutUs" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                    <CustomButton variant="outlined" onClick={() => {}} disabled={false} width="100%">
+                    <CustomButton variant="outlined" onClick={goToAboutUs}  disabled={false} width="100%">
                       About Us
                     </CustomButton>
                     </NavLink>

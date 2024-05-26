@@ -23,7 +23,7 @@ import CriteriaPage  from './pages/EvaluateCriteriaPage';
 import { DecisionStateContext } from './contexts/DecisionStateContext';
 import Home from './pages/Home';
 import DecisionState from './components/interfaces/DecisionState';
-import BreadcrumbsProvider from './context/BreadcrumbsProvider';
+import BreadcrumbsProvider from './contexts/BreadcrumbsProvider';
 import EvaluateOptions from './pages/EvaluateOptionsPage';
 
 

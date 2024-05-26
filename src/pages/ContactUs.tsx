@@ -13,6 +13,7 @@ import InputField from '../components/input-field';
 import CustomButton from '../components/Button';
 import TextArea from '../components/TextArea'; 
 import DropArea from '../components/DropArea'; 
+import Layout from '../components/Layout';
 
 
 function ContactUs() {
@@ -33,30 +34,23 @@ function ContactUs() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
-                <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <div style={{ marginLeft: '10px' }}> <BackButton /></div>
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Contact Us
-                        </Link>
-                    </Breadcrumbs>
-                </div>
-                <div><Typography variant='h4' align="center">Contact Us</Typography></div>
+        <Layout>
+             <Stack>
+                <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
             
+            <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
+
+            <Box className="stack-container">
+            <Stack sx={{ p: 2 }} gap={9} direction="column">
+                
+               
+                <div><Typography variant='h3' align="center">Contact Us</Typography></div>
+            </Stack>
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                 <InputField fields={fields} />
-            </Box>
+                </Box>
+           
 
             <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '5px',marginBottom: '10px', padding: 4 }}>
                 <Box sx={{ marginRight: '30px', height: '200px', width: '690px',  }}>
@@ -69,9 +63,9 @@ function ContactUs() {
             <Box sx={{ display: 'flex', justifyContent: 'right', marginRight: '100px',marginBottom: '30px' }}>
             <Button variant="contained">Send</Button> 
             </Box>
-
-            <Footer />
-        </ThemeProvider>
+            </Box>
+            </Stack>
+        </Layout>
     )
 }
 

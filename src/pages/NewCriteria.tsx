@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
-import { Button, Stack, Typography, Box, TextField, Breadcrumbs, Link, FormControl } from '@mui/material';
+import { Button, Stack, Typography, Box, TextField, FormControl } from '@mui/material';
 import BackButton from '../components/BackButton';
-import TitleSection from '../components/Title-section';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import Footer from '../components/Footer';
 import Layout from '../components/Layout';
-import CustomButton from '../components/Button';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 const NewCriteria = () => {
     const [formData, setFormData] = useState({ newCriteria: '' });

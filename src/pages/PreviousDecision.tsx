@@ -1,17 +1,20 @@
-import React from 'react'
-import { Box, Typography, Grid, Stack, TextField, Breadcrumbs, Link, Button, Paper, styled } from '@mui/material'
-import Layout from '../components/Layout'
-import SearchBox from '../components/Search'
+import React from 'react';
+import { Box, Typography, Grid, Stack, Paper, styled } from '@mui/material';
+import Layout from '../components/Layout';
+import SearchBox from '../components/Search';
 import AddIcon from '@mui/icons-material/Add';
-import Header from '../components/Header'
-import BackButton from '../components/BackButton'
-import AdsClickIcon from '@mui/icons-material/AdsClick';
+import BackButton from '../components/BackButton';
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
-import { NavLink } from 'react-router-dom'
-import CustomButton from '../components/Button'
+import { NavLink } from 'react-router-dom';
+import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 
 const PreviousDecisions: React.FC = () => {
+    const { handleNavigation } = useBreadcrumbs();
+    const goToNewDecision = () => {
+      handleNavigation('/NewDecision', 'New Decision');
+    };
 
     const handleClick = () => {
         console.log("Button is Clicked");
@@ -68,13 +71,12 @@ const PreviousDecisions: React.FC = () => {
                 </Box>
                 
                 <Box mt={3}>
-
-                <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                <CustomButton onClick={handleClick} endIcon={<AddIcon />} >
-                Add New Decision
-                </CustomButton>
-                </NavLink>
+                <NavLink to="/newDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <CustomButton onClick={goToNewDecision}endIcon={<AddIcon />} >
+                      Add New Decision
+                    </CustomButton>
+                  </NavLink>
+              
                
 
                 </Box>

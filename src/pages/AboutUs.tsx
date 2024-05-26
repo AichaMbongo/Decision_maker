@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Footer from '../components/Footer';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import Layout from '../components/Layout';
 
 function AboutUs() {
 
@@ -17,47 +18,42 @@ function AboutUs() {
     }
     
     return (
-        <ThemeProvider theme={theme}>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                <div> <Header /></div>
-                <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                    <div style={{marginLeft:'10px'}}> <BackButton /></div>
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            About Us
-                        </Link>
-                    </Breadcrumbs>
-                </div>
+        <Layout>
+             <Stack>
+                <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
+           
             
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginBottom: '52px',
-                    minHeight: 'calc(100vh - 260px)', // Adjust the height as needed
-                }}
-            >
-                <Box sx={{ maxWidth: '800px', padding: '27px', border: '1px solid #ccc', borderRadius: '16px',backgroundColor: '#C3C3C3' }}>
-                    <Typography variant="h6" gutterBottom>
+            <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
+
+            <Box className="stack-container">
+                
+                        <Typography variant="h6" gutterBottom>
                         We pay attention to your needs and help you make the best decisions
                     </Typography>
                     <Stack direction="row" spacing={4}>
                         <Typography variant="body1" sx={{ flex: 1, textAlign: 'left' }}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dapibus nisl sit amet lacinia tincidunt.
-                            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer
-                            varius velit non felis dapibus, at aliquam erat vehicula. Ut non dolor eu lorem tristique volutpat vel
-                            eget ex. Vestibulum ac enim ut leo egestas faucibus id at sem. Vivamus et quam enim. Ut feugiat eros nec
-                            diam tincidunt, ut consequat justo lacinia. Integer consequat augue sit amet justo egestas, at consequat
-                            libero blandit. 
+                        Welcome to Decision Maker, a groundbreaking application developed by project management educators 
+                        from European universities to revolutionize the learning experience of complex project management
+                         methodologies. Our mission is to make these processes more accessible, engaging, and enjoyable. 
+                         Decision Maker assists users in making well-informed decisions, whether buying a car, selecting a
+                          technological solution, or choosing an investment idea, by implementing decision models like Forced Choice,
+                           Analytic Hierarchy Process (AHP), and Multi-Criteria Analysis. Designed for project managers, teams, and 
+                           students, our user-friendly app allows for inputting and evaluating options and criteria across different
+                            models, simplifying decision-making. Initially available as a web prototype, the cross-platform native 
+                            application for iOS, Android, and Windows aims for full release by May 31, 2025, targeting 1000 downloads. 
+                            Unique in its focus on user experience and simplicity, Decision Maker offers features like an evaluation log,
+                             freemium model, and privacy without requiring login. Ongoing development will be funded through app sales, 
+                             with marketing efforts including free workshops for PM teachers and experts. Join us in making project 
+                             management learning and decision-making simpler and more enjoyable—download Decision Maker today and start 
+                             making better decisions with confidence.
+
+
+
+
+
+
+ 
                         </Typography>
                         <div style={{ flex: 1 }}>
                           
@@ -72,10 +68,11 @@ function AboutUs() {
                         </div>
                     </Stack>
                 </Box>
-            </Box>
-            
-            <Footer />
-        </ThemeProvider>
+                </Stack>
+          
+        
+          
+        </Layout>
     )
 }
 

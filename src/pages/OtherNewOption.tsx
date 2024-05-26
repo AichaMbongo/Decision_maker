@@ -1,16 +1,5 @@
-import React from 'react';
-import Header from '../components/Header';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
 import BackButton from '../components/BackButton';
 import { Button, Stack, Typography } from '@mui/material';
-import TitleSection from '../components/Title-section';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Footer from '../components/Footer';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -19,7 +8,7 @@ import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 import CustomButton from '../components/Button';
 import { NavLink } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();

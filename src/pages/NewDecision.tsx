@@ -1,5 +1,4 @@
 import React from 'react'
-import HeroSection from './HeroSection'
 import { Box, Grid, Typography, Stack } from '@mui/material'
 import Layout from '../components/Layout'
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
@@ -7,7 +6,8 @@ import CustomButton from '../components/Button';
 import BasicTextField from '../components/input-field';
 import {Field} from '../components/interfaces/InputFieldProps';
 import { NavLink } from 'react-router-dom';
-import { useBreadcrumbs } from '../context/BreadcrumbsProvider';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+import BackButton from '../components/BackButton';
 
 //add some temporary links here to enable viewing of pages
 
@@ -30,6 +30,9 @@ const EnterNewCriteria = () => {
   return (
     
     <Layout >
+       <Stack>
+                <div style={{ marginLeft: '30px' }}> <BackButton /></div>
+            </Stack>
       <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px' , padding:3, marginTop:'10px' }}>
       <Stack className="stack-container">      
         <Grid lg={6}>
