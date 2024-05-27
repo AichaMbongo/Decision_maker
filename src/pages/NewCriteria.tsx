@@ -1,17 +1,17 @@
+<<<<<<< HEAD
 import React, { useState, useContext } from 'react'
 import Header from '../components/Header'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
+=======
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Stack, Typography, Box, TextField, FormControl } from '@mui/material';
+>>>>>>> 3f801cf1ba406ceba291bd297a5d53e42c4c92f8
 import BackButton from '../components/BackButton';
-import { Button, Stack, Typography } from '@mui/material';
-import TitleSection from '../components/Title-section';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Footer from '../components/Footer';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import Layout from '../components/Layout';
+<<<<<<< HEAD
 import CustomButton from '../components/Button';
 import { NavLink } from 'react-router-dom';
 import DecisionState from '../components/interfaces/DecisionState';
@@ -26,12 +26,26 @@ const defaultCriterion = {
     name: "",
     weight: 0
 }
+=======
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
-// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-//     event.preventDefault();
-//     console.info('You clicked a breadcrumb.');
-// }
+const NewCriteria = () => {
+    const [formData, setFormData] = useState({ newCriteria: '' });
+    const navigate = useNavigate(); // Get the navigate function from useNavigate
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+>>>>>>> 3f801cf1ba406ceba291bd297a5d53e42c4c92f8
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(formData); // Log the form data in the console
+        navigate('/otherNewCriteria'); // Replace '/newPage' with the path you want to redirect to
+    };
+
+<<<<<<< HEAD
 
 const NewCriteria = () => {
     const [criterion, setCriterion] = useState<string>("Cost");
@@ -59,65 +73,69 @@ const NewCriteria = () => {
         console.log("Button is Clicked");
       }
 
+=======
+    const { handleNavigation } = useBreadcrumbs();
+    const addOtherCriteria = () => {
+      handleNavigation('/OtherNewCriteria', 'Add Another Criteria');
+    };
+>>>>>>> 3f801cf1ba406ceba291bd297a5d53e42c4c92f8
     return (
-      
-        < Layout>
-            <Stack sx={{ p: 2 }} gap={9} direction="column">
-                
-                <div role="presentation" onClick={handleClick} style={{marginLeft:'90px'}}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Decision
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Typography color="text.primary">New Criteria</Typography>
-                    </Breadcrumbs>
+        <Layout>
+          
+         
+                <div style={{ marginLeft: '30px' }}>
+                    <BackButton />
                 </div>
-            </Stack>
-            <Stack>
-                <div style={{marginLeft:'30px'}}> <BackButton /></div>
-                <div><Typography variant='h3' align="center">Type in a New Criteria</Typography></div>
-            </Stack>
-            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '78px' , padding:3, marginTop:'10px' }}>
-                < FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '50ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField id="filled-basic" label="ie. Cost, Comfort" variant="filled" />
-                </Box>
-                <NavLink to="/otherNewCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+                 
+                <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
+                    <Typography variant='h3' align="center">Type in a New Criteria</Typography>
+               
+            
+            <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" style={{ marginBottom: '78px', padding: 3, marginTop: '10px' }}>
+                <FormatListBulletedIcon style={{ fontSize: '56px', padding: '2' }} />
+                <form onSubmit={handleSubmit} style={{alignItems:'center', display:'flex', flexDirection:'column'}}>
+                    <Box
+                        component="div"
+                        sx={{
+                            '& > :not(style)': { m: 1, width: '50ch' },
+                        }}
+                    >
+                        <FormControl variant="standard">
+                            <TextField id="filled-basic"
+                                name="newCriteria"
+                                label="ie. Cost, Comfort"
+                                variant="filled"
+                                value={formData.newCriteria}
+                                onChange={handleChange} />
+                        </FormControl>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            borderRadius: '16px',
+                            paddingRight: 2,
+                            paddingLeft: 2,
+                            marginBottom: 2,
+                            minWidth: '200px', // Adjust the width as desired
+                        }}
+                        onClick={addOtherCriteria}
+                        type="submit"
+                        >
+                        Enter New Criteria
+                        </Button>
+                        
 
-                <CustomButton onClick={handleClick}>
-                Create New Criteria
-                </CustomButton>
-                </NavLink>
-                
+                </form>
+                </Stack>
             </Stack>
-           
-        
+            </Stack>
         </Layout>
-       
-
-    )
+    );
 }
 
+<<<<<<< HEAD
 export default NewCriteria
+=======
+export default NewCriteria;
+>>>>>>> 3f801cf1ba406ceba291bd297a5d53e42c4c92f8

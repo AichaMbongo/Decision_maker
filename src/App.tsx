@@ -1,14 +1,4 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import theme from './theme/theme';
-import { ThemeProvider } from '@mui/material/styles';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import HeroSection from './pages/HeroSection';
-import { Stack, Button, } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import Layout from './components/Layout'
 import { useState } from 'react';
 
 import '@fontsource/roboto/300.css';
@@ -18,24 +8,23 @@ import '@fontsource/roboto/700.css';
 import { Theme } from '@mui/material';
 
 
-import otherNewOption from './pages/OtherNewOption';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NewCriteria from './pages/NewCriteria';
 import OtherNewCriteria from './pages/OtherNewCriteria';
 import DecisionModel from './pages/DecisionModel';
-import PreviousDecisions from './pages/PreviousDecisions';
+import PreviousDecisions from './pages/PreviousDecision';
 import NewDecision from './pages/NewDecision';
 import OtherNewOption from './pages/OtherNewOption';
 import NewOption from './pages/NewOption';
-import PreviousDecision from './pages/PreviousDecision';
 import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';  
 import ResultsPage from './pages/ResultsPage';
-import CriteriaPage  from './pages/CriteriaPage';
-import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
+import CriteriaPage  from './pages/EvaluateCriteriaPage';
 import { DecisionStateContext } from './contexts/DecisionStateContext';
 import Home from './pages/Home';
 import DecisionState from './components/interfaces/DecisionState';
+import BreadcrumbsProvider from './contexts/BreadcrumbsProvider';
+import EvaluateOptions from './pages/EvaluateOptionsPage';
 
 
 
@@ -62,6 +51,7 @@ function App() {
   } 
   return (
     <>
+    <BreadcrumbsProvider>
     <DecisionStateContext.Provider value={{ decisionState, setDecisionState}}>
      <Routes>
         <Route path='/' element={<Home />} />
@@ -71,14 +61,16 @@ function App() {
         <Route path='/DecisionModel' element={<DecisionModel/>} />
         <Route path='/NewDecision' element={<NewDecision/>} />
         <Route path='/OtherNewOption' element={<OtherNewOption/>} />
-        <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
+        <Route path='/PreviousDecision' element={<PreviousDecisions/>}/>
         <Route path='/contactUs' element={<ContactUs/>} />
         <Route path='/aboutUs' element={<AboutUs/>} />
         <Route path='/resultsPage' element= {<ResultsPage/>}/>
-        <Route  path='/criteriaPage' element = {<CriteriaPage/>}/>
+        <Route  path='/EvaluateCriteriaPage' element = {<CriteriaPage/>}/>
+        <Route  path='/EvaluateOptionsPage' element = {<EvaluateOptions/>}/>
         </Routes>
 
         </DecisionStateContext.Provider>
+        </BreadcrumbsProvider>
     </>
   );
 }

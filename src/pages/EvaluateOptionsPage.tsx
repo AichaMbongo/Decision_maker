@@ -1,20 +1,20 @@
 import { Box, Container,Stack } from '@mui/material';
-import React from 'react';
 import Typography from '@mui/material/Typography';
 // import { error } from 'console';
 import Button from '@mui/material/Button';
 import Layout from '../components/Layout';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import BackButton from '../components/BackButton';
+import { NavLink } from 'react-router-dom';
+import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 
 
 
 
 
-const CriteriaPage = () => {
+const EvaluateOptions = () => {
     //function to initialise pairwise comparison matrices
     // function initPairwiseMatrices(num:number) {
     //     let matrice: number[][] = [];
@@ -72,53 +72,12 @@ const CriteriaPage = () => {
     const options =  ["Cost", "Safety", "Maintenenance"];
     // const optionComparisons = initPairwiseMatrices(options.length);
     // const finalPriorities = ;
-
+    const { handleNavigation } = useBreadcrumbs();
+    const Results = () => {
+        handleNavigation('/ResultsPage', 'Results');
+    };
     return (
     <Layout>
-        <Stack sx={{ p: 2 , mt: 10 }} gap={9} direction="column">
-                
-                <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Decision
-                        </Link>
-
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="#"
-                        >
-                            AHP Model
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >Evaluate Criteria</Link>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
@@ -129,63 +88,57 @@ const CriteriaPage = () => {
             }}
 
         >
-        <Box
-            sx={{
-                
-                display:"grid",
-                height: '80vh',
-                width: '100%',
-                
-                gap: 1,
-                padding:2,
-                
-                
-                gridTemplate: 
-                `"result result result result option"
-                "result result result result ranking"
-                "result result result result ranking"
-                ". . save save ranking"
-                `,
-            }}
-        >
-            <Box
-                sx={{
-                    gridArea: "result"
-                }}
-            >
-                {/* <Typography variant ="h5"></Typography>
-                <Typography></Typography> */}
-
-            
-            </Box>
-            <Box
-                            sx={{
-                                gridArea: "option",
-                                border: 1,
-                                borderRadius: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                       
-                            }}
-            >
-
-            <Button variant="contained">Add Criteria</Button>  
-            
-            </Box>
-            <Box
+         <Box
+                    sx={{
+                        display: "grid",
+                        height: '80vh',
+                        width: '100%',
+                        gap: 1,
+                        padding: 2,
+                        boxShadow: 3, // Added shadow effect
+                        backgroundColor: 'white',
+                        gridTemplate: 
+                        `"result result result result option"
+                        "result result result result ranking"
+                        "result result result result ranking"
+                        ". . save save ranking"
+                        `,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            gridArea: "result"
+                        }}
+                    >
+                        {/* Result Area */}
+                    </Box>
+                    <Box
+                        sx={{
+                            gridArea: "option",
+                            
+                            borderRadius: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            boxShadow: 3, // Added shadow effect
+                            backgroundColor: 'white',
+                        }}
+                    >
+                        <Button variant="contained">Add Criteria</Button>  
+                    </Box>
+                    <Box
                         sx={{
                             gridArea: "ranking",
-                            border: 1,
+                           
                             borderRadius: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            
                             gap: 2,
-                            padding: 2.5
-
-                            
-                        }}>
+                            padding: 2.5,
+                            boxShadow: 3, // Added shadow effect
+                            backgroundColor: 'white',
+                        }}
+                    >
                         
                         <Typography variant ="body1" alignSelf="flex-start" sx={{
                             fontWeight: '800'
@@ -206,8 +159,14 @@ const CriteriaPage = () => {
                         sx={{
                             gridArea: "save"
                         }}>
-                <Button variant="contained">Proceed</Button>     
-                        </Box>
+
+                <NavLink to="/ResultsPage" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                <CustomButton onClick={Results}>
+                PROCEED
+                </CustomButton>
+                </NavLink>
+                                        </Box>
 
 
         </Box>
@@ -216,4 +175,4 @@ const CriteriaPage = () => {
   )
 }
 
-export default CriteriaPage
+export default EvaluateOptions

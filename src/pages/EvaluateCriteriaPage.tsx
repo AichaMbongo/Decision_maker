@@ -1,47 +1,24 @@
-
-import { Box, Container,Stack } from '@mui/material';
-import { useContext } from 'react';
+import { Box, Container, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-// import { error } from 'console';
 import Button from '@mui/material/Button';
 import Layout from '../components/Layout';
 import AdsClickIcon from '@mui/icons-material/AdsClick';
 import BackButton from '../components/BackButton';
-import { DecisionStateContext } from '../contexts/DecisionStateContext';
-import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
-const options = ["Mercedes", "Audi", "BMW"]
-const optionComparisons = []
+const CriteriaPage = () => {
+    // Functions for handling criteria addition and deletion
 
-const ResultsPage = () => {
-
-    const { decisionState, setDecisionState } = useContext(DecisionStateContext);
-    console.log(decisionState)
-    console.log("It didn't work")
-
-    const generatePairwiseComparisons = () =>{
-        const options = decisionState.options
-        console.log("Generating pairwise comparisions")
-
-        for (let i = 0; i < options.length -1; i++){            
-            for (let j = i+1; j < options.length; j++) {
-                console.log(options[i], options[j]);
-            }            
-        }
-
-    }
-
-    generatePairwiseComparisons()
+    const options = ["Cost", "Safety", "Maintenance"];
     const { handleNavigation } = useBreadcrumbs();
-    const ViewPreviousDecisions = () => {
-    handleNavigation('/PreviousDecison', 'Previous Decision');
+    const EnterOption = () => {
+        handleNavigation('/NewOption', 'New Option');
     };
+
     return (
-        
         <Layout>
-            
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
@@ -50,39 +27,30 @@ const ResultsPage = () => {
                     display: '100vh',
                     paddingTop: '2',
                 }}
-
             >
                 <Box
                     sx={{
-
                         display: "grid",
                         height: '80vh',
                         width: '100%',
-
                         gap: 1,
                         padding: 2,
-                        boxShadow: 3 ,
+                        boxShadow: 3, // Added shadow effect
                         backgroundColor: 'white',
-
-
-                        gridTemplate:
-                            `"result result result result option"
-                "result result result result ranking"
-                "result result result result ranking"
-                ". . save save ranking"
-                `,
+                        gridTemplate: 
+                        `"result result result result option"
+                        "result result result result ranking"
+                        "result result result result ranking"
+                        ". . save save ranking"
+                        `,
                     }}
                 >
                     <Box
                         sx={{
                             gridArea: "result"
-                            
                         }}
                     >
-                        {/* <Typography variant ="h5"></Typography>
-                <Typography></Typography> */}
-
-
+                        {/* Result Area */}
                     </Box>
                     <Box
                         sx={{
@@ -111,10 +79,11 @@ const ResultsPage = () => {
                             backgroundColor: 'white',
                         }}
                     >
-
-                        <Typography variant="body1" alignSelf="flex-start" >Criteria</Typography>
+                        <Typography variant="body1" alignSelf="flex-start" sx={{ fontWeight: '800' }}>
+                            Criteria
+                        </Typography>
                         {options.map((option) => (
-                            <Stack gap={3} direction="column" justifyContent="center">
+                            <Stack key={option} gap={3} direction="column" justifyContent="center">
                                 <Stack gap={2} direction="row" alignItems="center" justifyContent="flex-start">
                                     <AdsClickIcon style={{ fontSize: '56px', padding: '2' }} />
                                     <Stack>
@@ -125,25 +94,17 @@ const ResultsPage = () => {
                             </Stack>
                         ))}
                     </Box>
-                    <Box
-                        sx={{
-                            gridArea: "save"
-                        }}>
-
-                        <NavLink to="/PreviousDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                        <CustomButton onClick={ViewPreviousDecisions}>
-                        Save Decision
-                        </CustomButton>
+                    <Box sx={{ gridArea: "save" }}>
+                        <NavLink to="/NewOption" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <CustomButton onClick={EnterOption}>
+                                PROCEED
+                            </CustomButton>
                         </NavLink>
-                        
                     </Box>
-
-
                 </Box>
             </Container>
         </Layout>
     )
 }
 
-export default ResultsPage
+export default CriteriaPage;

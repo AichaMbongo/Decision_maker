@@ -3,21 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NewCriteria from './pages/NewCriteria';
-import OtherNewCriteria from './pages/OtherNewCriteria';
-import DecisionModel from './pages/DecisionModel';
-import PreviousDecisions from './pages/PreviousDecisions';
-import NewDecision from './pages/NewDecision';
-import OtherNewOption from './pages/OtherNewOption';
-import NewOption from './pages/NewOption';
-import PreviousDecision from './pages/PreviousDecision';
-import ContactUs from './pages/ContactUs';
-import AboutUs from './pages/AboutUs';  
-import ResultsPage from './pages/ResultsPage';
-import CriteriaPage  from './pages/CriteriaPage';
-import DecisionStateProvider from './components/interfaces/DecisionStateProvider';
-import { DecisionStateContext } from './contexts/DecisionStateContext';
+import { BrowserRouter } from 'react-router-dom';
 
 
 

@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
-import Header from '../components/Header'
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
+import React from 'react'
 import BackButton from '../components/BackButton';
-import { Button, Stack, Typography } from '@mui/material';
-import Footer from '../components/Footer';
+import { Stack, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -15,28 +11,26 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Layout from '../components/Layout';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
 //     console.info('You clicked a breadcrumb.');
 // }
+
+
 const handleClick = () => {
     console.log("Button is Clicked");
-  }
-  
+}
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -76,7 +70,9 @@ const defaultProps: Partial<MyComponentProps> = {
 const collapsible = []
 
 
-function DecisionModel(){
+
+
+function DecisionModel() {
     const [expanded, setExpanded] = React.useState(false);
 
     const [expanded2, setExpanded2] = React.useState(false);
@@ -95,10 +91,41 @@ function DecisionModel(){
         setExpanded3(!expanded3);
     };
 
+    const models = [
+        {
+            modelname: 'Analytical Hierachial Process',
+            desc: 'This is the AHP Model',
+            modelimg: "../balance.jpg",
+            expanded: expanded,
+            expandclick: handleExpandClick
+
+        },
+        {
+            modelname: 'Forced Choice',
+            desc: 'This is the Forced Choice Model',
+            modelimg: "../yes-no.jpg",
+            expanded: expanded2,
+            expandclick: handleExpandClick2
+        },
+        {
+            modelname: 'Multi-criteria Analysis',
+            desc: 'This is the Multi-criteria Analysis Model',
+            modelimg: "../mcda-dm.png",
+            expanded: expanded3,
+            expandclick: handleExpandClick3
+        }
+    ]
+    
+
+    const { handleNavigation } = useBreadcrumbs();
+  const EnterNewCriteria = () => {
+    handleNavigation('/newCriteria', 'New Criteria');
+  };
+
     return (
-            < Layout>
+        < Layout>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
-                
+
                 <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
@@ -131,144 +158,68 @@ function DecisionModel(){
             </Stack>
             <Stack sx={{ p: 1 }} gap={4} direction="column">
                 <Grid alignItems="center" justifyContent="center" container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    <Grid item xs={3}>
-                        <Item>
-                            <Card sx={{ maxWidth: 405 }}>
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    sx={{
-                                        padding: '3%'
-                                    }}
-                                    image={require('../yes-no.jpg')}
-                                />
-                                <CardContent sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Typography variant="subtitle1" sx={{
+                    {models.map((model, index) => (
+                        <Grid item xs={3} key={index} >
+                            <Item>
+                                <Card sx={{ maxWidth: 405 }}>
+                                    <CardMedia
+                                        component="img"
+                                        height="200"
+                                        sx={{
+                                            padding: '3%'
+                                        }}
+                                        //image={require(`${model.modelimg}`)}
+                                    />
+                                    <CardContent sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <Typography variant="subtitle1" sx={{
 
-                                        textAlign: 'center'
-                                    }} >
-                                        Forced Choice Evaluation
-                                    </Typography>
-                                    <CardActions disableSpacing>
-                                        <ExpandMore
-                                            expand={expanded}
-                                            onClick={handleExpandClick}
-                                            aria-expanded={expanded}
-                                            aria-label="show more"
-                                        >
-                                            <ExpandMoreIcon />
-                                        </ExpandMore>
-                                    </CardActions>
-                                </CardContent>
-                                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                    <CardContent>
-                                        This is the Forced Choice Model
+                                            textAlign: 'center'
+                                        }} >
+                                            {model.modelname}
+                                        </Typography>
+                                        <CardActions disableSpacing>
+                                            <ExpandMore
+                                                 expand={model.expanded}
+                                                 onClick={model.expandclick}
+                                                 aria-expanded={model.expanded}
+                                                aria-label="show more"
+                                            >
+                                                <ExpandMoreIcon />
+                                            </ExpandMore>
+                                        </CardActions>
                                     </CardContent>
-                                </Collapse>
-                            </Card>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                        <Card sx={{ maxWidth: 405 }}>
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    sx={{
-                                        padding: '3%'
-                                    }}
-                                    image={require('../mcda-dm.png')}
-                                />
-                                <CardContent sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Typography variant="subtitle1" sx={{
+                                    <Collapse in={model.expanded} timeout="auto" unmountOnExit>
+                                        <CardContent>
+                                            {model.desc}
+                                        </CardContent>
+                                    </Collapse>
+                                </Card>
+                            </Item>
+                        </Grid>
+                    ))}
 
-                                        textAlign: 'center'
-                                    }} >
-                                       Multi-criteria Analysis
-                                    </Typography>
-                                    <CardActions disableSpacing>
-                                        <ExpandMore
-                                            expand={expanded2}
-                                            onClick={handleExpandClick2}
-                                            aria-expanded={expanded2}
-                                            aria-label="show more"
-                                        >
-                                            <ExpandMoreIcon />
-                                        </ExpandMore>
-                                    </CardActions>
-                                </CardContent>
-                                <Collapse in={expanded2} timeout="auto" unmountOnExit>
-                                    <CardContent>
-                                        This is the Multi-criteria Analysis Model.
-                                    </CardContent>
-                                </Collapse>
-                            </Card>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                        <Card sx={{ maxWidth: 405 }}>
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    sx={{
-                                        padding: '3%'
-                                    }}
-                                    image={require('../balance.jpg')}
-                                />
-                                <CardContent sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Typography variant="subtitle1" sx={{
 
-                                        textAlign: 'center'
-                                    }} >
-                                       Analytic Hierarchy Process 
-                                    </Typography>
-                                    <CardActions disableSpacing>
-                                        <ExpandMore
-                                            expand={expanded3}
-                                            onClick={handleExpandClick3}
-                                            aria-expanded={expanded3}
-                                            aria-label="show more"
-                                        >
-                                            <ExpandMoreIcon />
-                                        </ExpandMore>
-                                    </CardActions>
-                                </CardContent>
-                                <Collapse in={expanded3} timeout="auto" unmountOnExit>
-                                    <CardContent>
-                                        This is the Analytical Hierachial Process Model.
-                                    </CardContent>
-                                </Collapse>
-                            </Card>
-                        </Item>
-                    </Grid>
                 </Grid>
             </Stack>
             <Stack sx={{ p: 1 }} gap={6} direction="row" alignItems="center" justifyContent="center" style={{ marginBottom: '30px' }}>
-                
+
                 <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                <CustomButton onClick={handleClick} startIcon={<ArrowBackIosIcon />}>
-                Back to new decision
-                </CustomButton>
+                    <CustomButton onClick={handleClick} startIcon={<ArrowBackIosIcon />}>
+                        Back to new decision
+                    </CustomButton>
                 </NavLink>
                 <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                <CustomButton onClick={handleClick} endIcon={<ArrowForwardIosIcon />}>
-                Enter Criteria
-                </CustomButton>
+                    <CustomButton onClick={EnterNewCriteria} endIcon={<ArrowForwardIosIcon />}>
+                        Enter Criteria
+                    </CustomButton>
                 </NavLink>
             </Stack>
-            </Layout>
+        </Layout>
         // </ThemeProvider>
     )
 }

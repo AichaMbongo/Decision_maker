@@ -1,17 +1,20 @@
-import React from 'react'
-import { Box, Typography, Grid, Stack, TextField, Breadcrumbs, Link, Button, Paper, styled } from '@mui/material'
-import Layout from '../components/Layout'
-import SearchBox from '../components/Search'
+import React from 'react';
+import { Box, Typography, Grid, Stack, Paper, styled } from '@mui/material';
+import Layout from '../components/Layout';
+import SearchBox from '../components/Search';
 import AddIcon from '@mui/icons-material/Add';
-import Header from '../components/Header'
-import BackButton from '../components/BackButton'
-import AdsClickIcon from '@mui/icons-material/AdsClick';
+import BackButton from '../components/BackButton';
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
-import { NavLink } from 'react-router-dom'
-import CustomButton from '../components/Button'
+import { NavLink } from 'react-router-dom';
+import CustomButton from '../components/Button';
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 
 const PreviousDecisions: React.FC = () => {
+    const { handleNavigation } = useBreadcrumbs();
+    const goToNewDecision = () => {
+      handleNavigation('/NewDecision', 'New Decision');
+    };
 
     const handleClick = () => {
         console.log("Button is Clicked");
@@ -52,45 +55,12 @@ const PreviousDecisions: React.FC = () => {
 
         <Layout>
 
-<Stack sx={{ p: 2 }} gap={9} direction="column">
-                {/* <div>
-                     <Header />
-                     </div> */}
-                <div role="presentation" onClick={handleClick} style={{ marginLeft: '90px' }}>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
-                            Home
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/"
-                        >
-                            Decision
-                        </Link>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/decisionModel"
-                        >
-                            Decision Model
-                        </Link>
-                        <Typography color="text.primary">AHP Model</Typography>
-                        <Link
-                            underline="hover"
-                            color="inherit"
-                            href="/othernewCriteria"
-                        >
-                            More Criteria
-                        </Link>
-                    </Breadcrumbs>
-                </div>
-            </Stack>
             <Stack>
                 <div style={{ marginLeft: '30px' }}> <BackButton /></div>
             </Stack>
-          <Stack direction="column" spacing={2} alignItems="center" justifyContent="center">
-          <Typography variant='h3'>
+          <Stack direction="column" spacing={2} alignItems="center" justifyContent="center" >
+            <Stack className="stack-container">
+          <Typography variant='h3'> 
                     List of Previous Decisions
                   </Typography>
                 <Box
@@ -99,21 +69,21 @@ const PreviousDecisions: React.FC = () => {
 <SearchBox onSubmit={handleSearchSubmit} />                    
 
                 </Box>
-                <Box>
-
-                <NavLink to="/NewDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                <CustomButton onClick={handleClick} endIcon={<AddIcon />}>
-                Add New Decision
-                </CustomButton>
-                </NavLink>
+                
+                <Box mt={3}>
+                <NavLink to="/newDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <CustomButton onClick={goToNewDecision}endIcon={<AddIcon />} >
+                      Add New Decision
+                    </CustomButton>
+                  </NavLink>
+              
                
 
                 </Box>
-
+                </Stack>
                 <Grid container padding={4} rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {decisionData.map((decision) => (
-                <Grid item xs={4}  key={decision.id}>
+                <Grid item xs={3}  key={decision.id}>
                 <Item sx= {{ margin: 3 }}>
                     <Stack gap={2} direction="row" alignItems="center" justifyContent="center">
                     <PsychologyOutlinedIcon style={{ fontSize: '56px', padding: '2' }} />
