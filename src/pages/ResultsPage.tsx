@@ -18,7 +18,20 @@ const ResultsPage = () => {
     const { decisionState, setDecisionState } = useContext(DecisionStateContext);
     console.log(decisionState)
     console.log("It didn't work")
-    
+
+    const generatePairwiseComparisons = () =>{
+        const options = decisionState.options
+        console.log("Generating pairwise comparisions")
+
+        for (let i = 0; i < options.length -1; i++){            
+            for (let j = i+1; j < options.length; j++) {
+                console.log(options[i], options[j]);
+            }            
+        }
+
+    }
+
+    generatePairwiseComparisons()
     return (
         <Layout>
         <Stack sx={{ p: 2 , mt: 2 }} gap={9} direction="column">

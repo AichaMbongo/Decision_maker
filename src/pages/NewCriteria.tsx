@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import Header from '../components/Header'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
@@ -14,19 +14,51 @@ import Link from '@mui/material/Link';
 import Layout from '../components/Layout';
 import CustomButton from '../components/Button';
 import { NavLink } from 'react-router-dom';
+import DecisionState from '../components/interfaces/DecisionState';
+import { DecisionStateContext } from '../contexts/DecisionStateContext';
 
+interface criterion {
+    name: string,
+    weight: number
+}
 
+const defaultCriterion = {
+    name: "",
+    weight: 0
+}
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
 //     console.info('You clicked a breadcrumb.');
 // }
 
-const handleClick = () => {
-    console.log("Button is Clicked");
-  }
 
-const newCriteria = () => {
+const NewCriteria = () => {
+    const [criterion, setCriterion] = useState<string>("Cost");
+    const {decisionState, setDecisionState} = useContext(DecisionStateContext);
+    
+    defaultCriterion.name = criterion;
+    console.log(defaultCriterion) 
+    decisionState.criteria.push(defaultCriterion)
+
+    console.log(decisionState)
+    
+    const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
+        console.log("Check if function is being accessed")
+ 
+
+        console.log(updatedProperties)
+        setDecisionState(prevState => ({
+          ...prevState,
+          ...updatedProperties,
+        }));
+      };
+    
+    
+    const handleClick = () => {
+        console.log("Button is Clicked");
+      }
+
     return (
       
         < Layout>
@@ -88,4 +120,4 @@ const newCriteria = () => {
     )
 }
 
-export default newCriteria
+export default NewCriteria

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
@@ -13,6 +13,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { NavLink } from 'react-router-dom';
 import CustomButton from '../components/Button';
+import { DecisionStateContext } from '../contexts/DecisionStateContext';
+import { useContext } from 'react';
 
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -27,6 +29,22 @@ const handleClick = () => {
 
 
 const NewOption = () => {
+    const [option, setOption] = useState<string>("BMW")
+    const {decisionState, setDecisionState} = useContext(DecisionStateContext);
+
+    console.log("Decision State")
+    console.log(decisionState)
+
+    const options = decisionState.options
+
+    options.push(option)
+
+
+
+    const handleClick = () => {
+        console.log("option")
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">

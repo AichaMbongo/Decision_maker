@@ -7,18 +7,41 @@ import CustomButton from '../components/Button';
 import BasicTextField from '../components/input-field';
 import {Field} from '../components/interfaces/InputFieldProps';
 import { NavLink } from 'react-router-dom';
-
+import { DecisionStateContext } from '../contexts/DecisionStateContext';
+import { useContext, useState } from 'react';
+import DecisionState from '../components/interfaces/DecisionState';
 //add some temporary links here to enable viewing of pages
 
 
 const NewDecision: React.FC = () =>  {
+const [decision, setDecision] = useState<string>("Buy a new car");
+const {decisionState, setDecisionState} = useContext(DecisionStateContext);
 
 const fields: Field[] = [
   { id: 'filled-basic', label: 'E.g. "To Buy a Car"', variant: 'filled', defaultValue: '' },
 ]
 
+const decisionObject: Partial<DecisionState> = {
+  decision: decision
+};
+
+const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
+  console.log("Check if function is being accessed")
+  console.log(updatedProperties)
+  setDecisionState(prevState => ({
+    ...prevState,
+    ...updatedProperties,
+  }));
+};
+
 const handleClick = () => {
   console.log("Button is Clicked");
+  console.log(decisionState);
+  decisionState.decision = decision
+  // updateDecisionState(decisionObject);
+  console.log("After the update")
+  console.log(decisionState)
+
 }
 
   return (

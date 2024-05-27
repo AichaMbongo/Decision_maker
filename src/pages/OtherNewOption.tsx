@@ -18,6 +18,8 @@ import AdsClickIcon from '@mui/icons-material/AdsClick';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 import CustomButton from '../components/Button';
 import { NavLink } from 'react-router-dom';
+import { DecisionStateContext } from '../contexts/DecisionStateContext';
+import { useContext } from 'react';
 
 // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
@@ -36,6 +38,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const OtherNewOption = () => {
+    const {decisionState, setDecisionState} = useContext(DecisionStateContext);
+   
+    console.log(decisionState)
     return (
         <ThemeProvider theme={theme}>
             <Stack sx={{ p: 2 }} gap={9} direction="column">
