@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, Typography, Box, TextField, FormControl } from '@mui/material';
 import BackButton from '../components/BackButton';
@@ -11,6 +11,8 @@ import { NavLink } from 'react-router-dom';
 import DecisionState from '../components/interfaces/DecisionState';
 import { DecisionStateContext } from '../contexts/DecisionStateContext';
 
+import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+
 interface criterion {
     name: string,
     weight: number
@@ -21,7 +23,6 @@ const defaultCriterion = {
     weight: 0
 }
 
-import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
 const NewCriteria = () => {
     const [formData, setFormData] = useState({ newCriteria: '' });

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Typography, Stack } from '@mui/material'
+import { Box, Grid, Typography, Stack, Button } from '@mui/material'
 import Layout from '../components/Layout'
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import CustomButton from '../components/Button';
@@ -11,15 +11,16 @@ import BackButton from '../components/BackButton';
 import { DecisionStateContext } from '../contexts/DecisionStateContext';
 import { useContext, useState } from 'react';
 import DecisionState from '../components/interfaces/DecisionState';
+
 //add some temporary links here to enable viewing of pages
 
 
 const NewDecision: React.FC = () =>  {
-const [decision, setDecision] = useState<string>("Buy a new car");
-const {decisionState, setDecisionState} = useContext(DecisionStateContext);
+const [decision, setDecision] = useState<string>("");
+const {decisionState, setDecisionState} = useContext(DecisionStateContext);s
 
 const fields: Field[] = [
-  { id: 'filled-basic', label: 'E.g. "To Buy a Car"', variant: 'filled', defaultValue: '' },
+  { id: 'filled-basic', label: 'E.g. "To Buy a Car"', variant: 'filled', defaultValue: '', name: 'decision', value : decision, onChange : (e) =>(console.log(e))},
 ]
 
 const decisionObject: Partial<DecisionState> = {
@@ -35,19 +36,20 @@ const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
   }));
 };
 
-const handleClick = () => {
-  console.log("Button is Clicked");
-  console.log(decisionState);
-  decisionState.decision = decision
-  // updateDecisionState(decisionObject);
-  console.log("After the update")
-  console.log(decisionState)
+// const handleClick = () => {
+//   console.log("Button is Clicked");
+//   console.log(decisionState);
+//   decisionState.decision = decision
+//   // updateDecisionState(decisionObject);
+//   console.log("After the update")
+//   console.log(decisionState)
 
-}
+// }
 
 const { handleNavigation } = useBreadcrumbs();
 const EnterNewCriteria = () => {
-  handleNavigation('/newCriteria', 'New Criteria');
+  // handleNavigation('/newCriteria', 'New Criteria');
+  console.log("Decision: ", decision)
 };
 
   return (
@@ -86,15 +88,31 @@ What is Your Goal?
 
       </Box>
       </Grid>
+      <Button
+                        variant="contained"
+                        sx={{
+                            borderRadius: '16px',
+                            paddingRight: 2,
+                            paddingLeft: 2,
+                            marginBottom: 2,
+                            minWidth: '200px', // Adjust the width as desired
+                        }}
+                        onClick={EnterNewCriteria}
+                        type="submit"
+                        >
+                        PROCEED
+                        </Button>
+                        
       
-      <NavLink to="/newCriteria" style={{ textDecoration: 'none', color: 'inherit' }}>
+      {/* <NavLink  style={{ textDecoration: 'none', color: 'inherit' }}>
 
-<CustomButton onClick={EnterNewCriteria}>
-  PROCEED
-  </CustomButton>
-  </NavLink>
+      <CustomButton onClick={EnterNewCriteria}>
+        PROCEED
+        </CustomButton>
+  </NavLink> */}
   </Stack>    
   </Stack>
+
     </Layout>
    
   )
