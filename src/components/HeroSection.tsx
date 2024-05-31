@@ -8,14 +8,6 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
 
-
-
-
-
-
-  
-
-
 interface Field {
   id: string;
   label: string;
@@ -58,9 +50,17 @@ const HeroSection: React.FC = () => {
     handleNavigation('/AboutUs', 'About Us');
   };
 
+  const goToLogin = () => {
+    handleNavigation('/login', 'Login');
+  };
+
+  const goToAboutRegister = () => {
+    handleNavigation('/register', 'Register');
+  };
+
 
   return (
-    
+
     <Grid item xs={12} md={8} lg={6}>
       <Box
         className={`hero-section ${heroImage}`}
@@ -121,18 +121,18 @@ const HeroSection: React.FC = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12} lg={4}>
 
-                  <NavLink to="/newDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <CustomButton onClick={goToNewDecision} disabled={false} width="100%">
-                      Get Started
-                    </CustomButton>
-                  </NavLink>
+                    <NavLink to="/newDecision" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <CustomButton onClick={goToNewDecision} disabled={false} width="100%">
+                        Get Started
+                      </CustomButton>
+                    </NavLink>
                   </Grid>
                   <Grid item xs={12} lg={4}>
-                  <NavLink to="/aboutUs" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <NavLink to="/aboutUs" style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                    <CustomButton variant="outlined" onClick={goToAboutUs}  disabled={false} width="100%">
-                      About Us
-                    </CustomButton>
+                      <CustomButton variant="outlined" onClick={goToAboutUs} disabled={false} width="100%">
+                        About Us
+                      </CustomButton>
                     </NavLink>
                   </Grid>
                 </Grid>

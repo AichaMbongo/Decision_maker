@@ -25,7 +25,8 @@ import Home from './pages/Home';
 import DecisionState from './components/interfaces/DecisionState';
 import BreadcrumbsProvider from './contexts/BreadcrumbsProvider';
 import EvaluateOptions from './pages/EvaluateOptionsPage';
-
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 
 
@@ -54,6 +55,8 @@ function App() {
     <DecisionStateContext.Provider value={{ decisionState, setDecisionState}}>
      <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/NewOption' element={<NewOption />} />
         <Route path='/newCriteria' element={<NewCriteria />} />
         <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />

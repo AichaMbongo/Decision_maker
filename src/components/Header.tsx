@@ -55,11 +55,11 @@ const Header = () => {
         <PersonIcon />
       </IconButton>
       <Typography variant="body1">
-        <a href="#" onClick={changeAuth} style={{ color: 'black', textDecoration: 'none' }}>
+        <a href="/login" onClick={changeAuth} style={{ color: 'black', textDecoration: 'none' }}>
           Login
         </a>{' '}
         |{' '}
-        <a href="#" style={{ color: 'black', textDecoration: 'none' }}>
+        <a href="/register" style={{ color: 'black', textDecoration: 'none' }}>
           Register
         </a>
       </Typography>
