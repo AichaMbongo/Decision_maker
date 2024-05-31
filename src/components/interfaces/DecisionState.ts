@@ -1,12 +1,25 @@
 import React from 'react'
 
+interface Comparison {
+  [option: string]: {
+    [otherOption: string]: boolean;
+  };
+}
+export interface Criterion{
+  name: string,
+  weight: number,
+  comparisons: Comparison
+}
+  
+
 interface DecisionState {
     model: string;
-    criteria: string[];
-    criteriaComparisons: number[][];
+    decision: string;
+    criteria: Criterion[];
+
     options: string[];
-    optionComparisons: number[][];
+
   }
-  
+
 
 export default DecisionState

@@ -31,19 +31,20 @@ import EvaluateOptions from './pages/EvaluateOptionsPage';
 
 function App() {
   const [decisionState, setDecisionState] = useState<DecisionState>({
-    model: '',
+    model: 'AHP',
+    decision: '',
     criteria: [],
     criteriaComparisons: [],
     options: [],
     optionComparisons: [],
 });
 
-  const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
-    setDecisionState(prevState => ({
-      ...prevState,
-      ...updatedProperties,
-    }));
-  };
+  // const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
+  //   setDecisionState(prevState => ({
+  //     ...prevState,
+  //     ...updatedProperties,
+  //   }));
+  // };
 
   interface HeroSectionProps {
     theme: Theme;
