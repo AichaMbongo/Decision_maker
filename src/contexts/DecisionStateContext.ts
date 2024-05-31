@@ -9,11 +9,7 @@ const defaultDecisionState: DecisionState = {
     options: [],
 
 }
-interface Comparison {
-    [option: string]: {
-      [otherOption: string]: boolean;
-    };
-  }
+
   
 
 interface DecisionStateContextProps{
