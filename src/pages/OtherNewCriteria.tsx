@@ -22,15 +22,6 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import DecisionState from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 
-const criteria = [
-  "Cost",
-  "Comfort",
-  "Safety",
-  "Good Insurance",
-  "Comfy Seats",
-  "Nice Speakers",
-];
-
 const handleClick = () => {
   console.log("Button is Clicked");
 };
