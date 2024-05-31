@@ -22,11 +22,13 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 interface criterion {
   name: string;
   weight: number;
+  comparisons: object;
 }
 
 const defaultCriterion = {
   name: "",
   weight: 0,
+  comparisons: {},
 };
 
 const NewCriteria = () => {
@@ -58,7 +60,7 @@ const NewCriteria = () => {
 
   const addCriteria = () => {
     console.log("Clicked", decisionState);
-    const newCriterion = { name: criterion, weight: 0 };
+    const newCriterion = { name: criterion, weight: 0, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
     console.log(updatedCriteria);
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
