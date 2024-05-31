@@ -6,10 +6,15 @@ const defaultDecisionState: DecisionState = {
     model: 'AHP',
     decision: '',
     criteria: [],
-    criteriaComparisons: [],
     options: [],
-    optionComparisons: [],
+
 }
+interface Comparison {
+    [option: string]: {
+      [otherOption: string]: boolean;
+    };
+  }
+  
 
 interface DecisionStateContextProps{
     decisionState: DecisionState;
