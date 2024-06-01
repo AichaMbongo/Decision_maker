@@ -18,59 +18,50 @@ interface Comparison {
   };
 }
 
+interface AggregatedPreference {
+  [option: string]: number;
+}
+
 const EvaluateOptions = () => {
-  //function to initialise pairwise comparison matrices
-  // function initPairwiseMatrices(num:number) {
-  //     let matrice: number[][] = [];
-  //     for (let i = 0; i < num; i++) {
-  //         for (let j = 0; j < num; j++) {
-  //             matrice[i][j] = 1;
-  //         }
-  //     }
-  //     return matrice;
-  // }
-
-  // function addCriteria(name: string, criteria: string[], optionComparisons: number[][]){
-  //     const len = criteria.length;
-  //     criteria.push(name);
-  //     for (let i = 0; i < len; i++) {
-  //         optionComparisons[i][len] = 1
-  //     }
-  //     let newRow = [];
-  //     for (let i = 0; i < len+1; i++) {
-  //         newRow.push(1);
-  //     }
-  //     optionComparisons.push(newRow)
-
-  //     console.log("Criteria added successfully")
-  // }
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
 
-  //   function deleteCriteria(
-  //     name: string,
-  //     criteria: string[],
-  //     optionComparisons: number[][]
-  //   ) {
-  //     try {
-  //       const index = criteria.indexOf(name);
-  //       if (index !== -1) {
-  //         criteria.splice(index, 1);
+  // useEffect(() => {
+  //   const generateResults = () => {
+  //     const results: { [criterion: string]: Comparison } = {};
+  //     const aggregatedPreferences: { [criterion: string]: AggregatedPreference } = {};
 
-  //         //code to delete column where the specific criteria appears
-  //         for (let i = 0; i < optionComparisons.length; i++) {
-  //           optionComparisons[i].splice(index, 1);
-  //         }
-  //         //To delete row comtaining comparisons of the deleted criteria
-  //         optionComparisons.splice(index, 1);
-  //       } else {
-  //         throw Error;
-  //       }
-  //     } catch (error) {
-  //       console.log(
-  //         "Failed to delete specified criteria. Specified criteria does not exist"
-  //       );
-  //     }
-  //   }
+  //     data.criteria.forEach(criterion => {
+  //       const criterionResults: Comparison = {};
+  //       const criterionAggregated: AggregatedPreference = {};
+
+  //       // Initialize the criterionAggregated with all options set to 0
+  //       data.options.forEach(option => {
+  //         criterionAggregated[option] = 0;
+  //       });
+
+  //       Object.keys(criterion.comparisons).forEach(option1 => {
+  //         criterionResults[option1] = {};
+
+  //         Object.keys(criterion.comparisons[option1]).forEach(option2 => {
+  //           const value = criterion.comparisons[option1][option2];
+  //           criterionResults[option1][option2] = value;
+  //           criterionResults[option2] = criterionResults[option2] || {};
+  //           criterionResults[option2][option1] = 1 - value;
+
+  //           criterionAggregated[option1] += value;
+  //           criterionAggregated[option2] += 1 - value;
+  //         });
+  //       });
+
+  //       results[criterion.name] = criterionResults;
+  //       aggregatedPreferences[criterion.name] = criterionAggregated;
+  //     });
+
+  //     setDecisionState(prevData => ({ ...prevData, results, aggregatedPreferences }));
+  //   };
+
+  //   generateResults();
+  // }, [decisionState.criteria, setDecisionState]);
 
   function handleClick() {
     console.log("You clicked me");
@@ -108,6 +99,7 @@ const EvaluateOptions = () => {
   ) => {
     const updatedCriteria = decisionState.criteria.map((criterion, i) => {
       if (i === criterionIndex) {
+        console.log(decisionState);
         return {
           ...criterion,
           comparisons: {
