@@ -2,7 +2,7 @@ import React from 'react'
 
 interface Comparison {
   [option: string]: {
-    [otherOption: string]: boolean;
+    [otherOption: string]: number;
   };
 }
 export interface Criterion{
