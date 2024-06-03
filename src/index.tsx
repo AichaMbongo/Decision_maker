@@ -25,7 +25,7 @@ root.render(
 
         <Route path='/OtherNewCriteria' element={<OtherNewCriteria />} />
         <Route path='/DecisionModel' element={<DecisionModel/>} />
-        <Route path='/NewDecision' element={<NewDecision/>} />
+        <Route path='/NewDecision'class element={<NewDecision/>} />
         <Route path='/OtherNewOption' element={<OtherNewOption/>} />
         <Route path='/PreviousDecision' element={<PreviousDecision/>}/>
         <Route path='/contactUs' element={<ContactUs/>} />
