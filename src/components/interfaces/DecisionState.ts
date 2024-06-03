@@ -10,15 +10,17 @@ export interface Criterion{
   weight: number,
   comparisons: Comparison
 }
+interface AggregatedPreference {
+  [option: string]: number;
+}
   
 
 interface DecisionState {
     model: string;
     decision: string;
     criteria: Criterion[];
-
     options: string[];
-
+    aggregatedPreferences: { [criterion: string]: AggregatedPreference };
   }
 
 

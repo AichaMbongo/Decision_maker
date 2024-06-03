@@ -31,6 +31,7 @@ function App() {
     decision: "",
     criteria: [],
     options: [],
+    aggregatedPreferences: {},
   });
 
   // const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
