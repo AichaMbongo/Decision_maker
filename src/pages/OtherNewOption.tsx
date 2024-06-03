@@ -10,7 +10,9 @@ import { NavLink } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
-import DecisionState from "../components/interfaces/DecisionState";
+import DecisionState, {
+  Criterion,
+} from "../components/interfaces/DecisionState";
 import { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -18,6 +20,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //     event.preventDefault();
 //     console.info('You clicked a breadcrumb.');
 // }
+interface Comparison {
+  [option: string]: {
+    [otherOption: string]: number;
+  };
+}
 const handleClick = () => {
   console.log("Button is Clicked");
 };
@@ -39,6 +46,28 @@ const OtherNewOption = () => {
   const options = decisionState.options;
 
   const EvaluateOptions = () => {
+    const initializeComparisons = (
+      criteria: Criterion[],
+      options: string[]
+    ) => {
+      return criteria.map((criterion) => {
+        const comparisons: Comparison = {};
+        options.forEach((option, i) => {
+          comparisons[option] = {};
+          options.slice(i + 1).forEach((nextOption) => {
+            comparisons[option][nextOption] = 0; // Default comparison value
+          });
+        });
+        return { ...criterion, comparisons };
+      });
+    };
+
+    const updatedCriteria = initializeComparisons(
+      decisionState.criteria,
+      decisionState.options
+    );
+    setDecisionState({ ...decisionState, criteria: updatedCriteria });
+
     handleNavigation("/EvaluateOptionsPage", "Evaluate Options");
   };
 

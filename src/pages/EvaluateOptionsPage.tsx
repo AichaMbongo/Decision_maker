@@ -8,13 +8,14 @@ import BackButton from "../components/BackButton";
 import { NavLink } from "react-router-dom";
 import CustomButton from "../components/Button";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Criterion } from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
+import PairwiseComparison from "../components/PairwiseComparison";
 
 interface Comparison {
   [option: string]: {
-    [otherOption: string]: boolean;
+    [otherOption: string]: number;
   };
 }
 
@@ -24,72 +25,77 @@ interface AggregatedPreference {
 
 const EvaluateOptions = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
+  const [criterionIndex, setCriterionIndex] = useState(0);
+  const [combinationIndex, setCombinationIndex] = useState(0);
 
   // useEffect(() => {
   //   const generateResults = () => {
   //     const results: { [criterion: string]: Comparison } = {};
-  //     const aggregatedPreferences: { [criterion: string]: AggregatedPreference } = {};
+  //     const aggregatedPreferences: {
+  //       [criterion: string]: AggregatedPreference;
+  //     } = {};
 
-  //     data.criteria.forEach(criterion => {
-  //       const criterionResults: Comparison = {};
+  //     decisionState.criteria.forEach((criterion) => {
+  //       // const criterionResults: Comparison = {};
   //       const criterionAggregated: AggregatedPreference = {};
 
   //       // Initialize the criterionAggregated with all options set to 0
-  //       data.options.forEach(option => {
+  //       decisionState.options.forEach((option) => {
   //         criterionAggregated[option] = 0;
   //       });
 
-  //       Object.keys(criterion.comparisons).forEach(option1 => {
-  //         criterionResults[option1] = {};
+  //       Object.keys(criterion.comparisons).forEach((option1) => {
+  //         // criterionResults[option1] = {};
 
-  //         Object.keys(criterion.comparisons[option1]).forEach(option2 => {
+  //         Object.keys(criterion.comparisons[option1]).forEach((option2) => {
   //           const value = criterion.comparisons[option1][option2];
-  //           criterionResults[option1][option2] = value;
-  //           criterionResults[option2] = criterionResults[option2] || {};
-  //           criterionResults[option2][option1] = 1 - value;
 
   //           criterionAggregated[option1] += value;
   //           criterionAggregated[option2] += 1 - value;
   //         });
   //       });
 
-  //       results[criterion.name] = criterionResults;
+  //       // results[criterion.name] = criterionResults;
   //       aggregatedPreferences[criterion.name] = criterionAggregated;
   //     });
 
-  //     setDecisionState(prevData => ({ ...prevData, results, aggregatedPreferences }));
+  //     setDecisionState((prevData) => ({
+  //       ...prevData,
+  //       results,
+  //       aggregatedPreferences,
+  //     }));
   //   };
 
   //   generateResults();
   // }, [decisionState.criteria, setDecisionState]);
 
-  function handleClick() {
-    console.log("You clicked me");
-  }
+  // function handleClick() {
+  //   console.log("You clicked me");
+  // }
 
-  useEffect(() => {
-    const initializeComparisons = (
-      criteria: Criterion[],
-      options: string[]
-    ) => {
-      return criteria.map((criterion) => {
-        const comparisons: Comparison = {};
-        options.forEach((option, i) => {
-          comparisons[option] = {};
-          options.slice(i + 1).forEach((nextOption) => {
-            comparisons[option][nextOption] = false; // Default comparison value
-          });
-        });
-        return { ...criterion, comparisons };
-      });
-    };
+  // useEffect(() => {
+  //   const initializeComparisons = (
+  //     criteria: Criterion[],
+  //     options: string[]
+  //   ) => {
+  //     return criteria.map((criterion) => {
+  //       const comparisons: Comparison = {};
+  //       options.forEach((option, i) => {
+  //         comparisons[option] = {};
+  //         options.slice(i + 1).forEach((nextOption) => {
+  //           comparisons[option][nextOption] = 0; // Default comparison value
+  //         });
+  //       });
+  //       return { ...criterion, comparisons };
+  //     });
+  //   };
 
-    const updatedCriteria = initializeComparisons(
-      decisionState.criteria,
-      decisionState.options
-    );
-    setDecisionState({ ...decisionState, criteria: updatedCriteria });
-  }, []);
+  //   const updatedCriteria = initializeComparisons(
+  //     decisionState.criteria,
+  //     decisionState.options
+  //   );
+  //   setDecisionState({ ...decisionState, criteria: updatedCriteria });
+  // }, []);
 
   const handleComparisonChange = (
     criterionIndex: number,
@@ -106,7 +112,7 @@ const EvaluateOptions = () => {
             ...criterion.comparisons,
             [option1]: {
               ...criterion.comparisons[option1],
-              [option2]: value,
+              [option2]: !value ? 1 : 0,
             },
           },
         };
@@ -155,7 +161,7 @@ const EvaluateOptions = () => {
               gridArea: "result",
             }}
           >
-            <Container>
+            {/* <Container>
               {decisionState.criteria.map((criterion, criterionIndex) => (
                 <Box key={criterionIndex} mb={4}>
                   <Typography variant="h6">
@@ -169,7 +175,7 @@ const EvaluateOptions = () => {
                             control={
                               <Switch
                                 checked={
-                                  criterion.comparisons[option1][option2]
+                                  !!criterion.comparisons[option1][option2]
                                 }
                                 onChange={(e) =>
                                   handleComparisonChange(
@@ -189,7 +195,8 @@ const EvaluateOptions = () => {
                   )}
                 </Box>
               ))}
-            </Container>
+            </Container> */}
+            <PairwiseComparison />
           </Box>
           <Box
             sx={{
