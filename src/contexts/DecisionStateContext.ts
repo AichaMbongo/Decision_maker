@@ -3,21 +3,24 @@ import DecisionState from '../components/interfaces/DecisionState'
 import { createContext } from 'react';
 
 const defaultDecisionState: DecisionState = {
-    model: '',
+    model: 'AHP',
+    decision: '',
     criteria: [],
-    criteriaComparisons: [],
     options: [],
-    optionComparisons: [],
-  };
+    aggregatedPreferences: {}
+
+}
+
+  
 
 interface DecisionStateContextProps{
     decisionState: DecisionState;
-    setDecisionState: any;
+    setDecisionState: React.Dispatch<React.SetStateAction<DecisionState>>;
 }
 
-export const DecisionStateContext = createContext({
+export const DecisionStateContext = createContext<DecisionStateContextProps>({
     decisionState: defaultDecisionState,
-    setDecisionState: (property: any) => {}
+    setDecisionState: () => {}
 });
 
 // export default DecisionStateContext;
