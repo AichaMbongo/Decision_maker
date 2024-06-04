@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, Typography, Button, Container, Avatar, MenuItem, Menu, IconButton } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import theme from '../theme/theme';
 import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+import { getUser, signOut } from '../supabase/auth';
+import { supabase } from '../supabase/supabaseClient';
 
 const navItems = [
   { label: 'DecisionMaker', path: '/' },
@@ -14,11 +17,69 @@ const navItems = [
   { label: 'Contact Us', path: '/contactUs' },
 ];
 
-const Header = () => {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+interface HeaderProps {
+  auth: boolean;
+  setAuth: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Header({ auth, setAuth }: HeaderProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [userProfile, setUserProfile] = useState<{ displayName: string } | null>(null);
   const { handleNavigation, resetBreadcrumbs } = useBreadcrumbs();
 
+  useEffect(() => {
+    const storedAuth = localStorage.getItem('auth');
+    if (storedAuth === 'true') {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
+  }, [setAuth]);
+
+  useEffect(() => {
+    localStorage.setItem('auth', auth.toString());
+  }, [auth]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data, error } = await getUser();
+        if (error) {
+          console.error('Error fetching user:', error.message);
+          return;
+        }
+        if (data && data.user && data.user.id) {
+          const userId = data.user.id;
+
+          // Fetch user profile from user_profiles table
+          const { data: userProfileData, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('display_name')
+            .eq('id', userId)
+            .single();
+
+          if (profileError) {
+            console.error('Error fetching user profile:', profileError.message);
+            return;
+          }
+
+          if (userProfileData) {
+            setUserProfile({ displayName: userProfileData.display_name });
+            setAuth(true);
+          } else {
+            setAuth(false);
+          }
+        } else {
+          setAuth(false);
+        }
+      } catch (error: any) {
+        console.error('Error fetching user:', error.message);
+        setAuth(false);
+      }
+    };
+    fetchUser();
+  }, [setAuth]);
+  
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -27,11 +88,11 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const changeAuth = () => {
-    setAuth(!auth);
-    if (!auth) {
-      handleClose();
-    }
+  const handleSignOut = async () => {
+    await signOut();
+    setAuth(false);
+    setUserProfile(null);
+    handleClose();
   };
 
   const unauthenticated = (
@@ -55,27 +116,27 @@ const Header = () => {
         <PersonIcon />
       </IconButton>
       <Typography variant="body1">
-        <a href="#" onClick={changeAuth} style={{ color: 'black', textDecoration: 'none' }}>
+        <NavLink to="/login" style={{ color: 'black', textDecoration: 'none' }}>
           Login
-        </a>{' '}
+        </NavLink>{' '}
         |{' '}
-        <a href="#" style={{ color: 'black', textDecoration: 'none' }}>
+        <NavLink to="/register" style={{ color: 'black', textDecoration: 'none' }}>
           Register
-        </a>
+        </NavLink>
       </Typography>
     </Box>
   );
 
   const authenticated = (
-    <Box sx={{ 
-      display: 'flex', 
+    <Box sx={{
+      display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center', 
+      justifyContent: 'center',
       padding: '0.5rem',
       borderRadius: '5px',
     }}>
-      <Avatar sx={{ borderRadius: '10px' }}>Ö</Avatar>
-      <Box sx={{ marginLeft: '8px' }}>Mikä</Box>
+      <Avatar sx={{ borderRadius: '10px' }}>{userProfile ? userProfile.displayName.charAt(0) : 'U'}</Avatar>
+      <Box sx={{ marginLeft: '8px' }}>{userProfile ? userProfile.displayName : 'User'}</Box>
       <IconButton
         aria-controls="user-menu"
         aria-haspopup="true"
@@ -90,13 +151,11 @@ const Header = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
-        <MenuItem onClick={changeAuth}>Log Out</MenuItem>
+        <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
       </Menu>
     </Box>
   );
-
+  
   return (
     <AppBar
       sx={{
@@ -142,6 +201,6 @@ const Header = () => {
       </Container>
     </AppBar>
   );
-};
+}
 
 export default Header;

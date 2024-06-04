@@ -24,6 +24,10 @@ import Home from "./pages/Home";
 import DecisionState from "./components/interfaces/DecisionState";
 import BreadcrumbsProvider from "./contexts/BreadcrumbsProvider";
 import EvaluateOptions from "./pages/EvaluateOptionsPage";
+//login and registration
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
 
 function App() {
   const [decisionState, setDecisionState] = useState<DecisionState>({
@@ -44,6 +48,9 @@ function App() {
   interface HeroSectionProps {
     theme: Theme;
   }
+  //state management
+  const [auth, setAuth] = useState<boolean>(false);
+
   return (
     <>
       <BreadcrumbsProvider>
@@ -52,6 +59,9 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<Home />} />
+            {/* Abi */}
+            <Route path="/login" element={<Login setAuth={setAuth} />} />
+            <Route path="/register" element={<Register setAuth={setAuth} />} />
             <Route path="/NewOption" element={<NewOption />} />
             <Route path="/newCriteria" element={<NewCriteria />} />
             <Route path="/OtherNewCriteria" element={<OtherNewCriteria />} />
