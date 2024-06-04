@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -14,10 +14,18 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    if (location.state && location.state.isAuthenticated) {
+      setAuth(true);
+    }
+  }, [location.state]);
+
 
   return (
     <ThemeProvider theme={theme}>
-      <Header />
+      <Header auth={auth} setAuth={setAuth} />
       <div className='layout'>
         {!isLandingPage && (
           <Container maxWidth='xl' className='bread-container'>
