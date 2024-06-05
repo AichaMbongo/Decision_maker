@@ -43,44 +43,22 @@ function Register({ setAuth }: any) {
     };
 
     return (
-      <Layout>
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-          {/* Added a background color and flex utilities to center the content */}
-          <Stack>
-            <Box display="flex" alignItems="center">
-              <Fab
-                component={RouterLink}
-                to="/"
-                aria-label="back"
-                sx={{ mr: 1 }}
-              >
-                <ArrowBackIosNewRoundedIcon />
-              </Fab>
-              <Typography variant="body1">Back to Home Page</Typography>
-            </Box>
-          </Stack>
-          <Container
-            component="main"
-            maxWidth="xs"
-            className="stack-container"
+        <ThemeProvider theme={theme}>
+            <Container
+                component="main"
+                maxWidth="xs"
+                className="stack-container"
             // Added shadow-lg and other Tailwind CSS classes for styling
-          >
-            <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
             >
-              <Typography variant="h6">
-                <NavLink
-                  to="/"
-                  onClick={() => handleNavigation("/", "Home")}
-                  style={{ textDecoration: "none", color: "#337357" }}
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
                 >
-
                     <Box width="60vh" gap={8} display="flex" flexDirection="row">
                         <Box display="flex" justifyContent="center">
                             <Link href="/" style={{ textDecoration: 'none' }}>
@@ -170,8 +148,7 @@ function Register({ setAuth }: any) {
             </Container>
         </ThemeProvider>
 
-                  
-                  
+
     );
 }
 
