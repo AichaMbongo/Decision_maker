@@ -13,6 +13,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { signUp } from '../supabase/auth'; // Import the signUp function
 
 function Register({ setAuth }: any) {
@@ -49,15 +51,27 @@ function Register({ setAuth }: any) {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant='h6'>
-                        <NavLink
-                            to="/"
-                            onClick={() => handleNavigation('/', 'Home')}
-                            style={{ textDecoration: 'none', color: '#337357' }}
-                        >
-                            DecisionMaker
-                        </NavLink>
-                    </Typography>
+                    <Box width="60vh" gap={8} display="flex" flexDirection="row">
+                        <Box display="flex" justifyContent="center">
+                            <Link href="/" style={{ textDecoration: 'none' }}>
+                                <IconButton color="secondary">
+                                    <ArrowBackIosIcon />
+                                </IconButton>
+                            </Link>
+                        </Box>
+
+                        <Box display="flex" justifyContent="center">
+                            <Typography variant='h6'>
+                                <NavLink
+                                    to="/"
+                                    onClick={() => handleNavigation('/', 'Home')}
+                                    style={{ textDecoration: 'none', color: '#337357' }}
+                                >
+                                    DecisionMaker
+                                </NavLink>
+                            </Typography>
+                        </Box>
+                    </Box>
                     <Typography variant="body1">
                         Sign up
                     </Typography>
