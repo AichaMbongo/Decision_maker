@@ -37,34 +37,17 @@ const NewCriteria = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
 
   const criteria = decisionState.criteria;
-  console.log("New criterion", criterion);
 
-  console.log("OLd criteria", criteria);
-
-  const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
-    console.log("Check if function is being accessed");
-
-    console.log("Updated properties", updatedProperties);
-    setDecisionState((prevState) => ({
-      ...prevState,
-      ...updatedProperties,
-    }));
-  };
-
-  const handleClick = () => {
-    console.log("Button is Clicked");
-  };
   const navigate = useNavigate(); // Get the navigate function from useNavigate
 
   const { handleNavigation } = useBreadcrumbs();
 
   const addCriteria = () => {
-    console.log("Clicked", decisionState);
     const newCriterion = { name: criterion, weight: 0, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
-    console.log(updatedCriteria);
+
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    console.log("Updated Criteria", decisionState);
+
     handleNavigation("/OtherNewCriteria", "Add Another Criteria");
   };
 
