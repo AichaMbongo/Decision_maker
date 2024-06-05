@@ -1,4 +1,3 @@
-
 // import React from 'react'
 // import {Link, Typography} from '@mui/material'
 
@@ -39,11 +38,10 @@
 
 // export default BreadCrumbs_component
 
-
-import React from 'react';
-import { Breadcrumbs, Link } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+import React from "react";
+import { Breadcrumbs, Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 
 const BreadCrumbs_component: React.FC = () => {
   const { breadcrumbs, updateBreadcrumbs } = useBreadcrumbs();
@@ -55,12 +53,15 @@ const BreadCrumbs_component: React.FC = () => {
   };
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: '1rem', backgroundColor: 'transparent' }}>
+    <Breadcrumbs
+      aria-label="breadcrumb"
+      sx={{ marginLeft: "1rem", backgroundColor: "transparent" }}
+    >
       {breadcrumbs.map((crumb) => (
         <Link
           key={crumb.path}
           color="inherit"
-          style={{ textDecoration: 'none', cursor: 'pointer' }}
+          style={{ textDecoration: "none", cursor: "pointer" }}
           onClick={() => handleClick(crumb.path)}
         >
           {crumb.label}
