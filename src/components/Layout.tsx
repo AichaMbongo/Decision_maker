@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
-import theme from '../theme/theme';
-import { ThemeProvider } from '@emotion/react';
-import BreadCrumbs_component from './Breadcrumbs';
-import { Container } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import theme from "../theme/theme";
+import { ThemeProvider } from "@emotion/react";
+import BreadCrumbs_component from "./Breadcrumbs";
+import { Container } from "@mui/material";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = location.pathname === "/";
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
@@ -22,13 +22,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }
   }, [location.state]);
 
+  // Determine if the current path is /login or /registration
+  const hideHeaderAndBreadcrumbs =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <ThemeProvider theme={theme}>
-      <Header auth={auth} setAuth={setAuth} />
-      <div className='layout'>
-        {!isLandingPage && (
-          <Container maxWidth='xl' className='bread-container'>
+      {!hideHeaderAndBreadcrumbs && <Header auth={auth} setAuth={setAuth} />}
+      <div className="layout">
+        {!isLandingPage && !hideHeaderAndBreadcrumbs && (
+          <Container maxWidth="xl" className="bread-container">
             <BreadCrumbs_component />
           </Container>
         )}

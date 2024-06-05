@@ -13,8 +13,10 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme/theme';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 import { signIn, AuthError } from '../supabase/auth'; // Import the signIn function and AuthError
 
 function Login({ setAuth }: any) {
@@ -69,6 +71,7 @@ function Login({ setAuth }: any) {
     };
 
     return (
+
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -156,6 +159,7 @@ function Login({ setAuth }: any) {
                 </Box>
             </Container>
         </ThemeProvider>
+
     );
 }
 
