@@ -135,7 +135,7 @@ body{
 }
 
 .stack-container {
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Equivalent to MUI boxShadow 3 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Equivalent to MUI boxShadow 3 */
   background-color: white;
   border-radius: 8px; /* Adjust as needed, MUI 'rounded' translates to a standard pixel value */
   padding: 64px; /* 8 * 8px for padding={8} */
