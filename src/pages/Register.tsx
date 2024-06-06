@@ -47,7 +47,7 @@ function Register({ setAuth }: any) {
             <Container
                 component="main"
                 maxWidth="xs"
-                className="stack-container"
+               
             // Added shadow-lg and other Tailwind CSS classes for styling
             >
                 <CssBaseline />
