@@ -11,6 +11,8 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { NavLink } from "react-router-dom";
 import CustomButton from "../components/Button";
 import BarChartComponent from "../components/interfaces/BarChartComponent";
+import { supabase } from "../supabase/supabaseClient";
+import { getUser, getUserId } from "../supabase/auth";
 
 interface TotalScores {
   [option: string]: number;
@@ -44,6 +46,7 @@ const ResultsPage = () => {
     };
 
     calculateTotalScores();
+    decisionState.totalScores = totalScores
     console.log(decisionState);
     console.log("Total scores totality", totalScores);
   }, [
@@ -53,8 +56,25 @@ const ResultsPage = () => {
   ]);
 
   const { handleNavigation } = useBreadcrumbs();
-  const ViewPreviousDecisions = () => {
-    handleNavigation("/PreviousDecison", "Previous Decision");
+  const ViewPreviousDecisions = async () => {
+    
+    const user =  await getUserId();
+
+    // need to add something to redirect to login if not logged in
+    
+    const { data, error } = await supabase
+      .from("decisions")
+      .insert([
+        {
+          user_id: user,
+          decision: decisionState,
+        },
+      ])
+      .select();
+
+  
+          
+   handleNavigation("/PreviousDecison", "Previous Decision");
   };
   return (
     <Container>
@@ -168,14 +188,10 @@ const ResultsPage = () => {
               gridArea: "save",
             }}
           >
-            <NavLink
-              to="/PreviousDecision"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+
               <CustomButton onClick={ViewPreviousDecisions}>
                 Save Decision
               </CustomButton>
-            </NavLink>
           </Box>
         </Box>
       </Container>
