@@ -7,7 +7,8 @@ const defaultDecisionState: DecisionState = {
     decision: '',
     criteria: [],
     options: [],
-    aggregatedPreferences: {}
+    aggregatedPreferences: {},
+    totalScores: {},
 
 }
 
