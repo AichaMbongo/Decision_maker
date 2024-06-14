@@ -13,6 +13,9 @@ export interface Criterion{
 interface AggregatedPreference {
   [option: string]: number;
 }
+interface TotalScores {
+  [option: string]: number;
+}
   
 
 interface DecisionState {
@@ -21,6 +24,7 @@ interface DecisionState {
     criteria: Criterion[];
     options: string[];
     aggregatedPreferences: { [criterion: string]: AggregatedPreference };
+    totalScores: TotalScores;
   }
 
 

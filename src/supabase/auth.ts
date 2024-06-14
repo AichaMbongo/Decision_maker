@@ -46,3 +46,14 @@ export const signInWithGoogle = async () => {
 export const getUser = () => {
     return supabase.auth.getUser();
 };
+
+export const getUserId = async () => {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error('Error getting user:', error);
+    return null; // Handle the error according to your needs
+  }
+
+  return data?.user?.id ?? null;
+};

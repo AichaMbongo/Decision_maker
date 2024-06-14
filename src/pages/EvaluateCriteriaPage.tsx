@@ -16,7 +16,7 @@ const CriteriaPage = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [weightsValid, setWeightsValid] = useState(true);
 
-  console.log(decisionState);
+ 
 
   const options = ["Cost", "Safety", "Maintenance"];
 
@@ -29,7 +29,7 @@ const CriteriaPage = () => {
     });
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    console.log(decisionState);
+  
   };
 
   useEffect(() => {
