@@ -36,6 +36,7 @@ function App() {
     criteria: [],
     options: [],
     aggregatedPreferences: {},
+    totalScores: {},
   });
 
   // const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {

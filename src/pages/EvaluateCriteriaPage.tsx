@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Stack, TextField, Alert } from "@mui/material";
+import { Box, Container, Grid, Stack, Slider, Alert } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Layout from "../components/Layout";
@@ -16,7 +16,7 @@ const CriteriaPage = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [weightsValid, setWeightsValid] = useState(true);
 
-  console.log(decisionState);
+ 
 
   const options = ["Cost", "Safety", "Maintenance"];
 
@@ -29,7 +29,7 @@ const CriteriaPage = () => {
     });
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    console.log(decisionState);
+  
   };
 
   useEffect(() => {
@@ -96,14 +96,16 @@ const CriteriaPage = () => {
               </Typography>
               {decisionState.criteria.map((criterion, index) => (
                 <Box key={index} mb={2}>
-                  <TextField
-                    label={`${criterion.name} Weight`}
-                    type="number"
+                  <Typography variant="h6">{`${criterion.name} Weight`}</Typography>
+                  <Slider
                     value={criterion.weight}
-                    onChange={(e) =>
-                      handleWeightChange(index, parseFloat(e.target.value))
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    onChange={(e, value) =>
+                      handleWeightChange(index, value as number)
                     }
-                    fullWidth
+                    valueLabelDisplay="auto"
                   />
                 </Box>
               ))}

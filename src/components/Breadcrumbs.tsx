@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useBreadcrumbs } from '../contexts/BreadcrumbsProvider';
+
 
 const BreadCrumbs_component: React.FC = () => {
   const { breadcrumbs, updateBreadcrumbs } = useBreadcrumbs();
@@ -11,6 +13,7 @@ const BreadCrumbs_component: React.FC = () => {
     updateBreadcrumbs(path);
     navigate(path);
   };
+
 
   // Function to render breadcrumbs, with condensing logic
   const renderBreadcrumbs = () => {
@@ -45,10 +48,11 @@ const BreadCrumbs_component: React.FC = () => {
       </Typography>,
       // Show the last 4 breadcrumbs
       ...breadcrumbs.slice(-4).map((crumb) => (
+
         <Link
           key={crumb.path}
           color="inherit"
-          style={{ textDecoration: 'none', cursor: 'pointer' }}
+          style={{ textDecoration: "none", cursor: "pointer" }}
           onClick={() => handleClick(crumb.path)}
         >
           {crumb.label}

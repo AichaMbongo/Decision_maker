@@ -107,17 +107,15 @@ const PairwiseComparison: React.FC = () => {
   };
 
   const handleNext = () => {
-    setCombinationIndex((prevIndex) =>
-      prevIndex < combinations.length - 1 ? prevIndex + 1 : 0
-    );
-    // if (combinationIndex == combinations.length - 1) {
-    //   if (criterionIndex == criteria.length - 1) {
-    //     handleNavigation("/ResultsPage", "Results Page");
-    //   }
-    //   handleNextCriterion();
-    // } else {
-    //   handleNext();
-    // }
+    if (combinationIndex < combinations.length - 1) {
+      setCombinationIndex(combinationIndex + 1);
+    } else {
+      if (criterionIndex < criteria.length - 1) {
+        handleNextCriterion();
+      } else {
+        handleNavigation("/ResultsPage", "Results Page");
+      }
+    }
   };
 
   const handlePreviousCriterion = () => {
@@ -153,11 +151,12 @@ const PairwiseComparison: React.FC = () => {
     });
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    if (combinationIndex == combinations.length - 1) {
-      handleNextCriterion();
-    } else {
-      handleNext();
-    }
+    handleNext();
+    // if (combinationIndex == combinations.length - 1) {
+    //   handleNextCriterion();
+    // } else {
+    //   handleNext();
+    // }
   };
 
   return (
