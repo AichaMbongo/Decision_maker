@@ -7,14 +7,14 @@ import {
   TextField,
   Grid,
   Paper,
-  FormControl,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { NavLink } from "react-router-dom";
 import Layout from "../components/Layout";
 import BackButton from "../components/BackButton";
 import CustomButton from "../components/Button";
@@ -43,6 +43,8 @@ const OtherNewCriteria: React.FC = () => {
   console.log("Decision state on page", criteria2);
 
   const { handleNavigation } = useBreadcrumbs();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
     setDecisionState((prevState) => ({
@@ -69,87 +71,60 @@ const OtherNewCriteria: React.FC = () => {
 
   return (
     <Layout>
-      <Stack>
-        <div style={{ marginLeft: "30px" }}>
-          {" "}
-          <BackButton />
-        </div>
+      <Stack sx={{ margin: isMobile ? "0" : "0 30px", p: 2 }}>
+        <BackButton />
       </Stack>
-
       <Stack
         direction="column"
         spacing={2}
         alignItems="center"
         justifyContent="center"
+        sx={{ p: 2, mx: 2 }}
       >
-        <Stack className="stack-container">
+        <Paper
+          sx={{
+            p: isMobile ? 2 : 4,
+            boxShadow: 3,
+            width: "100%",
+            maxWidth: "600px",
+            margin: "auto",
+            mx: 2,
+          }}
+        >
           <Typography variant="h3" align="center">
             Do you want to Add Another Criteria?
           </Typography>
-          <PsychologyAltIcon style={{ fontSize: "56px", padding: "2" }} />
-          {/* <Box
+          <Stack alignItems="center" sx={{ mt: 2 }}>
+            <PsychologyAltIcon style={{ fontSize: "56px", padding: "2" }} />
+          </Stack>
+          <Stack
             sx={{
-              display: "flex",
-              flexDirection: "column",
+              p: 1,
+              flexDirection: isMobile ? "column" : "row",
+              gap: 2,
               alignItems: "center",
               justifyContent: "center",
-              "& > :not(style)": {
-                m: 1,
-                width: { xs: "100%", sm: "75%", md: "75%" },
-              },
+              mt: 2,
             }}
-            noValidate
-            autoComplete="off"
-        
-          ></Box> */}
-
-          <Stack
-            sx={{ p: 1 }}
-            gap={6}
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            style={{ marginBottom: "30px" }}
           >
-            {/* <NavLink
-              to="/newCriteria"
-              style={{ textDecoration: "none", color: "inherit" }}
-            > */}
-            <Button
-              style={{ textDecoration: "none", color: "inherit" }}
-              onClick={handleYesClick}
-            >
-              Yes
-            </Button>
-            {/* </NavLink>
-            <NavLink
-              to="/EvaluateCriteriaPage"
-              style={{ textDecoration: "none", color: "inherit" }}
-            > */}
-            <Button
-              style={{ textDecoration: "none", color: "primary" }}
-              onClick={EvaluateCriteria}
-            >
-              No
-            </Button>
-            {/* </NavLink> */}
+            <CustomButton onClick={handleYesClick}>Yes</CustomButton>
+            <CustomButton onClick={EvaluateCriteria}>No</CustomButton>
           </Stack>
-
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <Box sx={{ display: "flex", alignItems: "flex-end", mt: 2 }}>
             <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
               name="criteria"
               label="Search Criteria..."
               variant="standard"
+              fullWidth
             />
           </Box>
-        </Stack>
+        </Paper>
       </Stack>
-
-      <Stack sx={{ p: 1 }} gap={4} direction="column">
+      <Stack sx={{ p: 1, mx: 2 }} gap={4} direction="column">
         <Grid
           container
-          padding={4}
+          padding={isMobile ? 2 : 4}
           rowSpacing={2}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
@@ -158,7 +133,7 @@ const OtherNewCriteria: React.FC = () => {
               <Item>
                 <Stack
                   gap={2}
-                  direction="row"
+                  direction={isMobile ? "column" : "row"}
                   alignItems="center"
                   justifyContent="center"
                 >

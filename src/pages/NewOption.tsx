@@ -1,37 +1,28 @@
-import React, { useState } from "react";
-import Header from "../components/Header";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme/theme";
+import React, { useState, useContext } from "react";
 import BackButton from "../components/BackButton";
-import { Stack, Typography, Button } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  Button,
+  useMediaQuery,
+  useTheme,
+  Paper,
+  Box,
+  TextField,
+} from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { NavLink } from "react-router-dom";
-import CustomButton from "../components/Button";
-import Layout from "../components/Layout";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
-import { useContext } from "react";
-
-// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-//     event.preventDefault();
-//     console.info('You clicked a breadcrumb.');
-// }
-
-const handleClick = () => {
-  console.log("Button is Clicked");
-};
+import Layout from "../components/Layout";
 
 const NewOption = () => {
   const { handleNavigation } = useBreadcrumbs();
-  const addOtherNewOption = () => {
-    handleNavigation("/OtherNewOption", "Other New Option");
-  };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [option, setOption] = useState<string>("");
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
 
-  const options = decisionState.options;
   const handleClick = () => {
     console.log("option", option);
     console.log(decisionState);
@@ -39,65 +30,61 @@ const NewOption = () => {
     setDecisionState({ ...decisionState, options: updatedOptions });
     console.log("Updated Options", decisionState);
     handleNavigation("/OtherNewOption", "Other New Option");
-
-    //
   };
 
   return (
     <Layout>
-      <div style={{ marginLeft: "30px" }}>
-        {" "}
+      <Stack sx={{ margin: isMobile ? "0" : "0 30px" }}>
         <BackButton />
-      </div>
+      </Stack>
       <Stack
         direction="column"
         spacing={2}
         alignItems="center"
         justifyContent="center"
+        sx={{ p: 2, mx: 2 }}
       >
-        <Stack className="stack-container">
-          <div>
-            <Typography variant="h4" align="center">
-              Enter Your Option
-            </Typography>
-          </div>
-
-          <Stack
-            direction="column"
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-            style={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
-          >
+        <Paper
+          sx={{
+            p: isMobile ? 2 : 4,
+            boxShadow: 3,
+            width: "100%",
+            maxWidth: "600px",
+            mx: 2,
+          }}
+        >
+          <Typography variant="h4" align="center">
+            Enter Your Option
+          </Typography>
+          <Stack alignItems="center" sx={{ mt: 2 }}>
             <FormatListBulletedIcon
               style={{ fontSize: "56px", padding: "2" }}
             />
-
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "50ch" },
-              }}
-            >
-              <TextField
-                id="filled-basic"
-                label="ie. BMW, Mercedes"
-                name="option"
-                value={option}
-                onChange={(e) => setOption(e.target.value)}
-                variant="filled"
-              />
-            </Box>
-
-            <Button onClick={handleClick}>PROCEED</Button>
-
-            {/* <NavLink
-              to="/otherNewOption"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <CustomButton onClick={addOtherNewOption}>PROCEED</CustomButton>
-            </NavLink> */}
           </Stack>
-        </Stack>
+          <Box
+            sx={{
+              width: "100%",
+              "& > :not(style)": { m: 1 },
+              mt: 2,
+              mb: 2,
+            }}
+          >
+            <TextField
+              id="filled-basic"
+              label="ie. BMW, Mercedes"
+              name="option"
+              value={option}
+              onChange={(e) => setOption(e.target.value)}
+              variant="filled"
+              fullWidth
+            />
+          </Box>
+          <Stack direction="row" justifyContent="center">
+            <Button variant="contained" color="primary" onClick={handleClick}>
+              PROCEED
+            </Button>
+          </Stack>
+        </Paper>
       </Stack>
     </Layout>
   );

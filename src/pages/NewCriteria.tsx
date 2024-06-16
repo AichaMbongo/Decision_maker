@@ -6,17 +6,15 @@ import {
   Typography,
   Box,
   TextField,
-  FormControl,
+  useMediaQuery,
+  useTheme,
+  Paper,
 } from "@mui/material";
 import BackButton from "../components/BackButton";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Layout from "../components/Layout";
-
 import CustomButton from "../components/Button";
-import { NavLink } from "react-router-dom";
-import DecisionState from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
-
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 
 interface criterion {
@@ -35,105 +33,92 @@ const NewCriteria = () => {
   const [formData, setFormData] = useState({ newCriteria: "" });
   const [criterion, setCriterion] = useState<string>("");
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const criteria = decisionState.criteria;
-  console.log("New criterion", criterion);
 
-  console.log("OLd criteria", criteria);
-
-  const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
-    console.log("Check if function is being accessed");
-
-    console.log("Updated properties", updatedProperties);
-    setDecisionState((prevState) => ({
-      ...prevState,
-      ...updatedProperties,
-    }));
-  };
-
-  const handleClick = () => {
-    console.log("Button is Clicked");
-  };
-  const navigate = useNavigate(); // Get the navigate function from useNavigate
+  const navigate = useNavigate();
 
   const { handleNavigation } = useBreadcrumbs();
 
   const addCriteria = () => {
-    console.log("Clicked", decisionState);
     const newCriterion = { name: criterion, weight: 0, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
-    console.log(updatedCriteria);
+
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    console.log("Updated Criteria", decisionState);
+
     handleNavigation("/OtherNewCriteria", "Add Another Criteria");
   };
 
   return (
     <Layout>
-      <div style={{ marginLeft: "30px" }}>
+      <Stack sx={{ margin: isMobile ? "0" : "0 30px", p: 2 }}>
         <BackButton />
-      </div>
-
+      </Stack>
       <Stack
         direction="column"
         spacing={2}
         alignItems="center"
         justifyContent="center"
+        sx={{ p: 2, mx: 2 }}
       >
-        <Stack className="stack-container">
+        <Paper
+          sx={{
+            p: isMobile ? 2 : 4,
+            boxShadow: 3,
+            width: "100%",
+            maxWidth: "600px",
+            margin: "auto",
+          }}
+        >
           <Typography variant="h3" align="center">
             Type in a New Criteria
           </Typography>
-
+          <Stack alignItems="center" sx={{ mt: 2 }}>
+            <FormatListBulletedIcon
+              style={{ fontSize: "56px", padding: "2" }}
+            />
+          </Stack>
           <Stack
             direction="column"
             spacing={2}
             alignItems="center"
             justifyContent="center"
-            style={{ marginBottom: "78px", padding: 3, marginTop: "10px" }}
+            sx={{ mt: 2, mb: isMobile ? 4 : 8, px: isMobile ? 2 : 3 }}
           >
-            <FormatListBulletedIcon
-              style={{ fontSize: "56px", padding: "2" }}
-            />
-            <div
-              style={{
-                alignItems: "center",
-                display: "flex",
-                flexDirection: "column",
+            <Box
+              sx={{
+                width: "100%",
+                "& > :not(style)": { m: 1 },
               }}
             >
-              <Box
-                component="div"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "50ch" },
-                }}
-              >
-                <TextField
-                  id="filled-basic"
-                  name="newCriteria"
-                  label="ie. Cost, Comfort"
-                  variant="filled"
-                  value={criterion}
-                  onChange={(e) => setCriterion(e.target.value)}
-                />
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  borderRadius: "16px",
-                  paddingRight: 2,
-                  paddingLeft: 2,
-                  marginBottom: 2,
-                  minWidth: "200px", // Adjust the width as desired
-                }}
-                onClick={addCriteria}
-                type="submit"
-              >
-                Enter New Criteria
-              </Button>
-            </div>
+              <TextField
+                id="filled-basic"
+                name="newCriteria"
+                label="ie. Cost, Comfort"
+                variant="filled"
+                value={criterion}
+                onChange={(e) => setCriterion(e.target.value)}
+                fullWidth
+              />
+            </Box>
+            <Button
+              variant="contained"
+              sx={{
+                borderRadius: "16px",
+                paddingRight: 2,
+                paddingLeft: 2,
+                marginBottom: 2,
+                minWidth: "200px",
+              }}
+              onClick={addCriteria}
+              type="submit"
+            >
+              Enter New Criteria
+            </Button>
           </Stack>
-        </Stack>
+        </Paper>
       </Stack>
     </Layout>
   );
