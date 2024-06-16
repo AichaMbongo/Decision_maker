@@ -61,7 +61,7 @@ const NewDecision: React.FC = () => {
 
   return (
     <Layout>
-      <Stack>
+      <Stack style={{margin:'2vh'}}>
         <div style={{ marginLeft: "30px" }}>
           {" "}
           <BackButton />
