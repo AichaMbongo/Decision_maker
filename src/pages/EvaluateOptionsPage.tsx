@@ -28,75 +28,6 @@ const EvaluateOptions = () => {
   const [criterionIndex, setCriterionIndex] = useState(0);
   const [combinationIndex, setCombinationIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const generateResults = () => {
-  //     const results: { [criterion: string]: Comparison } = {};
-  //     const aggregatedPreferences: {
-  //       [criterion: string]: AggregatedPreference;
-  //     } = {};
-
-  //     decisionState.criteria.forEach((criterion) => {
-  //       // const criterionResults: Comparison = {};
-  //       const criterionAggregated: AggregatedPreference = {};
-
-  //       // Initialize the criterionAggregated with all options set to 0
-  //       decisionState.options.forEach((option) => {
-  //         criterionAggregated[option] = 0;
-  //       });
-
-  //       Object.keys(criterion.comparisons).forEach((option1) => {
-  //         // criterionResults[option1] = {};
-
-  //         Object.keys(criterion.comparisons[option1]).forEach((option2) => {
-  //           const value = criterion.comparisons[option1][option2];
-
-  //           criterionAggregated[option1] += value;
-  //           criterionAggregated[option2] += 1 - value;
-  //         });
-  //       });
-
-  //       // results[criterion.name] = criterionResults;
-  //       aggregatedPreferences[criterion.name] = criterionAggregated;
-  //     });
-
-  //     setDecisionState((prevData) => ({
-  //       ...prevData,
-  //       results,
-  //       aggregatedPreferences,
-  //     }));
-  //   };
-
-  //   generateResults();
-  // }, [decisionState.criteria, setDecisionState]);
-
-  // function handleClick() {
-  //   console.log("You clicked me");
-  // }
-
-  // useEffect(() => {
-  //   const initializeComparisons = (
-  //     criteria: Criterion[],
-  //     options: string[]
-  //   ) => {
-  //     return criteria.map((criterion) => {
-  //       const comparisons: Comparison = {};
-  //       options.forEach((option, i) => {
-  //         comparisons[option] = {};
-  //         options.slice(i + 1).forEach((nextOption) => {
-  //           comparisons[option][nextOption] = 0; // Default comparison value
-  //         });
-  //       });
-  //       return { ...criterion, comparisons };
-  //     });
-  //   };
-
-  //   const updatedCriteria = initializeComparisons(
-  //     decisionState.criteria,
-  //     decisionState.options
-  //   );
-  //   setDecisionState({ ...decisionState, criteria: updatedCriteria });
-  // }, []);
-
   const handleComparisonChange = (
     criterionIndex: number,
     option1: string,
@@ -128,12 +59,12 @@ const EvaluateOptions = () => {
   };
   return (
     <Layout>
-      <Stack>
+      <Stack style={{ margin: '2vh' }}>
         <div style={{ marginLeft: "30px" }}>
-          {" "}
           <BackButton />
         </div>
       </Stack>
+
       <Container
         sx={{
           display: "100vh",
@@ -142,8 +73,7 @@ const EvaluateOptions = () => {
       >
         <Box
           sx={{
-            display: "grid",
-            height: "80vh",
+            height: "65vh",
             width: "100%",
             gap: 1,
             padding: 2,
@@ -154,113 +84,121 @@ const EvaluateOptions = () => {
                         "result result result result ranking"
                         ". . save save ranking"
                         `,
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <Box
-            sx={{
-              gridArea: "result",
-            }}
-          >
-            {/* <Container>
-              {decisionState.criteria.map((criterion, criterionIndex) => (
-                <Box key={criterionIndex} mb={4}>
-                  <Typography variant="h6">
-                    {criterion.name} Comparisons
-                  </Typography>
-                  {Object.keys(criterion.comparisons).map((option1) =>
-                    Object.keys(criterion.comparisons[option1]).map(
-                      (option2) => (
-                        <Box key={`${option1}-${option2}`} mb={2}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={
-                                  !!criterion.comparisons[option1][option2]
-                                }
-                                onChange={(e) =>
-                                  handleComparisonChange(
-                                    criterionIndex,
-                                    option1,
-                                    option2,
-                                    e.target.checked
-                                  )
-                                }
-                              />
-                            }
-                            label={`${option1} is preferred over ${option2}`}
-                          />
-                        </Box>
-                      )
-                    )
-                  )}
-                </Box>
-              ))}
-            </Container> */}
-            <PairwiseComparison />
-          </Box>
-          <Box
-            sx={{
-              gridArea: "option",
+          <Box sx={{
+            borderRadius: 1,
+            display: "flex",
+            flexDirection: "row",
+            gap: 2,
+            padding: 2.5,
+          }}>
+            <Box
+              sx={{
+                gridArea: "result",
+                width: '138vh',
+              }}
+            >
+              <PairwiseComparison />
+            </Box>
 
-              borderRadius: 1,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              boxShadow: 3, // Added shadow effect
-              backgroundColor: "white",
-            }}
-          >
-            <Button variant="contained">Add Criteria</Button>
-          </Box>
-          <Box
-            sx={{
-              gridArea: "ranking",
-
+            <Box sx={{
               borderRadius: 1,
               display: "flex",
               flexDirection: "column",
               gap: 2,
               padding: 2.5,
-              boxShadow: 3, // Added shadow effect
-              backgroundColor: "white",
-            }}
-          >
-            <Typography
-              variant="body1"
-              alignSelf="flex-start"
-              sx={{
-                fontWeight: "800",
-              }}
-            >
-              Criteria
-            </Typography>
-            {decisionState.options.map((option) => (
-              <Stack gap={3} direction="column" justifyContent="center">
-                <Stack
-                  gap={2}
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-start"
+              width: '43vh'
+            }}>
+              <Box
+                sx={{
+                  gridArea: "option",
+                  borderRadius: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  boxShadow: 3,
+                  backgroundColor: "white",
+                  height: '10vh'
+                }}
+              >
+                <NavLink
+                  to="/OtherNewCriteria"
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <AdsClickIcon style={{ fontSize: "56px", padding: "2" }} />
-                  <Stack>
-                    <Typography variant="body1">{option}</Typography>
-                    <Button variant="contained">Edit Criteria</Button>
+                  <Button variant="contained">
+                    Update Options
+                  </Button>
+                </NavLink>
+              </Box>
+
+              <Box
+                sx={{
+                  gridArea: "ranking",
+                  borderRadius: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  padding: 2.5,
+                  boxShadow: 3,
+                  backgroundColor: "white",
+                  height: '40vh'
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  alignSelf="flex-start"
+                  sx={{ fontWeight: "800" }}
+                >
+                  Options
+                </Typography>
+
+
+                {decisionState.options.map((option) => (
+                  <Stack
+                    key={option}
+                    gap={3}
+                    direction="column"
+                    justifyContent="center"
+                  >
+                    <Stack
+                      gap={2}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="flex-start"
+                    >
+                      <AdsClickIcon style={{ fontSize: "56px", padding: "2" }} />
+                      <Stack>
+                        <Typography variant="body1">{option}</Typography>
+                        <NavLink
+                          to="/OtherNewOption"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          <Button variant="contained">Edit Option</Button>
+                        </NavLink>
+                      </Stack>
+                    </Stack>
                   </Stack>
-                </Stack>
-              </Stack>
-            ))}
+                ))}
+              </Box>
+            </Box>
           </Box>
-          <Box
-            sx={{
-              gridArea: "save",
-            }}
-          >
+
+          <Box sx={{
+            borderRadius: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: '3',
+            
+          }}>
             <NavLink
               to="/ResultsPage"
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <CustomButton onClick={Results}>PROCEED</CustomButton>
+              <Button sx={{ width: '50vh' }} variant="contained">Proceed</Button>
             </NavLink>
           </Box>
         </Box>

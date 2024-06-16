@@ -23,29 +23,7 @@ const PairwiseComparison: React.FC = () => {
   const [combinationIndex, setCombinationIndex] = useState(0);
   const { handleNavigation } = useBreadcrumbs();
 
-  // useEffect(() => {
-  //   const initializeComparisons = (
-  //     criteria: Criterion[],
-  //     options: string[]
-  //   ) => {
-  //     return criteria.map((criterion) => {
-  //       const comparisons: Comparison = {};
-  //       options.forEach((option, i) => {
-  //         comparisons[option] = {};
-  //         options.slice(i + 1).forEach((nextOption) => {
-  //           comparisons[option][nextOption] = 0; // Default comparison value
-  //         });
-  //       });
-  //       return { ...criterion, comparisons };
-  //     });
-  //   };
 
-  //   const updatedCriteria = initializeComparisons(
-  //     decisionState.criteria,
-  //     decisionState.options
-  //   );
-  //   setDecisionState({ ...decisionState, criteria: updatedCriteria });
-  // }, []);
 
   useEffect(() => {
     const generateResults = () => {
@@ -166,7 +144,8 @@ const PairwiseComparison: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: 5,
+          padding: 2,
+         
         }}
       >
         <Box
@@ -201,7 +180,7 @@ const PairwiseComparison: React.FC = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: 5,
+          padding: 2,
         }}
       >
         <Box
@@ -259,14 +238,6 @@ const PairwiseComparison: React.FC = () => {
           </Typography>
         </Box>
       </Box>
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => console.log(decisionState)}
-      >
-        Submit
-      </Button>
     </Container>
   );
 };
