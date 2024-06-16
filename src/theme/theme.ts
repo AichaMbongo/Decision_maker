@@ -14,6 +14,7 @@ const themeOptions: ThemeOptions = {
     },
   },
   typography: {
+    fontFamily: 'Roboto, sans-serif', // Set the desired font family here
     h1: {
       fontSize: 12,
       color: '#071e22',
@@ -36,7 +37,7 @@ const themeOptions: ThemeOptions = {
       fontStyle: 'italic',
     },
     button: {
-    //   fontStyle: 'italic',
+      // fontStyle: 'italic',
     },
   },
 };

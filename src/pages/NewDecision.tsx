@@ -57,8 +57,13 @@ const NewDecision: React.FC = () => {
 
   return (
     <Layout>
-      <Stack sx={{ margin: isMobile ? "0" : "0 30px", p: 2 }}>
-        <BackButton />
+
+      <Stack style={{margin:'2vh'}}>
+        <div style={{ marginLeft: "30px" }}>
+          {" "}
+          <BackButton />
+        </div>
+
       </Stack>
       <Stack
         direction="column"
