@@ -15,13 +15,13 @@ const Footer = () => {
     >
 
     <Box sx={{ paddingLeft: '10px' }}>
-    <a href="/privacy-policy" style={{ color: 'black', textDecoration: 'none' }}>Privacy Policy</a> |{' '}
-        <a href="/terms-conditions" style={{ color: 'black', textDecoration: 'none' }}>Terms & Conditions</a>
+    <a href="/" style={{ color: 'black', textDecoration: 'none' }}>Decision Maker</a> 
+        {/* <a href="/terms-conditions" style={{ color: 'black', textDecoration: 'none' }}>Terms & Conditions</a> */}
       </Box>
       
-      <Box sx={{ marginLeft: 'auto' }}>
+      {/* <Box sx={{ marginLeft: 'auto' }}>
         <Typography variant="body2">Decision Maker</Typography>
-      </Box>
+      </Box> */}
 
       <Box sx={{ paddingLeft: '150px' }}>
       <Typography variant="body2" color="textSecondary">
