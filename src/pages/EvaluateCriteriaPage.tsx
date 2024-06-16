@@ -106,7 +106,7 @@ const CriteriaPage = () => {
               ))}
               {!weightsValid && (
                 <Alert severity="error">
-                  The weights must sum to 1. Please adjust the values.
+                  The weights must sum to 1. Please adjust the values
                 </Alert>
               )}
             </Container>
