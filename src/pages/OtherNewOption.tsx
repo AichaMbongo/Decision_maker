@@ -1,7 +1,14 @@
+import React, { useContext } from "react";
 import BackButton from "../components/BackButton";
-import { Button, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Paper,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
@@ -12,19 +19,15 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import DecisionState, {
   Criterion,
-} from "../components/interfaces/DecisionState";
-import { useContext } from "react";
+} from "../components/interfaces/DecisionState"; // Import the required types
 import DeleteIcon from "@mui/icons-material/Delete";
 
-// function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-//     event.preventDefault();
-//     console.info('You clicked a breadcrumb.');
-// }
 interface Comparison {
   [option: string]: {
     [otherOption: string]: number;
   };
 }
+
 const handleClick = () => {
   console.log("Button is Clicked");
 };
@@ -39,6 +42,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const OtherNewOption = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   console.log(decisionState);
   const { handleNavigation } = useBreadcrumbs();
@@ -88,41 +93,28 @@ const OtherNewOption = () => {
 
   return (
     <Layout>
-      <Stack>
-        <div style={{ marginLeft: "30px" }}>
-          {" "}
-          <BackButton />
-        </div>
+      <Stack sx={{ margin: isMobile ? "0" : "0 30px" }}>
+        <BackButton />
       </Stack>
       <Stack
         direction="column"
         spacing={2}
         alignItems="center"
         justifyContent="center"
+        sx={{ p: 2 }}
       >
-        <Stack className="stack-container">
+        <Paper sx={{ p: 4, boxShadow: 3 }}>
           <Typography variant="h4" align="center">
             Do you want to Add Another Option?
           </Typography>
-          <PsychologyAltIcon style={{ fontSize: "56px", padding: "2" }} />
-          {/* <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '50ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField id="filled-basic" label="Type in something...." variant="filled" />
-                </Box> */}
-
+          <Stack alignItems="center" sx={{ mt: 2 }}>
+            <PsychologyAltIcon style={{ fontSize: "56px", padding: "2" }} />
+          </Stack>
           <Stack
-            sx={{ p: 1 }}
-            gap={6}
-            direction="row"
+            sx={{ p: 1, flexDirection: isMobile ? "column" : "row", mt: 2 }}
+            gap={2}
             alignItems="center"
             justifyContent="center"
-            style={{ marginBottom: "30px" }}
           >
             <NavLink
               to="/newOption"
@@ -138,12 +130,12 @@ const OtherNewOption = () => {
               <CustomButton onClick={EvaluateOptions}>No</CustomButton>
             </NavLink>
           </Stack>
-        </Stack>
+        </Paper>
       </Stack>
       <Stack sx={{ p: 1 }} gap={4} direction="column">
         <Grid
           container
-          padding={4}
+          padding={2}
           rowSpacing={2}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
@@ -152,7 +144,7 @@ const OtherNewOption = () => {
               <Item>
                 <Stack
                   gap={2}
-                  direction="row"
+                  direction={isMobile ? "column" : "row"}
                   alignItems="center"
                   justifyContent="center"
                 >

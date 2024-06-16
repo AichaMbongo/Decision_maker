@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Stack, Slider, Alert } from "@mui/material";
+import { Box, Container, Stack, Slider, Alert } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Layout from "../components/Layout";
@@ -8,28 +8,35 @@ import { NavLink } from "react-router-dom";
 import CustomButton from "../components/Button";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { useContext, useEffect, useState } from "react";
-import DecisionState from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 
 const CriteriaPage = () => {
-  // Functions for handling criteria addition and deletion
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [weightsValid, setWeightsValid] = useState(true);
-
- 
 
   const options = ["Cost", "Safety", "Maintenance"];
 
   const handleWeightChange = (index: number, value: number) => {
+    const otherTotalWeight = decisionState.criteria.reduce(
+      (total, criterion, i) => {
+        return i === index ? total : total + criterion.weight;
+      },
+      0
+    );
+
+    const remainingWeight = 1 - value;
+    const factor =
+      otherTotalWeight === 0 ? 0 : remainingWeight / otherTotalWeight;
+
     const updatedCriteria = decisionState.criteria.map((criterion, i) => {
       if (i === index) {
         return { ...criterion, weight: value };
+      } else {
+        return { ...criterion, weight: criterion.weight * factor };
       }
-      return criterion;
     });
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
-  
   };
 
   useEffect(() => {
@@ -44,7 +51,6 @@ const CriteriaPage = () => {
     if (weightsValid) {
       console.log("Weights are valid and sum to 1:", decisionState.criteria);
       handleNavigation("/NewOption", "New Option");
-      // Proceed with further actions like submitting the data
     } else {
       console.log("Weights do not sum to 1. Please correct them.");
     }
@@ -63,20 +69,13 @@ const CriteriaPage = () => {
           <BackButton />
         </div>
       </Stack>
-      <Container
-        sx={{
-          display: "100vh",
-          paddingTop: "2",
-        }}
-      >
+      <Container sx={{ paddingY: 2 }}>
         <Box
           sx={{
             display: "grid",
-            height: "80vh",
-            width: "100%",
             gap: 1,
             padding: 2,
-            boxShadow: 3, // Added shadow effect
+            boxShadow: 3,
             backgroundColor: "white",
             gridTemplate: `"result result result result option"
                           "result result result result ranking"
@@ -85,11 +84,7 @@ const CriteriaPage = () => {
                           `,
           }}
         >
-          <Box
-            sx={{
-              gridArea: "result",
-            }}
-          >
+          <Box sx={{ gridArea: "result" }}>
             <Container>
               <Typography variant="h4" gutterBottom>
                 Update Weights
@@ -119,12 +114,11 @@ const CriteriaPage = () => {
           <Box
             sx={{
               gridArea: "option",
-
               borderRadius: 1,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              boxShadow: 3, // Added shadow effect
+              boxShadow: 3,
               backgroundColor: "white",
             }}
           >
@@ -135,13 +129,12 @@ const CriteriaPage = () => {
           <Box
             sx={{
               gridArea: "ranking",
-
               borderRadius: 1,
               display: "flex",
               flexDirection: "column",
               gap: 2,
               padding: 2.5,
-              boxShadow: 3, // Added shadow effect
+              boxShadow: 3,
               backgroundColor: "white",
             }}
           >
