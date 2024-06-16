@@ -1,21 +1,26 @@
-// components/TextArea.tsx
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
+import React from 'react';
+import { TextField } from '@mui/material';
 
-interface Props {
-    label?: string;
+interface TextAreaProps {
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const TextArea: React.FC<Props> = ({ label = 'Talk to us' }) => {
+const TextArea: React.FC<TextAreaProps> = ({ name, value, onChange }) => {
     return (
         <TextField
+            id={name}
+            name={name}
+            label="Message"
+            variant="outlined"
             multiline
             rows={8}
-            label={label}
-            variant="outlined"
+            value={value}
+            onChange={onChange}
             fullWidth
         />
     );
-}
+};
 
 export default TextArea;
