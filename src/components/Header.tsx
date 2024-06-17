@@ -123,8 +123,8 @@ function Header({ auth, setAuth }: HeaderProps) {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+    <Box sx={{ width: 250 }} onClick={handleDrawerToggle}>
+      <Typography variant="h6" sx={{ textAlign: "center", my: 2 }}>
         DecisionMaker
       </Typography>
       <List>
@@ -157,11 +157,13 @@ function Header({ auth, setAuth }: HeaderProps) {
               </ListItemIcon>
               <ListItemText primary="Log Out" />
             </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`Logged in as ${userProfile?.displayName}`}
-              />
-            </ListItem>
+            {isSmallScreen && (
+              <ListItem>
+                <ListItemText
+                  primary={`Logged in as ${userProfile?.displayName}`}
+                />
+              </ListItem>
+            )}
           </>
         )}
       </List>
@@ -192,33 +194,6 @@ function Header({ auth, setAuth }: HeaderProps) {
           Register
         </NavLink>
       </Typography>
-    </Box>
-  );
-
-  const authenticated = (
-    <Box sx={{ display: "flex", alignItems: "center", padding: "0.5rem" }}>
-      <Avatar sx={{ borderRadius: "10px" }}>
-        {userProfile ? userProfile.displayName.charAt(0) : "U"}
-      </Avatar>
-      <Box sx={{ marginLeft: "8px" }}>
-        {userProfile ? userProfile.displayName : "User"}
-      </Box>
-      <IconButton
-        aria-controls="user-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        aria-label="expand more"
-      >
-        <ExpandMoreIcon />
-      </IconButton>
-      <Menu
-        id="user-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
-      </Menu>
     </Box>
   );
 
@@ -272,11 +247,40 @@ function Header({ auth, setAuth }: HeaderProps) {
             {auth ? (
               <>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {authenticated}
-                  <Typography variant="body2">
-                    {`Logged in as ${userProfile?.displayName}`}
-                  </Typography>
+                  <Avatar sx={{ borderRadius: "10px" }}>
+                    {userProfile ? userProfile.displayName.charAt(0) : "U"}
+                  </Avatar>
+                  <Box sx={{ marginLeft: "8px" }}>
+                    {userProfile ? userProfile.displayName : "User"}
+                  </Box>
+                  <IconButton
+                    aria-controls="user-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    aria-label="expand more"
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                  <Menu
+                    id="user-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
+                  </Menu>
                 </Box>
+                {isSmallScreen && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    <Typography variant="body2">{`Logged in as ${userProfile?.displayName}`}</Typography>
+                  </Box>
+                )}
               </>
             ) : (
               unauthenticated
