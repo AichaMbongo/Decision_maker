@@ -140,7 +140,7 @@ const EvaluateOptions = () => {
               to="/ResultsPage"
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <CustomButton onClick={Results}>PROCEED</CustomButton>
+              <Button sx={{ width: '50vh' }} variant="contained">Proceed</Button>
             </NavLink>
           </Box>
         </Box>
