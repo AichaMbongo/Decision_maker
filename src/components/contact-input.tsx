@@ -10,12 +10,12 @@ interface InputFieldProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ id, label, variant, value, onChange }) => {
+const InputField: React.FC<InputFieldProps> = ({ id, label, variant, value, onChange , ...rest}) => {
     return (
         <Box
             component="form"
             sx={{
-                "& > :not(style)": { m: 1, width: "80ch" },
+                "& > :not(style)": { m: 2, width: "55ch" },
             }}
             noValidate
             autoComplete="off"
@@ -29,6 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({ id, label, variant, value, onCh
                 value={value}
                 onChange={onChange}
                 fullWidth
+                {...rest}
             />
         </Box>
     );

@@ -1,19 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import Header from '../components/Header';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme/theme';
-import BackButton from '../components/BackButton';
-import { Stack, Typography, Button } from '@mui/material';
-import Box from '@mui/material/Box';
-import Footer from '../components/Footer';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import InputField from '../components/contact-input';
-import CustomButton from '../components/Button';
-import TextArea from '../components/TextArea';
-import DropArea from '../components/DropArea';
-import Layout from '../components/Layout';
+import { Stack, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import emailjs from 'emailjs-com';
+import BackButton from '../components/BackButton';
+import InputField from '../components/contact-input';
+import TextArea from '../components/TextArea';
+import Layout from '../components/Layout';
+import theme from '../theme/theme';
 
 interface FormData {
   name: string;
@@ -27,6 +19,9 @@ const ContactUs: React.FC = () => {
     email: '',
     message: '',
   });
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const fields = [
     { id: 'name', label: 'Name', variant: 'outlined' as const, defaultValue: '' },
@@ -62,17 +57,24 @@ const ContactUs: React.FC = () => {
 
   return (
     <Layout>
-      <Stack style={{margin:'2vh'}}>
-        <div style={{ marginLeft: '30px' }}> <BackButton /></div>
+      <Stack sx={{ margin: '2vh' }}>
+        <Box sx={{ marginLeft: '30px' }}>
+          <BackButton />
+        </Box>
       </Stack>
 
-      <Stack direction="column" spacing={2} alignItems="center" textAlign="center" justifyContent="center" style={{ marginBottom: '154px', padding: 3, marginTop: '10px' }}>
-        <Box className="stack-container">
-          <Stack sx={{ p: 2 }} gap={9} direction="column">
-            <div><Typography variant='h3' align="center">Contact Us</Typography></div>
-          </Stack>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <form onSubmit={handleSubmit}>
+      <Stack
+        direction="column"
+        spacing={2}
+        alignItems="center"
+        textAlign="center"
+        justifyContent="center"
+        sx={{ marginBottom: '154px', padding: 3, marginTop: '10px' }}
+      >
+        <Box sx={{ width: '100%', maxWidth: '600px', padding: 2 }}>
+          <Typography variant='h3' align="center">Contact Us</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
               {fields.map((field) => (
                 <InputField
                   key={field.id}
@@ -81,17 +83,25 @@ const ContactUs: React.FC = () => {
                   variant={field.variant}
                   value={formData[field.id as keyof FormData]}
                   onChange={handleChange}
+
                 />
               ))}
-              <Box sx={{ marginRight: '0px', height: '200px', width: '690px', marginTop: '5px', marginBottom: '10px', padding: 2 }}>
-                <TextArea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                />
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center',  marginBottom: '20px', marginTop:'5vh' }}>
-                <Button type="submit" variant="contained" style={{ width: '40vh' }}>Contact Support</Button>
+              <TextArea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+
+              />
+              <Box component="form"
+                sx={{
+                  "& > :not(style)": { m: 2, width: "60ch" },
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <Button type="submit" variant="contained" sx={{ width: isMobile || isTablet ? '100%' : '50vh' }}>
+                  Contact Support
+                </Button>
               </Box>
             </form>
           </Box>
