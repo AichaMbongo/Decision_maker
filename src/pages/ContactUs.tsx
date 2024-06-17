@@ -1,11 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Stack, Typography, Button, Box, useMediaQuery } from "@mui/material";
-import emailjs from "emailjs-com";
-import BackButton from "../components/BackButton";
-import InputField from "../components/contact-input";
-import TextArea from "../components/TextArea";
-import Layout from "../components/Layout";
-import theme from "../theme/theme";
+
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { Stack, Typography, Button, Box, useMediaQuery } from '@mui/material';
+import emailjs from 'emailjs-com';
+import BackButton from '../components/BackButton';
+import InputField from '../components/contact-input';
+import TextArea from '../components/TextArea';
+import Layout from '../components/Layout';
+import theme from '../theme/theme';
 
 interface FormData {
   name: string;
@@ -15,32 +16,21 @@ interface FormData {
 
 const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const fields = [
-    {
-      id: "name",
-      label: "Name",
-      variant: "outlined" as const,
-      defaultValue: "",
-    },
-    {
-      id: "email",
-      label: "Email",
-      variant: "outlined" as const,
-      defaultValue: "",
-    },
+    { id: 'name', label: 'Name', variant: 'outlined' as const, defaultValue: '' },
+    { id: 'email', label: 'Email', variant: 'outlined' as const, defaultValue: '' },
   ];
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -48,31 +38,23 @@ const ContactUs: React.FC = () => {
     }));
   };
 
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    emailjs
-      .sendForm(
-        "service_z2h0kre",
-        "template_s8oxbyc",
-        e.currentTarget,
-        "4lAxf2SoQmDnKjzUl"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-          alert("Message Sent Successfully");
-        },
-        (error) => {
-          console.log(error.text);
-          alert("Message Failed to Send");
-        }
-      );
+    emailjs.sendForm('service_z2h0kre', 'template_s8oxbyc', e.currentTarget, '4lAxf2SoQmDnKjzUl')
+      .then((result) => {
+        console.log(result.text);
+        alert('Message Sent Successfully');
+      }, (error) => {
+        console.log(error.text);
+        alert('Message Failed to Send');
+      });
 
     setFormData({
-      name: "",
-      email: "",
-      message: "",
+      name: '',
+      email: '',
+      message: '',
     });
   };
 
