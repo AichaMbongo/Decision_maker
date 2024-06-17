@@ -1,3 +1,4 @@
+
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Stack, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import emailjs from 'emailjs-com';
@@ -20,6 +21,7 @@ const ContactUs: React.FC = () => {
     message: '',
   });
 
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
@@ -35,6 +37,7 @@ const ContactUs: React.FC = () => {
       [name]: value,
     }));
   };
+
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -57,8 +60,8 @@ const ContactUs: React.FC = () => {
 
   return (
     <Layout>
-      <Stack sx={{ margin: '2vh' }}>
-        <Box sx={{ marginLeft: '30px' }}>
+      <Stack sx={{ margin: "2vh" }}>
+        <Box sx={{ marginLeft: "30px" }}>
           <BackButton />
         </Box>
       </Stack>
@@ -69,12 +72,16 @@ const ContactUs: React.FC = () => {
         alignItems="center"
         textAlign="center"
         justifyContent="center"
-        sx={{ marginBottom: '154px', padding: 3, marginTop: '10px' }}
+        sx={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
       >
-        <Box sx={{ width: '100%', maxWidth: '600px', padding: 2 }}>
-          <Typography variant='h3' align="center">Contact Us</Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Box sx={{ width: "100%", maxWidth: "600px", padding: 2 }}>
+          <Typography variant="h3" align="center">
+            Contact Us
+          </Typography>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               {fields.map((field) => (
                 <InputField
                   key={field.id}
@@ -83,23 +90,26 @@ const ContactUs: React.FC = () => {
                   variant={field.variant}
                   value={formData[field.id as keyof FormData]}
                   onChange={handleChange}
-
                 />
               ))}
               <TextArea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-
               />
-              <Box component="form"
+              <Box
+                component="form"
                 sx={{
                   "& > :not(style)": { m: 2, width: "60ch" },
                 }}
                 noValidate
                 autoComplete="off"
               >
-                <Button type="submit" variant="contained" sx={{ width: isMobile || isTablet ? '100%' : '50vh' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ width: isMobile || isTablet ? "100%" : "50vh" }}
+                >
                   Contact Support
                 </Button>
               </Box>
