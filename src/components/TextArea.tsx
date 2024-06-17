@@ -1,11 +1,15 @@
+
 import React from 'react';
 import { TextField, Box } from '@mui/material';
 
+
 interface TextAreaProps {
-    name: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  style?: React.CSSProperties;
 }
+
 
 const TextArea: React.FC<TextAreaProps> = ({ name, value, onChange }) => {
     return (
@@ -30,6 +34,7 @@ const TextArea: React.FC<TextAreaProps> = ({ name, value, onChange }) => {
             />
         </Box>
     );
+
 };
 
 export default TextArea;

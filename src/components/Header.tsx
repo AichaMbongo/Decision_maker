@@ -16,18 +16,20 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  useMediaQuery,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import theme from "../theme/theme";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { getUser, signOut } from "../supabase/auth";
 import { supabase } from "../supabase/supabaseClient";
 
 const navItems = [
-  { label: "DecisionMaker", path: "/" },
+  // { label: "DecisionMaker", path: "/" },
   { label: "New Decision", path: "/NewDecision" },
   { label: "Previous Decisions", path: "/PreviousDecision" },
   { label: "About", path: "/aboutUs" },
@@ -118,13 +120,15 @@ function Header({ auth, setAuth }: HeaderProps) {
     handleClose();
   };
 
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+    <Box sx={{ width: 250 }} onClick={handleDrawerToggle}>
+      <Typography variant="h6" sx={{ textAlign: "center", my: 2 }}>
         DecisionMaker
       </Typography>
       <List>
-        {navItems.slice(1).map((item) => (
+        {navItems.map((item) => (
           <ListItem
             key={item.label}
             button
@@ -135,6 +139,33 @@ function Header({ auth, setAuth }: HeaderProps) {
             <ListItemText primary={item.label} />
           </ListItem>
         ))}
+        {!auth && (
+          <>
+            <ListItem button component={NavLink} to="/login">
+              <ListItemText primary="Login" />
+            </ListItem>
+            <ListItem button component={NavLink} to="/register">
+              <ListItemText primary="Register" />
+            </ListItem>
+          </>
+        )}
+        {auth && (
+          <>
+            <ListItem button onClick={handleSignOut}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
+            </ListItem>
+            {isSmallScreen && (
+              <ListItem>
+                <ListItemText
+                  primary={`Logged in as ${userProfile?.displayName}`}
+                />
+              </ListItem>
+            )}
+          </>
+        )}
       </List>
     </Box>
   );
@@ -166,33 +197,6 @@ function Header({ auth, setAuth }: HeaderProps) {
     </Box>
   );
 
-  const authenticated = (
-    <Box sx={{ display: "flex", alignItems: "center", padding: "0.5rem" }}>
-      <Avatar sx={{ borderRadius: "10px" }}>
-        {userProfile ? userProfile.displayName.charAt(0) : "U"}
-      </Avatar>
-      <Box sx={{ marginLeft: "8px" }}>
-        {userProfile ? userProfile.displayName : "User"}
-      </Box>
-      <IconButton
-        aria-controls="user-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        aria-label="expand more"
-      >
-        <ExpandMoreIcon />
-      </IconButton>
-      <Menu
-        id="user-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
-      </Menu>
-    </Box>
-  );
-
   return (
     <AppBar
       sx={{
@@ -202,6 +206,15 @@ function Header({ auth, setAuth }: HeaderProps) {
     >
       <Container maxWidth="xl">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ display: { md: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6">
             <NavLink
               to="/"
@@ -219,7 +232,7 @@ function Header({ auth, setAuth }: HeaderProps) {
               gap: "1.75rem",
             }}
           >
-            {navItems.slice(1).map((item) => (
+            {navItems.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.path}
@@ -231,21 +244,52 @@ function Header({ auth, setAuth }: HeaderProps) {
             ))}
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {auth ? authenticated : unauthenticated}
+            {auth ? (
+              <>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Avatar sx={{ borderRadius: "10px" }}>
+                    {userProfile ? userProfile.displayName.charAt(0) : "U"}
+                  </Avatar>
+                  <Box sx={{ marginLeft: "8px" }}>
+                    {userProfile ? userProfile.displayName : "User"}
+                  </Box>
+                  <IconButton
+                    aria-controls="user-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    aria-label="expand more"
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                  <Menu
+                    id="user-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
+                  </Menu>
+                </Box>
+                {isSmallScreen && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    <Typography variant="body2">{`Logged in as ${userProfile?.displayName}`}</Typography>
+                  </Box>
+                )}
+              </>
+            ) : (
+              unauthenticated
+            )}
           </Box>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
-            sx={{ display: { md: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
         </Toolbar>
       </Container>
       <Drawer
-        anchor="right"
+        anchor="left"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         sx={{ display: { md: "none" } }}
