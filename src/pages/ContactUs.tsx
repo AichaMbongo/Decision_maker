@@ -1,13 +1,19 @@
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Stack, Typography, Button, Box, useMediaQuery } from '@mui/material';
-import emailjs from 'emailjs-com';
-import BackButton from '../components/BackButton';
-import InputField from '../components/contact-input';
-import TextArea from '../components/TextArea';
-import Layout from '../components/Layout';
-import theme from '../theme/theme';
-
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import {
+  Stack,
+  Typography,
+  Button,
+  Box,
+  Paper,
+  useMediaQuery,
+} from "@mui/material";
+import emailjs from "emailjs-com";
+import BackButton from "../components/BackButton";
+import InputField from "../components/contact-input";
+import TextArea from "../components/TextArea";
+import Layout from "../components/Layout";
+import theme from "../theme/theme";
 
 interface FormData {
   name: string;
@@ -16,51 +22,39 @@ interface FormData {
 }
 
 const ContactUs: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     message: "",
   });
 
-
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-
-  const fields = [
-    { id: 'name', label: 'Name', variant: 'outlined' as const, defaultValue: '' },
-    { id: 'email', label: 'Email', variant: 'outlined' as const, defaultValue: '' },
-  ];
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const fields = [
     {
       id: "name",
       label: "Name",
       variant: "outlined" as const,
-      value: formData.name,
-      onChange: handleChange,
-      name: "name",
+      defaultValue: "",
     },
     {
       id: "email",
       label: "Email",
       variant: "outlined" as const,
-      value: formData.email,
-      onChange: handleChange,
-      name: "email",
+      defaultValue: "",
     },
   ];
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -92,8 +86,8 @@ const ContactUs: React.FC = () => {
 
   return (
     <Layout>
-      <Stack sx={{ margin: '2vh' }}>
-        <Box sx={{ marginLeft: '30px' }}>
+      <Stack sx={{ margin: "2vh" }}>
+        <Box sx={{ marginLeft: "30px" }}>
           <BackButton />
         </Box>
       </Stack>
@@ -104,12 +98,19 @@ const ContactUs: React.FC = () => {
         alignItems="center"
         textAlign="center"
         justifyContent="center"
-        sx={{ marginBottom: '154px', padding: 3, marginTop: '10px' }}
+        sx={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
       >
-        <Box sx={{ width: '100%', maxWidth: '600px', padding: 2 }}>
-          <Typography variant='h3' align="center">Contact Us</Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Paper
+          elevation={3}
+          sx={{ padding: 2, width: "100%", maxWidth: "600px" }}
+        >
+          <Typography variant="h3" align="center">
+            Contact Us
+          </Typography>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               {fields.map((field) => (
                 <InputField
                   key={field.id}
@@ -118,31 +119,33 @@ const ContactUs: React.FC = () => {
                   variant={field.variant}
                   value={formData[field.id as keyof FormData]}
                   onChange={handleChange}
-
                 />
               ))}
               <TextArea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-
               />
-              <Box component="form"
+              <Box
+                component="form"
                 sx={{
                   "& > :not(style)": { m: 2, width: "60ch" },
                 }}
                 noValidate
                 autoComplete="off"
               >
-                <Button type="submit" variant="contained" sx={{ width: isMobile || isTablet ? '100%' : '50vh' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ width: isMobile || isTablet ? "100%" : "50vh" }}
+                >
                   Contact Support
                 </Button>
               </Box>
             </form>
-
           </Box>
-        </Stack>
-      </Container>
+        </Paper>
+      </Stack>
     </Layout>
   );
 };
