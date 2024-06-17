@@ -182,7 +182,7 @@ const HeroSection: React.FC = () => {
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
+                  justifyContent={isSmallScreen ? "left" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
@@ -198,7 +198,7 @@ const HeroSection: React.FC = () => {
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
+                  justifyContent={isSmallScreen ? "left" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
@@ -215,7 +215,7 @@ const HeroSection: React.FC = () => {
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
+                  justifyContent={isSmallScreen ? "left" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
