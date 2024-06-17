@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Box, Typography, Button, IconButton } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-// import BarChartComponent from "./BarChartComponent";
 import BarChartComponent from "./interfaces/BarChartComponent";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { Criterion } from "./interfaces/DecisionState";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
+
 interface Comparison {
   [option: string]: {
     [otherOption: string]: number;
@@ -23,29 +30,8 @@ const PairwiseComparison: React.FC = () => {
   const [combinationIndex, setCombinationIndex] = useState(0);
   const { handleNavigation } = useBreadcrumbs();
 
-  // useEffect(() => {
-  //   const initializeComparisons = (
-  //     criteria: Criterion[],
-  //     options: string[]
-  //   ) => {
-  //     return criteria.map((criterion) => {
-  //       const comparisons: Comparison = {};
-  //       options.forEach((option, i) => {
-  //         comparisons[option] = {};
-  //         options.slice(i + 1).forEach((nextOption) => {
-  //           comparisons[option][nextOption] = 0; // Default comparison value
-  //         });
-  //       });
-  //       return { ...criterion, comparisons };
-  //     });
-  //   };
-
-  //   const updatedCriteria = initializeComparisons(
-  //     decisionState.criteria,
-  //     decisionState.options
-  //   );
-  //   setDecisionState({ ...decisionState, criteria: updatedCriteria });
-  // }, []);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const generateResults = () => {
@@ -55,17 +41,13 @@ const PairwiseComparison: React.FC = () => {
       } = {};
 
       decisionState.criteria.forEach((criterion) => {
-        // const criterionResults: Comparison = {};
         const criterionAggregated: AggregatedPreference = {};
 
-        // Initialize the criterionAggregated with all options set to 0
         decisionState.options.forEach((option) => {
           criterionAggregated[option] = 0;
         });
 
         Object.keys(criterion.comparisons).forEach((option1) => {
-          // criterionResults[option1] = {};
-
           Object.keys(criterion.comparisons[option1]).forEach((option2) => {
             const value = criterion.comparisons[option1][option2];
 
@@ -74,7 +56,6 @@ const PairwiseComparison: React.FC = () => {
           });
         });
 
-        // results[criterion.name] = criterionResults;
         aggregatedPreferences[criterion.name] = criterionAggregated;
       });
 
@@ -89,7 +70,6 @@ const PairwiseComparison: React.FC = () => {
   }, [decisionState.criteria, setDecisionState]);
 
   const criteria = decisionState.criteria.map((c) => c.name);
-  console.log(criteria);
   const combinations = Object.keys(
     decisionState.criteria[criterionIndex].comparisons
   )
@@ -122,14 +102,14 @@ const PairwiseComparison: React.FC = () => {
     setCriterionIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : criteria.length - 1
     );
-    setCombinationIndex(0); // Reset combination index when changing criterion
+    setCombinationIndex(0);
   };
 
   const handleNextCriterion = () => {
     setCriterionIndex((prevIndex) =>
       prevIndex < criteria.length - 1 ? prevIndex + 1 : 0
     );
-    setCombinationIndex(0); // Reset combination index when changing criterion
+    setCombinationIndex(0);
   };
 
   const handleSelect = (selectedOption: string) => {
@@ -152,11 +132,6 @@ const PairwiseComparison: React.FC = () => {
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
     handleNext();
-    // if (combinationIndex == combinations.length - 1) {
-    //   handleNextCriterion();
-    // } else {
-    //   handleNext();
-    // }
   };
 
   return (
@@ -166,7 +141,7 @@ const PairwiseComparison: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: 5,
+          padding: { xs: 2, md: 5 },
         }}
       >
         <Box
@@ -201,13 +176,13 @@ const PairwiseComparison: React.FC = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: 5,
+          padding: { xs: 2, md: 5 },
         }}
       >
         <Box
           sx={{
             bgcolor: "lightgrey",
-            p: 2,
+            p: { xs: 1, md: 2 },
             display: "flex",
             flexDirection: "row",
             gap: 2,
@@ -218,19 +193,19 @@ const PairwiseComparison: React.FC = () => {
           <IconButton aria-label="arrowbackios" onClick={handlePrevious}>
             <ArrowBackIosIcon />
           </IconButton>
-          <Typography
-            sx={{ fontWeight: "bold" }}
-          >{`${combinations[combinationIndex][0]} vs ${combinations[combinationIndex][1]}`}</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>
+            {`${combinations[combinationIndex][0]} vs ${combinations[combinationIndex][1]}`}
+          </Typography>
           <IconButton aria-label="arrowforwardios" onClick={handleNext}>
             <ArrowForwardIosIcon />
           </IconButton>
         </Box>
         <Box
           sx={{
-            p: 4,
+            p: { xs: 2, md: 4 },
             display: "flex",
             flexDirection: "row",
-            gap: 5,
+            gap: 2,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -245,28 +220,20 @@ const PairwiseComparison: React.FC = () => {
             </Button>
           ))}
         </Box>
-        <Box sx={{ p: 1, textAlign: "center" }}>
+        <Box sx={{ p: { xs: 1, md: 1.5 }, textAlign: "center" }}>
           <Typography variant="body2" sx={{ fontWeight: "bold" }}>
             Please Set Your Preference on Options Based On This Criteria
           </Typography>
-          <Typography variant="caption" sx={{ fontWeight: "xs" }}>
+          <Typography variant="caption">
             Click one of the Buttons Above
           </Typography>
         </Box>
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: { xs: 1, md: 2 } }}>
           <Typography variant="caption" sx={{ fontWeight: "bold" }}>
             Evaluation based on '{criteria[criterionIndex]}'
           </Typography>
         </Box>
       </Box>
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => console.log(decisionState)}
-      >
-        Submit
-      </Button>
     </Container>
   );
 };

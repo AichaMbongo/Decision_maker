@@ -77,11 +77,12 @@ const CriteriaPage = () => {
             padding: 2,
             boxShadow: 3,
             backgroundColor: "white",
-            gridTemplate: `"result result result result option"
-                          "result result result result ranking"
-                          "result result result result ranking"
-                          ". . save save ranking"
-                          `,
+            gridTemplateColumns: { xs: "1fr", md: "3fr 1fr" },
+            gridTemplateRows: { xs: "auto", md: "auto 1fr auto" },
+            gridTemplateAreas: {
+              xs: `"result" "option" "ranking" "save"`,
+              md: `"result option" "result ranking" "result save"`,
+            },
           }}
         >
           <Box sx={{ gridArea: "result" }}>
@@ -167,7 +168,14 @@ const CriteriaPage = () => {
               </Stack>
             ))}
           </Box>
-          <Box sx={{ gridArea: "save" }}>
+          <Box
+            sx={{
+              gridArea: "save",
+              mt: { xs: 2, md: 0 },
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <NavLink
               to="/NewOption"
               style={{ textDecoration: "none", color: "inherit" }}
