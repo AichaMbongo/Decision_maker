@@ -22,6 +22,7 @@ import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import theme from "../theme/theme";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { getUser, signOut } from "../supabase/auth";
@@ -119,7 +120,7 @@ function Header({ auth, setAuth }: HeaderProps) {
     handleClose();
   };
 
-  const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -139,14 +140,29 @@ function Header({ auth, setAuth }: HeaderProps) {
           </ListItem>
         ))}
         {!auth && (
-          <ListItem button component={NavLink} to="/login">
-            <ListItemText primary="Login" />
-          </ListItem>
+          <>
+            <ListItem button component={NavLink} to="/login">
+              <ListItemText primary="Login" />
+            </ListItem>
+            <ListItem button component={NavLink} to="/register">
+              <ListItemText primary="Register" />
+            </ListItem>
+          </>
         )}
-        {!auth && (
-          <ListItem button component={NavLink} to="/register">
-            <ListItemText primary="Register" />
-          </ListItem>
+        {auth && (
+          <>
+            <ListItem button onClick={handleSignOut}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary={`Logged in as ${userProfile?.displayName}`}
+              />
+            </ListItem>
+          </>
         )}
       </List>
     </Box>
@@ -253,7 +269,18 @@ function Header({ auth, setAuth }: HeaderProps) {
             ))}
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {auth ? authenticated : unauthenticated}
+            {auth ? (
+              <>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {authenticated}
+                  <Typography variant="body2">
+                    {`Logged in as ${userProfile?.displayName}`}
+                  </Typography>
+                </Box>
+              </>
+            ) : (
+              unauthenticated
+            )}
           </Box>
         </Toolbar>
       </Container>
