@@ -1,17 +1,16 @@
-//input-field.tsk
+// input-field.tsx
 
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Field } from "./interfaces/InputFieldProps";
 import { Props } from "./interfaces/InputFieldProps";
 
-export default function BasicTextField({ fields }: Props) {
+const BasicTextField: React.FC<Props> = ({ fields }) => {
   return (
     <Box
       component="form"
       sx={{
-        "& > :not(style)": { m: 1, width: "70ch" },
+        "& > :not(style)": { m: 1, width: "100%" },
       }}
       noValidate
       autoComplete="off"
@@ -26,25 +25,12 @@ export default function BasicTextField({ fields }: Props) {
           onChange={field.onChange}
           value={field.value}
           name={field.name}
-
-          // the above are props that have been passed to the textfield component
+          fullWidth
+          margin="normal"
         />
       ))}
     </Box>
   );
-}
+};
 
-// How to use component in the main File
-
-// import BasicTextFields from './BasicTextFields';
-// import Field from '../components/interfaces/InputFieldProps';
-
-// export default function MyForm() {
-//   const fields: Field[] = [
-// { id: 'outlined-basic', label: 'Outlined', variant: 'outlined', defaultValue: '' },
-// { id: 'filled-basic', label: 'Filled', variant: 'filled', defaultValue: '' },
-// { id: 'standard-basic', label: 'Standard', variant: 'standard', defaultValue: '' },
-//   ];
-
-//   return <BasicTextField fields={fields} />;
-// }
+export default BasicTextField;
