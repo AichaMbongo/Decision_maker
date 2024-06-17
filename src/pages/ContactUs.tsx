@@ -22,8 +22,6 @@ const ContactUs: React.FC = () => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const fields = [
     {
@@ -31,25 +29,11 @@ const ContactUs: React.FC = () => {
       label: "Name",
       variant: "outlined" as const,
       defaultValue: "",
-      defaultValue: "",
     },
     {
       id: "email",
       label: "Email",
       variant: "outlined" as const,
-      defaultValue: "",
-    },
-  ];
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
       defaultValue: "",
     },
   ];
@@ -96,8 +80,6 @@ const ContactUs: React.FC = () => {
     <Layout>
       <Stack sx={{ margin: "2vh" }}>
         <Box sx={{ marginLeft: "30px" }}>
-      <Stack sx={{ margin: "2vh" }}>
-        <Box sx={{ marginLeft: "30px" }}>
           <BackButton />
         </Box>
       </Stack>
@@ -108,7 +90,6 @@ const ContactUs: React.FC = () => {
         alignItems="center"
         textAlign="center"
         justifyContent="center"
-        sx={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
         sx={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
       >
         <Box sx={{ width: "100%", maxWidth: "600px", padding: 2 }}>
@@ -151,10 +132,9 @@ const ContactUs: React.FC = () => {
                 </Button>
               </Box>
             </form>
-
           </Box>
-        </Stack>
-      </Container>
+        </Box>
+      </Stack>
     </Layout>
   );
 };
