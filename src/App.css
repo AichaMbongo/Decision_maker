@@ -76,14 +76,18 @@ body{
 
 
 .hero-image-small {
-  background-image: url('mobile.jpg');
-  /* background-color:#c8d1d3; */
+  background-image: url('mobile.jpg'); /* Replace 'mobile.jpg' with your actual image path */
+  background-color: antiquewhite; /* Fallback color if the image doesn't load or cover completely */
   height: 100vh;
   background-size: cover;
-  /* color: white; */
-  color: antiquewhite;
-  
+  color: white; /* Default text color */
+
+  /* Additional styling for smaller screens */
+  @media (min-width: 601px) {
+    background-color: unset; /* Unset background color on larger screens */
+  }
 }
+
 
 .hero-image-large {
   background-image: url('cho3.jpg');

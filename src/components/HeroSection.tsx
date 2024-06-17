@@ -1,3 +1,4 @@
+// components/HeroSection.tsx
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -16,7 +17,6 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import Lottie from "react-lottie-player";
 import animationData from "../animations/success.json";
-import "animate.css";
 import theme from "../theme/theme";
 
 interface Field {
@@ -139,7 +139,7 @@ const HeroSection: React.FC = () => {
         <Grid
           container
           justifyContent={isLargeScreen ? "left" : "center"}
-          textAlign={isSmallScreen ? "left" : "center"} // Center align text for small screens
+          textAlign={isSmallScreen ? "center" : "left"} // Center align text for small screens
         >
           <Grid item xs={12} md={8} lg={5} ml={isLargeScreen ? 10 : 0}>
             <Box
@@ -182,7 +182,7 @@ const HeroSection: React.FC = () => {
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "left" : "flex-start"}
+                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
@@ -198,7 +198,7 @@ const HeroSection: React.FC = () => {
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "left" : "flex-start"}
+                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
@@ -211,11 +211,11 @@ const HeroSection: React.FC = () => {
                     Customizable Decision Criteria
                   </Typography>
                 </Box>
-                
+
                 <Box
                   display="flex"
                   alignItems="left"
-                  justifyContent={isSmallScreen ? "left" : "flex-start"}
+                  justifyContent={isSmallScreen ? "center" : "flex-start"} // Adjust alignment for small screens
                   marginBottom={1}
                 >
                   <StyledIcon>
@@ -254,7 +254,7 @@ const HeroSection: React.FC = () => {
                       </AnimatedButton>
                     </NavLink>
                   </Grid>
-                  <Grid item xs={12} sm={6} lg={4}>
+                  {/* <Grid item xs={12} sm={6} lg={4}>
                     <NavLink
                       to="/aboutUs"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -271,12 +271,13 @@ const HeroSection: React.FC = () => {
                           borderColor: isSmallScreen
                             ? "white"
                             : theme.palette.text.primary,
+                          marginBottom: "3px", // Corrected typo here
                         }}
                       >
                         About Us
                       </CustomButton>
                     </NavLink>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Box>
             </Box>
