@@ -11,6 +11,7 @@ const Footer = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        
       }}
     >
 
