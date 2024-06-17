@@ -211,22 +211,7 @@ const HeroSection: React.FC = () => {
                     Customizable Decision Criteria
                   </Typography>
                 </Box>
-                <Box
-                  display="flex"
-                  alignItems="left"
-                  justifyContent={isSmallScreen ? "left" : "flex-start"}
-                  marginBottom={1}
-                >
-                  <StyledIcon>
-                    <CompareArrowsIcon className="animate__animated animate__bounce" />
-                  </StyledIcon>
-                  <Typography
-                    variant={isSmallScreen ? "body1" : "h6"}
-                    color={isSmallScreen ? "white" : theme.palette.text.primary}
-                  >
-                    Comparison Tools
-                  </Typography>
-                </Box>
+                
                 <Box
                   display="flex"
                   alignItems="left"
