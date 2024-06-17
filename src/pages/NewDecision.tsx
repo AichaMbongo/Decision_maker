@@ -8,6 +8,7 @@ import {
   useMediaQuery,
   useTheme,
   Paper,
+  TextField,
 } from "@mui/material";
 import Layout from "../components/Layout";
 import GolfCourseIcon from "@mui/icons-material/GolfCourse";
@@ -57,13 +58,11 @@ const NewDecision: React.FC = () => {
 
   return (
     <Layout>
-
-      <Stack style={{margin:'2vh'}}>
+      <Stack style={{ margin: "2vh" }}>
         <div style={{ marginLeft: "30px" }}>
           {" "}
           <BackButton />
         </div>
-
       </Stack>
       <Stack
         direction="column"
@@ -93,7 +92,17 @@ const NewDecision: React.FC = () => {
             </Typography>
             <Typography variant="h3">What is Your Goal?</Typography>
             <GolfCourseIcon sx={{ fontSize: 40 }} />
-            <BasicTextField fields={fields} />
+            <TextField
+              id="filled-basic"
+              defaultValue=""
+              name="decision"
+              label='E.g. "To Buy a Car"'
+              variant="filled"
+              value={decision}
+              onChange={(e) => setDecision(e.target.value)}
+              fullWidth
+            />
+
             <Button
               variant="contained"
               sx={{
