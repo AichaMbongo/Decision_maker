@@ -27,6 +27,7 @@ import EvaluateOptions from "./pages/EvaluateOptionsPage";
 //login and registration
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ExistingCriteria from "./pages/ExistingCriteria";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
             <Route path="/resultsPage" element={<ResultsPage />} />
             <Route path="/EvaluateCriteriaPage" element={<CriteriaPage />} />
             <Route path="/EvaluateOptionsPage" element={<EvaluateOptions />} />
+            <Route path="/ExistingCriteria" element={<ExistingCriteria />} />
           </Routes>
         </DecisionStateContext.Provider>
       </BreadcrumbsProvider>
