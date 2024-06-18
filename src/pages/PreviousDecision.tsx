@@ -17,6 +17,7 @@ import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Search } from "@mui/icons-material";
+import { supabase } from "../supabase/supabaseClient";
 
 // Define the Decision interface
 interface Decision {
@@ -28,6 +29,8 @@ interface Decision {
 const PreviousDecisions: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredDecisions, setFilteredDecisions] = useState<Decision[]>([]);
+
+  
 
   const decisionData: Decision[] = [
     {
