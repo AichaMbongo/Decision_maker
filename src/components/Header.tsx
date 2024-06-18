@@ -17,8 +17,10 @@ import {
   ListItemText,
   ListItemIcon,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -48,6 +50,10 @@ function Header({ auth, setAuth }: HeaderProps) {
   } | null>(null);
   const { handleNavigation, resetBreadcrumbs } = useBreadcrumbs();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const location = useLocation();
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
@@ -117,6 +123,8 @@ function Header({ auth, setAuth }: HeaderProps) {
     await signOut();
     setAuth(false);
     setUserProfile(null);
+    setSnackbarMessage("Logout successful!");
+    setSnackbarOpen(true);
     handleClose();
   };
 
@@ -197,107 +205,121 @@ function Header({ auth, setAuth }: HeaderProps) {
     </Box>
   );
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
   return (
-    <AppBar
-      sx={{
-        background: theme.palette.background.default,
-        color: theme.palette.primary.main,
-      }}
-    >
-      <Container maxWidth="xl">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { md: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6">
-            <NavLink
-              to="/"
-              onClick={() => handleNavigation("/", "Home")}
-              style={{ textDecoration: "none", color: "inherit" }}
+    <>
+      <AppBar
+        sx={{
+          background: theme.palette.background.default,
+          color: theme.palette.primary.main,
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ display: { md: "none" } }}
             >
-              DecisionMaker
-            </NavLink>
-          </Typography>
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              flexGrow: 1,
-              justifyContent: "space-around",
-              gap: "1.75rem",
-            }}
-          >
-            {navItems.map((item) => (
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6">
               <NavLink
-                key={item.label}
-                to={item.path}
-                onClick={() => handleNavigation(item.path, item.label)}
+                to="/"
+                onClick={() => handleNavigation("/", "Home")}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Button>{item.label}</Button>
+                DecisionMaker
               </NavLink>
-            ))}
-          </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {auth ? (
-              <>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar sx={{ borderRadius: "10px" }}>
-                    {userProfile ? userProfile.displayName.charAt(0) : "U"}
-                  </Avatar>
-                  <Box sx={{ marginLeft: "8px" }}>
-                    {userProfile ? userProfile.displayName : "User"}
+            </Typography>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                flexGrow: 1,
+                justifyContent: "space-around",
+                gap: "1.75rem",
+              }}
+            >
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.label}
+                  to={item.path}
+                  onClick={() => handleNavigation(item.path, item.label)}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Button>{item.label}</Button>
+                </NavLink>
+              ))}
+            </Box>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              {auth ? (
+                <>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Avatar sx={{ borderRadius: "10px" }}>
+                      {userProfile ? userProfile.displayName.charAt(0) : "U"}
+                    </Avatar>
+                    <Box sx={{ marginLeft: "8px" }}>
+                      {userProfile ? userProfile.displayName : "User"}
+                    </Box>
+                    <IconButton
+                      aria-controls="user-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      aria-label="expand more"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                    <Menu
+                      id="user-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
+                    </Menu>
                   </Box>
-                  <IconButton
-                    aria-controls="user-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    aria-label="expand more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-                  <Menu
-                    id="user-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleSignOut}>Log Out</MenuItem>
-                  </Menu>
-                </Box>
-                {isSmallScreen && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    <Typography variant="body2">{`Logged in as ${userProfile?.displayName}`}</Typography>
-                  </Box>
-                )}
-              </>
-            ) : (
-              unauthenticated
-            )}
-          </Box>
-        </Toolbar>
-      </Container>
-      <Drawer
-        anchor="left"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        sx={{ display: { md: "none" } }}
+                  {isSmallScreen && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "0.5rem",
+                      }}
+                    >
+                      <Typography variant="body2">{`Logged in as ${userProfile?.displayName}`}</Typography>
+                    </Box>
+                  )}
+                </>
+              ) : (
+                unauthenticated
+              )}
+            </Box>
+          </Toolbar>
+        </Container>
+        <Drawer
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          sx={{ display: { md: "none" } }}
+        >
+          {drawer}
+        </Drawer>
+      </AppBar>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000} // Adjust as per your preference
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        {drawer}
-      </Drawer>
-    </AppBar>
+        <Alert onClose={handleSnackbarClose} severity="success">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
-
 export default Header;

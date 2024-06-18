@@ -9,7 +9,8 @@ interface CustomButtonProps {
   marginTop?: string | number;
   variant?: "text" | "outlined" | "contained";
   borderRadius?: string | number;
-  style?: React.CSSProperties; 
+  style?: React.CSSProperties;
+  // className: ReactNode;
 }
 
 export default CustomButtonProps

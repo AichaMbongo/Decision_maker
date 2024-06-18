@@ -7,7 +7,8 @@ import {
   TextField,
   Grid,
   Paper,
-  IconButton,
+  Snackbar,
+  Container,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,19 +16,14 @@ import AddIcon from "@mui/icons-material/Add";
 import Layout from "../components/Layout";
 import BackButton from "../components/BackButton";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
-import DecisionState from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import TargetIcon from "@mui/icons-material/Adjust";
 import { supabase } from "../supabase/supabaseClient";
-
-const handleClick = () => {
-  console.log("Button is Clicked");
-};
+import DecisionState from "../components/interfaces/DecisionState";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
+  padding: theme.spacing(3),
   textAlign: "center",
   color: theme.palette.text.secondary,
   width: "300px",
@@ -37,6 +33,16 @@ const Item = styled(Paper)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
+  transition: "transform 0.2s ease-in-out, background-color 0.2s ease-in-out",
+  borderRadius: "12px",
+  boxShadow:
+    theme.palette.mode === "dark"
+      ? "0 4px 8px rgba(0,0,0,0.2)"
+      : "0 4px 8px rgba(0,0,0,0.1)",
+  "&:hover": {
+    transform: "scale(1.03)",
+    backgroundColor: theme.palette.mode === "dark" ? "#29303b" : "#f0f0f0",
+  },
 }));
 
 const NewCriteriaPage: React.FC = () => {
@@ -44,8 +50,7 @@ const NewCriteriaPage: React.FC = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [criteria, setCriteria] = useState<string[]>([]);
   const [selectedCriteria, setSelectedCriteria] = useState<string[]>([]);
-
-  const criteria2 = decisionState.criteria;
+  const [successMessageOpen, setSuccessMessageOpen] = useState(false);
 
   const { handleNavigation } = useBreadcrumbs();
 
@@ -79,6 +84,7 @@ const NewCriteriaPage: React.FC = () => {
     ]);
 
     console.log(`Selected criteria: ${criteria}`);
+    setSuccessMessageOpen(true); // Show success message
   };
 
   const handleSubmit = () => {
@@ -102,7 +108,7 @@ const NewCriteriaPage: React.FC = () => {
       console.error("Error fetching criteria:", error);
     }
   };
-  console.log(decisionState)
+
   useEffect(() => {
     fetchCriteria();
   }, []);
@@ -110,21 +116,15 @@ const NewCriteriaPage: React.FC = () => {
   return (
     <Layout>
       <Stack>
-        <div style={{ marginLeft: "30px" }}>
+        <Box ml={2} mt={2}>
           <BackButton />
-        </div>
+        </Box>
       </Stack>
 
-      <Stack
-        direction="column"
-        spacing={2}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Stack className="stack-container">
+      <Container>
+        <Stack spacing={4} alignItems="center" justifyContent="center">
           <Typography variant="h3" align="center">
-            Awesome Decision! Select Existing/Create New Criteria For The
-            Decision.
+            Select Existing or Add New Criteria
           </Typography>
 
           <Stack
@@ -132,16 +132,16 @@ const NewCriteriaPage: React.FC = () => {
             spacing={2}
             alignItems="center"
             justifyContent="center"
-            sx={{ marginTop: 2 }}
           >
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-              <TextField
-                name="criteria"
-                label="Search Anything"
-                variant="standard"
-              />
-            </Box>
+            <TextField
+              name="criteria"
+              label="Search Criteria"
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                endAdornment: <SearchIcon />,
+              }}
+            />
             <Button
               variant="contained"
               color="primary"
@@ -152,19 +152,13 @@ const NewCriteriaPage: React.FC = () => {
             </Button>
           </Stack>
 
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-            sx={{ marginTop: 4 }}
-          >
+          <Grid container spacing={4} justifyContent="center">
             {criteria.map((crit, index) => (
               <Grid item key={index}>
                 <Item onClick={() => handleSelectCriteria(crit)}>
                   <Stack alignItems="center">
                     <TargetIcon style={{ fontSize: "56px", padding: "2" }} />
-                    <Typography variant="body1">{crit}</Typography>
+                    <Typography variant="h5">{crit}</Typography>
                   </Stack>
                 </Item>
               </Grid>
@@ -175,20 +169,19 @@ const NewCriteriaPage: React.FC = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            sx={{ marginTop: 8 }} // Added space between cards and submit button
+            sx={{ marginTop: 4 }}
           >
             Submit Criteria
           </Button>
         </Stack>
-      </Stack>
+      </Container>
 
-      <Stack
-        direction="row"
-        spacing={2}
-        alignItems="center"
-        justifyContent="center"
-        sx={{ marginTop: 2, padding: 2 }}
-      ></Stack>
+      <Snackbar
+        open={successMessageOpen}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessageOpen(false)}
+        message="Criteria successfully selected!"
+      />
     </Layout>
   );
 };

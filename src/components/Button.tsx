@@ -13,6 +13,7 @@ const CustomButton = ({
   disabled,
   variant,
   borderRadius,
+  // className,
   style,
   ...rest
 }: CustomButtonProps) => {
@@ -20,7 +21,7 @@ const CustomButton = ({
     <Button
       variant={variant || "contained"}
       onClick={onClick}
-      className="custom-button"
+      // className={`custom-button ${className}`} // Add className here
       disabled={disabled}
       sx={{
         borderRadius: borderRadius || "16px",
@@ -28,7 +29,7 @@ const CustomButton = ({
         paddingLeft: 2,
         marginBottom: 2,
         minWidth: "200px",
-        ...style, // Apply inline styles here
+        ...style, // Spread the style object here
       }}
       {...rest}
     >

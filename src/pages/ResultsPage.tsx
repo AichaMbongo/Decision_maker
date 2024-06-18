@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -5,23 +6,26 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Typography,
+  Modal,
+  Backdrop,
+  Fade,
+  Button,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import StarIcon from "@mui/icons-material/Star";
+import { keyframes } from "@mui/system";
 import Layout from "../components/Layout";
-import AdsClickIcon from "@mui/icons-material/AdsClick";
 import BackButton from "../components/BackButton";
-import { DecisionStateContext } from "../contexts/DecisionStateContext";
-import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import CustomButton from "../components/Button";
 import BarChartComponent from "../components/interfaces/BarChartComponent";
+import { DecisionStateContext } from "../contexts/DecisionStateContext";
+import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { supabase } from "../supabase/supabaseClient";
 import { getUserId } from "../supabase/auth";
+import DecisionState from "../components/interfaces/DecisionState";
 import Confetti from "react-confetti";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 
 interface TotalScores {
   [option: string]: number;
@@ -31,6 +35,27 @@ interface Criterion {
   name: string;
   weight: number;
 }
+const defaultDecisionState: DecisionState = {
+  model: "AHP",
+  decision: "",
+  criteria: [],
+  options: [],
+  aggregatedPreferences: {},
+  totalScores: {},
+};
+
+// Define keyframes for pulsing animation
+const pulse = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+`;
 
 const ResultsPage = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
@@ -39,8 +64,10 @@ const ResultsPage = () => {
   const [tiebreakerExplanation, setTiebreakerExplanation] =
     useState<string>("");
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [showCompletionPopup, setShowCompletionPopup] =
+    useState<boolean>(false);
 
-  console.log(decisionState)
+  console.log(decisionState);
   useEffect(() => {
     const calculateTotalScores = () => {
       const scores: TotalScores = {};
@@ -53,13 +80,10 @@ const ResultsPage = () => {
       decisionState.criteria.forEach((criterion: Criterion) => {
         const criterionAggregated =
           decisionState.aggregatedPreferences[criterion.name];
-        console.log("Aggregated criteria:", criterionAggregated);
-        console.log("Criterion weight", criterion.weight);
 
         // Update total scores with weighted sum
         decisionState.options.forEach((option) => {
           scores[option] += criterionAggregated[option] * criterion.weight;
-          console.log("Current", scores[option]);
         });
       });
 
@@ -71,9 +95,6 @@ const ResultsPage = () => {
       setBestChoice(bestOption.choice);
       setTiebreakerExplanation(bestOption.explanation);
       setShowConfetti(true);
-
-      console.log(decisionState);
-      console.log("Total scores totality", scores);
     };
 
     const determineBestOption = (
@@ -118,26 +139,70 @@ const ResultsPage = () => {
 
   const { handleNavigation } = useBreadcrumbs();
 
-  const ViewPreviousDecisions = async () => {
+  const saveDecision = async () => {
     const user = await getUserId();
 
-    const { data, error } = await supabase
-      .from("decisions")
-      .insert([
-        {
-          user_id: user,
-          decision: decisionState,
-        },
-      ])
-      .select();
+    if (!user) {
+      // Prompt user to log in
+      alert("Please log in to save your decision.");
+      return;
+    }
 
-    handleNavigation("/PreviousDecision", "Previous Decision");
+    try {
+      const { data, error } = await supabase
+        .from("decisions")
+        .insert([
+          {
+            user_id: user,
+            decision: decisionState,
+          },
+        ])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      setShowCompletionPopup(true);
+    } catch (error) {
+      console.error("Error saving decision:");
+    }
+  };
+
+  const closeModal = () => {
+    setShowCompletionPopup(false);
+  };
+
+  const handlePopupOption = async (option: number) => {
+    switch (option) {
+      case 1:
+        // Make another decision (Navigate or handle as needed)
+        setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
+        await handleNavigation("/NewDecision", "New Decision");
+        break;
+      case 2:
+        setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
+        await handleNavigation("/PreviousDecision", "Previous Decision");
+        break;
+      case 3:
+        setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
+        await handleNavigation("/", "Home");
+        break;
+      default:
+        break;
+    }
   };
 
   const getTotalMaxValue = () =>
     Object.values(totalScores).reduce((a, b) => a + b, 0);
   const convertScoreToOutOfTen = (score: number) =>
     Math.round((score / getTotalMaxValue()) * 10);
+
+  // Sort totalScores by score descending
+  const sortedScores = Object.entries(totalScores).sort((a, b) => b[1] - a[1]);
 
   return (
     <Layout>
@@ -184,6 +249,7 @@ const ResultsPage = () => {
               alignItems: "center",
               justifyContent: "center",
               position: "relative",
+              animation: `${pulse} 2s infinite`,
             }}
           >
             <Typography variant="h4" gutterBottom>
@@ -192,22 +258,9 @@ const ResultsPage = () => {
             <Typography variant="h5" gutterBottom>
               {bestChoice}
             </Typography>
-            <Box sx={{ width: "100px", height: "100px", marginTop: 2 }}>
-              <CircularProgressbar
-                value={convertScoreToOutOfTen(totalScores[bestChoice] || 0)}
-                maxValue={10}
-                text={`${convertScoreToOutOfTen(
-                  totalScores[bestChoice] || 0
-                )}/10`}
-                styles={buildStyles({
-                  pathColor: `rgba(62, 152, 199, ${
-                    (totalScores[bestChoice] || 0) / getTotalMaxValue()
-                  })`,
-                  textColor: "#0277bd",
-                  trailColor: "#d6d6d6",
-                })}
-              />
-            </Box>
+            <EmojiEventsIcon
+              sx={{ fontSize: 80, color: "gold", marginTop: 2 }}
+            />
             <Box
               sx={{
                 position: "absolute",
@@ -273,35 +326,30 @@ const ResultsPage = () => {
             <Typography variant="h5" gutterBottom>
               Total Scores
             </Typography>
-            {Object.keys(totalScores).map((option) => (
+            <Typography
+              variant="body2"
+              sx={{ marginBottom: 2, textAlign: "center" }}
+            >
+              The options below are sorted from the most preferred to the least
+              preferred.
+            </Typography>
+            {sortedScores.map(([option], index) => (
               <Box
                 key={option}
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  marginBottom: 2,
+                  justifyContent: "space-between",
+                  width: "100%",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  boxShadow: 1,
+                  backgroundColor: index % 2 === 0 ? "#f0f0f0" : "#ffffff",
+                  marginBottom: 1,
                 }}
               >
-                <Typography variant="body1" sx={{ marginRight: 2 }}>
-                  {option}:
-                </Typography>
-                <Typography variant="body1" sx={{ marginRight: 2 }}>
-                  {convertScoreToOutOfTen(totalScores[option])}/10
-                </Typography>
-                <Box sx={{ width: "50px", height: "50px", marginLeft: 2 }}>
-                  <CircularProgressbar
-                    value={convertScoreToOutOfTen(totalScores[option])}
-                    maxValue={10}
-                    text={`${convertScoreToOutOfTen(totalScores[option])}/10`}
-                    styles={buildStyles({
-                      pathColor: `rgba(62, 152, 199, ${
-                        (totalScores[option] || 0) / getTotalMaxValue()
-                      })`,
-                      textColor: "#0277bd",
-                      trailColor: "#d6d6d6",
-                    })}
-                  />
-                </Box>
+                <Typography variant="body1">{option}</Typography>
+                <StarIcon sx={{ color: index === 0 ? "gold" : "gray" }} />
               </Box>
             ))}
           </Box>
@@ -312,12 +360,57 @@ const ResultsPage = () => {
               justifyContent: "center",
             }}
           >
-            <CustomButton onClick={ViewPreviousDecisions}>
-              Save Decision
-            </CustomButton>
+            <CustomButton onClick={saveDecision}>Save Decision</CustomButton>
           </Box>
         </Box>
       </Container>
+
+      {/* Completion Popup */}
+      <Modal
+        open={showCompletionPopup}
+        onClose={closeModal}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showCompletionPopup}>
+          <Box
+            sx={{
+              backgroundColor: "white",
+              boxShadow: 3,
+              padding: 3,
+              borderRadius: 8,
+              width: "50%",
+              maxWidth: 400,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Decision Saved!
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 3 }}>
+              What would you like to do next?
+            </Typography>
+            <Stack direction="row" spacing={2} justifyContent="center">
+              <Button variant="outlined" onClick={() => handlePopupOption(1)}>
+                Make Another Decision
+              </Button>
+              <Button variant="outlined" onClick={() => handlePopupOption(2)}>
+                See Previous Decisions
+              </Button>
+              <Button variant="outlined" onClick={() => handlePopupOption(3)}>
+                Go Back to Homepage
+              </Button>
+            </Stack>
+          </Box>
+        </Fade>
+      </Modal>
     </Layout>
   );
 };
