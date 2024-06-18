@@ -13,3 +13,5 @@ Decision Maker is a web application that assists users in making choices by usin
 ### Main Figma Mockups
 You can view the Figma Mockup Designs [here](https://www.figma.com/design/kQ9PfXpMb0DhHpJnCQoEux/Decision-Makers?node-id=0%3A1&t=NIp4ta55vMXejFYp-1)
 
+## Vercel Web App link
+https://decision-maker-lemon.vercel.app/
