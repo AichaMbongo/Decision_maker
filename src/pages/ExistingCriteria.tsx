@@ -99,7 +99,7 @@ const NewCriteriaPage: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // Handle submitting criteria logic here
+    // Handle submitting criteria logic here..
     handleNavigation("/OtherNewCriteria", "Add Another Criteria");
     console.log("Submit criteria");
   };
