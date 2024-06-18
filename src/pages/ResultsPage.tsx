@@ -40,6 +40,7 @@ const ResultsPage = () => {
     useState<string>("");
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
 
+  console.log(decisionState)
   useEffect(() => {
     const calculateTotalScores = () => {
       const scores: TotalScores = {};

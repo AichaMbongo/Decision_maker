@@ -53,7 +53,7 @@ const NewDecision: React.FC = () => {
   const { handleNavigation } = useBreadcrumbs();
   const EnterNewCriteria = () => {
     updateDecisionState(decisionObject);
-    handleNavigation("/newCriteria", "New Criteria");
+    handleNavigation("/ExistingCriteria", "Existing Criteria");
   };
 
   return (

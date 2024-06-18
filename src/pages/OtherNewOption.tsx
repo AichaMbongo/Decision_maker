@@ -82,6 +82,7 @@ const OtherNewOption = () => {
       ...updatedProperties,
     }));
   };
+  console.log(decisionState)
 
   const handleDelete = (id: number) => {
     console.log(id);

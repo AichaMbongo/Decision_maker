@@ -40,7 +40,7 @@ const OtherNewCriteria: React.FC = () => {
 
   const criteria2 = decisionState.criteria;
 
-  console.log("Decision state on page", criteria2);
+  console.log("Decision state on page", decisionState);
 
   const { handleNavigation } = useBreadcrumbs();
   const theme = useTheme();
