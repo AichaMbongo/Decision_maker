@@ -112,7 +112,7 @@ const CriteriaPage = () => {
               )}
             </Container>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               gridArea: "option",
               borderRadius: 1,
@@ -167,7 +167,7 @@ const CriteriaPage = () => {
                 </Stack>
               </Stack>
             ))}
-          </Box>
+          </Box> */}
           <Box
             sx={{
               gridArea: "save",

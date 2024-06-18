@@ -70,7 +70,7 @@ const EvaluateOptions = () => {
           <Box sx={{ gridArea: "result" }}>
             <PairwiseComparison />
           </Box>
-          <Box
+          {/* <Box
             sx={{
               gridArea: "option",
               borderRadius: 1,
@@ -127,7 +127,7 @@ const EvaluateOptions = () => {
                 </Stack>
               </Stack>
             ))}
-          </Box>
+          </Box> */}
           <Box
             sx={{
               gridArea: "save",
@@ -140,7 +140,9 @@ const EvaluateOptions = () => {
               to="/ResultsPage"
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <Button sx={{ width: '50vh' }} variant="contained">Proceed</Button>
+              <Button sx={{ width: "50vh" }} variant="contained">
+                Proceed
+              </Button>
             </NavLink>
           </Box>
         </Box>
