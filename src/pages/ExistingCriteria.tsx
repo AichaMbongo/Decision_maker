@@ -74,7 +74,6 @@ const NewCriteriaPage: React.FC = () => {
   };
 
   const handleAddCriteria = () => {
-    // Handle adding new criteria logic here
     handleNavigation("/newCriteria", "Add Criteria");
     console.log("Add new criteria");
   };
