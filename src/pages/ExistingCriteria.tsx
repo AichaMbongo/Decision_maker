@@ -21,11 +21,19 @@ import TargetIcon from "@mui/icons-material/Adjust";
 import { supabase } from "../supabase/supabaseClient";
 import DecisionState from "../components/interfaces/DecisionState";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+interface ItemProps {
+  selected: boolean;
+}
+
+const Item = styled(Paper)<ItemProps>(({ theme, selected }) => ({
+  backgroundColor: selected
+    ? theme.palette.primary.main
+    : theme.palette.mode === "dark"
+    ? "#1A2027"
+    : "#fff",
   padding: theme.spacing(3),
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: selected ? "#fff" : theme.palette.text.secondary,
   width: "300px",
   height: "200px",
   display: "flex",
@@ -41,7 +49,11 @@ const Item = styled(Paper)(({ theme }) => ({
       : "0 4px 8px rgba(0,0,0,0.1)",
   "&:hover": {
     transform: "scale(1.03)",
-    backgroundColor: theme.palette.mode === "dark" ? "#29303b" : "#f0f0f0",
+    backgroundColor: selected
+      ? theme.palette.primary.main
+      : theme.palette.mode === "dark"
+      ? "#29303b"
+      : "#f0f0f0",
   },
 }));
 
@@ -62,7 +74,6 @@ const NewCriteriaPage: React.FC = () => {
   };
 
   const handleAddCriteria = () => {
-    // Handle adding new criteria logic here
     handleNavigation("/newCriteria", "Add Criteria");
     console.log("Add new criteria");
   };
@@ -155,7 +166,10 @@ const NewCriteriaPage: React.FC = () => {
           <Grid container spacing={4} justifyContent="center">
             {criteria.map((crit, index) => (
               <Grid item key={index}>
-                <Item onClick={() => handleSelectCriteria(crit)}>
+                <Item
+                  onClick={() => handleSelectCriteria(crit)}
+                  selected={selectedCriteria.includes(crit)}
+                >
                   <Stack alignItems="center">
                     <TargetIcon style={{ fontSize: "56px", padding: "2" }} />
                     <Typography variant="h5">{crit}</Typography>
