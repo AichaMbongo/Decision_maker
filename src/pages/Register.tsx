@@ -17,9 +17,17 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import { signUp } from "../supabase/auth"; // Import the signUp function
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function Register({ setAuth }: any) {
   const navigate = useNavigate();
   const { handleNavigation } = useBreadcrumbs();
+  const [successMessageOpen, setSuccessMessageOpen] = React.useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,7 +41,8 @@ function Register({ setAuth }: any) {
     try {
       await signUp(email, password, displayName);
       setAuth(true);
-      navigate("/", { state: { isAuthenticated: true } });
+      navigate("/", { state: { isAuthenticated: true, message: "Registration successful!" } });
+      setSuccessMessageOpen(true); // Display success message
     } catch (error: any) {
       console.error("Sign up error:", error.message);
     }
@@ -140,6 +149,7 @@ function Register({ setAuth }: any) {
           </Box>
         </Box>
       </Container>
+
     </ThemeProvider>
   );
 }

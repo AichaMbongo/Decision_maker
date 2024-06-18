@@ -1,12 +1,10 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
@@ -58,13 +56,14 @@ function Login({ setAuth }: any) {
     try {
       await signIn(email, password);
       setAuth(true);
-      navigate("/", { state: { isAuthenticated: true } });
+      navigate("/", {
+        state: { isAuthenticated: true, message: "Login successful!" },
+      });
     } catch (error: any) {
       if (error instanceof AuthError && error.code === "invalid_credentials") {
-        // setLoginError('Incorrect email or password');
+        setLoginError("Incorrect email or password");
       } else {
         setLoginError("Incorrect email or password");
-        //console.log(error.message)
         //console.error('Sign in error:', error.message);
       }
     }

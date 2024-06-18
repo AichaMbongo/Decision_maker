@@ -24,6 +24,7 @@ import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { supabase } from "../supabase/supabaseClient";
 import { getUserId } from "../supabase/auth";
+import DecisionState from "../components/interfaces/DecisionState";
 import Confetti from "react-confetti";
 
 interface TotalScores {
@@ -34,6 +35,14 @@ interface Criterion {
   name: string;
   weight: number;
 }
+const defaultDecisionState: DecisionState = {
+  model: "AHP",
+  decision: "",
+  criteria: [],
+  options: [],
+  aggregatedPreferences: {},
+  totalScores: {},
+};
 
 // Define keyframes for pulsing animation
 const pulse = keyframes`
@@ -49,7 +58,7 @@ const pulse = keyframes`
 `;
 
 const ResultsPage = () => {
-  const { decisionState } = useContext(DecisionStateContext);
+  const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [totalScores, setTotalScores] = useState<TotalScores>({});
   const [bestChoice, setBestChoice] = useState<string>("");
   const [tiebreakerExplanation, setTiebreakerExplanation] =
@@ -58,7 +67,7 @@ const ResultsPage = () => {
   const [showCompletionPopup, setShowCompletionPopup] =
     useState<boolean>(false);
 
-  console.log(decisionState)
+  console.log(decisionState);
   useEffect(() => {
     const calculateTotalScores = () => {
       const scores: TotalScores = {};
@@ -169,14 +178,17 @@ const ResultsPage = () => {
       case 1:
         // Make another decision (Navigate or handle as needed)
         setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
         await handleNavigation("/NewDecision", "New Decision");
         break;
       case 2:
         setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
         await handleNavigation("/PreviousDecision", "Previous Decision");
         break;
       case 3:
         setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
         await handleNavigation("/", "Home");
         break;
       default:
