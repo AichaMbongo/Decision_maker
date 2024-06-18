@@ -58,6 +58,7 @@ const ResultsPage = () => {
   const [showCompletionPopup, setShowCompletionPopup] =
     useState<boolean>(false);
 
+  console.log(decisionState)
   useEffect(() => {
     const calculateTotalScores = () => {
       const scores: TotalScores = {};

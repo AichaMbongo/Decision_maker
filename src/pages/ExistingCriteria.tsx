@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Stack,
@@ -18,6 +18,7 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import DecisionState from "../components/interfaces/DecisionState";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import TargetIcon from "@mui/icons-material/Adjust";
+import { supabase } from "../supabase/supabaseClient";
 
 const handleClick = () => {
   console.log("Button is Clicked");
@@ -41,6 +42,8 @@ const Item = styled(Paper)(({ theme }) => ({
 const NewCriteriaPage: React.FC = () => {
   const [formData, setFormData] = useState({ criteria: "" });
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
+  const [criteria, setCriteria] = useState<string[]>([]);
+  const [selectedCriteria, setSelectedCriteria] = useState<string[]>([]);
 
   const criteria2 = decisionState.criteria;
 
@@ -55,18 +58,54 @@ const NewCriteriaPage: React.FC = () => {
 
   const handleAddCriteria = () => {
     // Handle adding new criteria logic here
+    handleNavigation("/newCriteria", "Add Criteria");
     console.log("Add new criteria");
   };
 
   const handleSelectCriteria = (criteria: string) => {
     // Handle selecting criteria logic here
+    if (selectedCriteria.includes(criteria)) {
+      console.log(`Criteria "${criteria}" is already selected.`);
+      return;
+    }
+
+    const newCriterion = { name: criteria, weight: 0, comparisons: {} };
+    const updatedCriteria = [...decisionState.criteria, newCriterion];
+    setDecisionState({ ...decisionState, criteria: updatedCriteria });
+
+    setSelectedCriteria((prevSelectedCriteria) => [
+      ...prevSelectedCriteria,
+      criteria,
+    ]);
+
     console.log(`Selected criteria: ${criteria}`);
   };
 
   const handleSubmit = () => {
     // Handle submitting criteria logic here
+    handleNavigation("/OtherNewCriteria", "Add Another Criteria");
     console.log("Submit criteria");
   };
+
+  const fetchCriteria = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("example_criteria")
+        .select("criteria");
+
+      if (!error && data) {
+        setCriteria(data.map((item: any) => item.criteria));
+      } else {
+        console.error("Error fetching criteria:", error);
+      }
+    } catch (error) {
+      console.error("Error fetching criteria:", error);
+    }
+  };
+  console.log(decisionState)
+  useEffect(() => {
+    fetchCriteria();
+  }, []);
 
   return (
     <Layout>
@@ -109,7 +148,7 @@ const NewCriteriaPage: React.FC = () => {
               onClick={handleAddCriteria}
               startIcon={<AddIcon />}
             >
-              Add New Criteria
+              Add Custom Criteria
             </Button>
           </Stack>
 
@@ -120,7 +159,7 @@ const NewCriteriaPage: React.FC = () => {
             justifyContent="center"
             sx={{ marginTop: 4 }}
           >
-            {["Cost", "Safety", "Comfort"].map((crit, index) => (
+            {criteria.map((crit, index) => (
               <Grid item key={index}>
                 <Item onClick={() => handleSelectCriteria(crit)}>
                   <Stack alignItems="center">
