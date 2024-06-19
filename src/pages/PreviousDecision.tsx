@@ -19,6 +19,7 @@ import { NavLink } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import { supabase } from "../supabase/supabaseClient";
 
+// Define interfaces based on your data structure
 interface Criterion {
   name: string;
   weight: number;
@@ -27,9 +28,16 @@ interface Criterion {
 
 interface Decision {
   id: number;
-  name: string;
-  description: string;
-  criteria: Criterion[];
+  decision:
+    | string
+    | {
+        model: string;
+        options: string[];
+        results: {};
+        criteria: Criterion[];
+        totalScores: Record<string, number>;
+        aggregatedPreferences: Record<string, Record<string, number>>;
+      };
 }
 
 const PreviousDecisions: React.FC = () => {
@@ -37,6 +45,7 @@ const PreviousDecisions: React.FC = () => {
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [filteredDecisions, setFilteredDecisions] = useState<Decision[]>([]);
   const [currentDecision, setCurrentDecision] = useState<Decision | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false); // State to manage modal open/close
 
   useEffect(() => {
     fetchDecisions();
@@ -44,16 +53,21 @@ const PreviousDecisions: React.FC = () => {
 
   const fetchDecisions = async () => {
     try {
-      const { data, error } = await supabase.from("decisions").select("*");
+      const { data, error } = await supabase
+        .from("decisions")
+        .select("id, decision");
+
       if (error) {
         console.error("Error fetching decisions:", error.message);
         return;
       }
+
       if (data) {
+        console.log("Fetched decisions:", data);
         setDecisions(data);
       }
     } catch (error) {
-      console.error("Error fetching decisions:");
+      console.error("Error fetching decisions:", error);
     }
   };
 
@@ -66,16 +80,17 @@ const PreviousDecisions: React.FC = () => {
     if (normalizedQuery === "") {
       setFilteredDecisions([]);
     } else {
-      const filtered = decisions.filter((decision) =>
-        decision.name.toLowerCase().includes(normalizedQuery)
+      const filtered = decisions.filter(
+        (decision) =>
+          decision.decision &&
+          typeof decision.decision !== "string" &&
+          decision.decision.model.toLowerCase().includes(normalizedQuery)
       );
       if (filtered.length === 0) {
         setFilteredDecisions([
           {
             id: 0,
-            name: "No decision found",
-            description: "No decision matches your search.",
-            criteria: [],
+            decision: "No decision found",
           },
         ]);
       } else {
@@ -90,11 +105,14 @@ const PreviousDecisions: React.FC = () => {
   };
 
   const handleSeeCriteria = (decision: Decision) => {
+    console.log("Selected decision:", decision);
     setCurrentDecision(decision);
+    setModalOpen(true); // Open modal when decision is selected
   };
-console.log("Decisions", decisions);
+
   const closeModal = () => {
     setCurrentDecision(null);
+    setModalOpen(false); // Close modal when clicking Close button
   };
 
   return (
@@ -108,83 +126,112 @@ console.log("Decisions", decisions);
         alignItems="center"
         justifyContent="center"
       >
-        <Stack className="stack-container" alignItems="center">
+        <Paper
+          sx={{
+            padding: 3,
+            textAlign: "center",
+            maxWidth: "100%",
+            margin: "auto",
+            marginBottom: 2,
+          }}
+        >
           <Typography variant="h3" align="center">
             List of Previous Decisions
           </Typography>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               alignItems: "center",
               marginTop: "2vh",
-              width: "100%",
-              justifyContent: "center",
+              width: { xs: "100%", sm: "80%", md: "60%", lg: "50%" },
+              margin: "auto",
             }}
           >
             <TextField
               value={searchQuery}
               onChange={handleSearchChange}
               label="Search previous decisions"
-              variant="standard"
-              size="small"
-              sx={{ marginRight: 2, width: "35vh" }}
-            />
-            <Button variant="contained" onClick={handleSearchSubmit}>
-              <Search />
-            </Button>
-            <Button
               variant="outlined"
-              onClick={clearSearchResults}
-              sx={{ marginLeft: 2 }}
+              size="small"
+              sx={{ marginBottom: 1, width: "100%" }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
             >
-              Clear
-            </Button>
-          </Box>
-          <Box mt={8}>
-            <NavLink
-              to="/newDecision"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <Button variant="contained" color="primary" endIcon={<AddIcon />}>
-                Add New Decision
+              <Button
+                variant="contained"
+                onClick={handleSearchSubmit}
+                sx={{ marginRight: 1 }}
+              >
+                <Search />
               </Button>
-            </NavLink>
+              <Button
+                variant="outlined"
+                onClick={clearSearchResults}
+                sx={{ marginLeft: 1 }}
+              >
+                Clear
+              </Button>
+            </Box>
+            <Box mt={2} width="100%">
+              <NavLink
+                to="/newDecision"
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  width: "100%",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<AddIcon />}
+                  fullWidth
+                >
+                  Add New Decision
+                </Button>
+              </NavLink>
+            </Box>
           </Box>
-        </Stack>
+        </Paper>
 
         <Grid container spacing={2} justifyContent="center">
           {(filteredDecisions.length > 0 ? filteredDecisions : decisions).map(
             (decision, index) => (
-              <Grid item xs={12} sm={6} md={3} key={decision.id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={decision.id}>
                 <Paper
                   sx={{
                     backgroundColor: index % 2 === 0 ? "#f0f0f0" : "#ffffff",
                     padding: 3,
                     textAlign: "center",
-                    color: "text.secondary",
                   }}
                 >
                   <Stack
-                    gap={2}
-                    direction="row"
+                    direction="column"
                     alignItems="center"
-                    justifyContent="center"
+                    spacing={1}
+                    sx={{ minHeight: 140 }}
                   >
-                    <PsychologyOutlinedIcon style={{ fontSize: "56px" }} />
-                    <Stack>
-                      <Typography variant="subtitle1">
-                        {decision.name}
-                      </Typography>
-                      <Typography variant="body1">
-                        <Button
-                          onClick={() => handleSeeCriteria(decision)}
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          See criteria
-                        </Button>
-                      </Typography>
-                    </Stack>
+                    <PsychologyOutlinedIcon style={{ fontSize: 56 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      {typeof decision.decision === "string"
+                        ? decision.decision
+                        : (decision.decision.options || "").slice(0, 10)}
+                    </Typography>
+
+                    <Button
+                      onClick={() => handleSeeCriteria(decision)}
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                    >
+                      See Criteria
+                    </Button>
                   </Stack>
                 </Paper>
               </Grid>
@@ -193,7 +240,7 @@ console.log("Decisions", decisions);
         </Grid>
 
         <Modal
-          open={Boolean(currentDecision)}
+          open={modalOpen}
           onClose={closeModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -201,9 +248,10 @@ console.log("Decisions", decisions);
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
+            style: { zIndex: 999 }, // Adjust z-index to ensure modal is in front of backdrop
           }}
         >
-          <Fade in={Boolean(currentDecision)}>
+          <Fade in={modalOpen}>
             <Box
               sx={{
                 backgroundColor: "white",
@@ -213,18 +261,33 @@ console.log("Decisions", decisions);
                 margin: "auto",
                 marginTop: "10vh",
                 borderRadius: 8,
+                position: "relative", // Ensure position is relative for z-index to work
+                zIndex: 1000, // Ensure modal content is above backdrop
               }}
             >
-              <Typography variant="h5" id="modal-modal-title">
-                {currentDecision?.name} Criteria
+              <Typography variant="h5" id="modal-modal-title" align="center">
+                {currentDecision?.decision &&
+                typeof currentDecision.decision !== "string"
+                  ? currentDecision.decision.model
+                  : "Decision details are not available"}
               </Typography>
-              {currentDecision?.criteria && (
-                <ul>
-                  {currentDecision.criteria.map((criterion, index) => (
-                    <li key={index}>{criterion.name}</li>
-                  ))}
-                </ul>
-              )}
+              <Box sx={{ maxHeight: 300, overflowY: "auto", marginTop: 2 }}>
+                {currentDecision?.decision &&
+                typeof currentDecision.decision !== "string" &&
+                currentDecision.decision.criteria ? (
+                  currentDecision.decision.criteria.map(
+                    (criterion: Criterion, index: number) => (
+                      <Typography key={index} variant="body1">
+                        {criterion.name}
+                      </Typography>
+                    )
+                  )
+                ) : (
+                  <Typography variant="body1">
+                    Decision details are not available.
+                  </Typography>
+                )}
+              </Box>
               <Button onClick={closeModal} variant="outlined" sx={{ mt: 2 }}>
                 Close
               </Button>
