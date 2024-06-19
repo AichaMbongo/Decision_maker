@@ -17,5 +17,3 @@ Scan this QR code to access the app
 
 
 ![QR Code _decisionmaker](https://github.com/AichaMbongo/Decision_maker/assets/89012847/ecca088b-91d9-494e-88ff-5027c92f7bcd)
-## Vercel Web App link
-https://decision-maker-lemon.vercel.app/
