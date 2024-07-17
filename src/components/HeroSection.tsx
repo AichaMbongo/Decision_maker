@@ -30,6 +30,7 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
         gutterBottom
         color={isSmallScreen ? "white" : theme.typography.h2.color}
         align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
+        style={{ marginTop: isSmallScreen ? 8 : 0 }}
       >
         Simplify Complex Choices, Achieve Your Goals with Ease
       </Typography>
@@ -42,36 +43,39 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
       >
         Key Features:
       </Typography>
-      <Box>
-        <Box display="flex" alignItems="left" marginBottom={1}>
+      <Box style={{ textAlign: isSmallScreen ? "center" : "left" }}>
+        <Box display="flex" alignItems="center" marginBottom={1}>
           <StyledIcon>
             <CheckCircleIcon className="animate__animated animate__bounce" />
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
             color={isSmallScreen ? "white" : theme.palette.text.primary}
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
           >
             Intuitive Decision Wizard
           </Typography>
         </Box>
-        <Box display="flex" alignItems="left" marginBottom={1}>
+        <Box display="flex" alignItems="center" marginBottom={1}>
           <StyledIcon>
             <SettingsIcon className="animate__animated animate__bounce" />
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
             color={isSmallScreen ? "white" : theme.palette.text.primary}
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
           >
             Customizable Decision Criteria
           </Typography>
         </Box>
-        <Box display="flex" alignItems="left" marginBottom={1}>
+        <Box display="flex" alignItems="center" marginBottom={1}>
           <StyledIcon>
             <AnalyticsIcon className="animate__animated animate__bounce" />
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
             color={isSmallScreen ? "white" : theme.palette.text.primary}
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
           >
             Data Analysis
           </Typography>
