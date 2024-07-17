@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  useMediaQuery,
-  styled,
-} from "@mui/material";
+import { Box, Typography, Grid, useMediaQuery, styled } from "@mui/material";
 import CustomButton from "./Button";
 import { NavLink } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -16,10 +10,7 @@ import theme from "../theme/theme";
 import Lottie from "react-lottie-player";
 import animationData from "../animations/success.json";
 
-const HeroContent: React.FC<any> = ({
-  isSmallScreen,
-  goToNewDecision,
-}) => {
+const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
   const StyledIcon = styled("span")({
     color: isSmallScreen ? theme.palette.primary.main : "#337357",
   });
@@ -27,18 +18,18 @@ const HeroContent: React.FC<any> = ({
   return (
     <Box sx={{ padding: isSmallScreen ? 2 : 3 }}>
       <Typography
-        variant={isSmallScreen ? "subtitle1" : "h3"}
+        variant={isSmallScreen ? "subtitle3" : "subtitle2"}
         gutterBottom
         color={isSmallScreen ? "white" : theme.typography.h1.color}
-        textAlign="left"
+        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
       >
         DecisionMaker, The Ultimate Decision-Making Companion
-      </Typography>
+      </Typography>{" "}
       <Typography
         variant={isSmallScreen ? "h1" : "subtitle1"}
         gutterBottom
         color={isSmallScreen ? "white" : theme.typography.h2.color}
-        textAlign="left"
+        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
       >
         Simplify Complex Choices, Achieve Your Goals with Ease
       </Typography>
@@ -47,7 +38,7 @@ const HeroContent: React.FC<any> = ({
         gutterBottom
         color={isSmallScreen ? "white" : theme.palette.text.primary}
         style={{ marginTop: 20 }}
-        textAlign="left"
+        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
       >
         Key Features:
       </Typography>
@@ -114,7 +105,9 @@ const HeroContent: React.FC<any> = ({
 
 const HeroSection: React.FC = () => {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
-  const isTabletScreen = useMediaQuery("(min-width:600px) and (max-width:1024px)");
+  const isTabletScreen = useMediaQuery(
+    "(min-width:600px) and (max-width:1024px)"
+  );
   const isLargeScreen = useMediaQuery("(min-width:1024px)");
 
   const { handleNavigation } = useBreadcrumbs();
@@ -125,7 +118,7 @@ const HeroSection: React.FC = () => {
   return (
     <Box sx={{ height: "100vh", backgroundColor: "#81c784" }}>
       <Grid container style={{ height: "100%" }}>
-        {(isSmallScreen || isTabletScreen) ? (
+        {isSmallScreen || isTabletScreen ? (
           // Stacked layout for small screens and tablets
           <>
             <Grid item xs={12} style={{ height: "50%" }}>
