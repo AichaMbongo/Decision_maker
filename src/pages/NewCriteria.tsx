@@ -25,7 +25,7 @@ interface criterion {
 
 const defaultCriterion = {
   name: "",
-  weight: 0,
+  weight: 1,
   comparisons: {},
 };
 
@@ -43,7 +43,7 @@ const NewCriteria = () => {
   const { handleNavigation } = useBreadcrumbs();
 
   const addCriteria = () => {
-    const newCriterion = { name: criterion, weight: 0, comparisons: {} };
+    const newCriterion = { name: criterion, weight: 1, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
