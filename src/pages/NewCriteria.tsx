@@ -13,39 +13,39 @@ import {
 import BackButton from "../components/BackButton";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Layout from "../components/Layout";
-import CustomButton from "../components/Button";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
-
-interface criterion {
-  name: string;
-  weight: number;
-  comparisons: object;
-}
-
-const defaultCriterion = {
-  name: "",
-  weight: 0,
-  comparisons: {},
-};
+import { supabase } from "../supabase/supabaseClient"; // Import supabase client
+import { getUserId } from "../supabase/auth"; // Import getUserId function
 
 const NewCriteria = () => {
-  const [formData, setFormData] = useState({ newCriteria: "" });
   const [criterion, setCriterion] = useState<string>("");
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const criteria = decisionState.criteria;
-
   const navigate = useNavigate();
-
   const { handleNavigation } = useBreadcrumbs();
 
-  const addCriteria = () => {
+  const addCriteria = async () => {
+    const userId = await getUserId(); // Get the current user's ID
+
+    if (userId) {
+      // Add the new criterion to the database only if the user is authenticated
+      const { data, error } = await supabase
+        .from("criteria")
+        .insert([{ name: criterion, user_id: userId }]);
+
+      if (error) {
+        console.error("Error adding criteria:", error);
+        return;
+      }
+    } else {
+      console.log("User not authenticated. Criterion will not be saved to the database.");
+    }
+
+    // Update the local state with the new criterion
     const newCriterion = { name: criterion, weight: 0, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
-
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
 
     handleNavigation("/OtherNewCriteria", "Add Another Criteria");
