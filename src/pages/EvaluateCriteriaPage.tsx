@@ -16,51 +16,27 @@ import { DecisionStateContext } from "../contexts/DecisionStateContext";
 
 const CriteriaPage = () => {
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
-  const [weightsValid, setWeightsValid] = useState(true);
+ 
   const { handleNavigation } = useBreadcrumbs();
 
   const options: string[] = ["Cost", "Safety", "Maintenance"]; // Explicitly typing options array
 
   const handleWeightChange = (index: number, value: number) => {
     // Explicitly typing index and value parameters
-    const otherTotalWeight = decisionState.criteria.reduce(
-      (total, criterion, i) => {
-        return i === index ? total : total + criterion.weight;
-      },
-      0
-    );
 
-    const remainingWeight = 1 - value;
-    const factor =
-      otherTotalWeight === 0 ? 0 : remainingWeight / otherTotalWeight;
 
     const updatedCriteria = decisionState.criteria.map((criterion, i) => {
       if (i === index) {
         return { ...criterion, weight: value };
-      } else {
-        return { ...criterion, weight: criterion.weight * factor };
       }
+      return criterion;
     });
 
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
   };
 
-  useEffect(() => {
-    const totalWeight = decisionState.criteria.reduce(
-      (total, criterion) => total + criterion.weight,
-      0
-    );
-    setWeightsValid(totalWeight === 1);
-  }, [decisionState.criteria]);
 
-  const handleClick = () => {
-    if (weightsValid) {
-      console.log("Weights are valid and sum to 1:", decisionState.criteria);
-      handleNavigation("/NewOption", "New Option");
-    } else {
-      console.log("Weights do not sum to 1. Please correct them.");
-    }
-  };
+
 
   const EnterOption = () => {
     handleNavigation("/NewOption", "New Option");
@@ -97,11 +73,7 @@ const CriteriaPage = () => {
               />
             </Box>
           ))}
-          {!weightsValid && (
-            <Alert severity="error" sx={{ marginBottom: 2 }}>
-              The weights must sum to 1. Please adjust the values.
-            </Alert>
-          )}
+
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <NavLink
               to="/NewOption"
