@@ -113,6 +113,7 @@ const HeroSection: React.FC = () => {
     "(min-width:600px) and (max-width:1024px)"
   );
   const isLargeScreen = useMediaQuery("(min-width:1024px)");
+  const isLandscape = useMediaQuery("(orientation: landscape)");
 
   const { handleNavigation } = useBreadcrumbs();
   const goToNewDecision = () => {
@@ -120,10 +121,11 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <Box sx={{ height: "100vh", backgroundColor: "#81c784" }}>
+    <Box sx={{ height: "100vh", background: "linear-gradient(to bottom right, #669900 0%, #99cc00 100%)" }}>
+      
       <Grid container style={{ height: "100%" }}>
-        {isSmallScreen || isTabletScreen ? (
-          // Stacked layout for small screens and tablets
+        {(isSmallScreen && !isLandscape) || isTabletScreen ? (
+          // Stacked layout for small screens and tablets in portrait orientation
           <>
             <Grid item xs={12} style={{ height: "50%" }}>
               <Box
@@ -153,15 +155,13 @@ const HeroSection: React.FC = () => {
               >
                 <HeroContent
                   isSmallScreen={isSmallScreen}
-                  isTabletScreen={isTabletScreen}
-                  isLargeScreen={isLargeScreen}
                   goToNewDecision={goToNewDecision}
                 />
               </Box>
             </Grid>
           </>
         ) : (
-          // Side-by-side layout for larger screens
+          // Side-by-side layout for larger screens and small screens in landscape orientation
           <>
             <Grid item xs={12} md={6} style={{ height: "100%" }}>
               <Box
@@ -191,8 +191,6 @@ const HeroSection: React.FC = () => {
               >
                 <HeroContent
                   isSmallScreen={isSmallScreen}
-                  isTabletScreen={isTabletScreen}
-                  isLargeScreen={isLargeScreen}
                   goToNewDecision={goToNewDecision}
                 />
               </Box>

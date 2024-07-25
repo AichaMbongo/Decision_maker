@@ -14,40 +14,75 @@ import {
   List,
   ListItem,
   ListItemText,
+  LinearProgress,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear"; // Import ClearIcon for the "Clear Search" button
+import ClearIcon from "@mui/icons-material/Clear";
 import AddIcon from "@mui/icons-material/Add";
 import Layout from "../components/Layout";
 import BackButton from "../components/BackButton";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { supabase } from "../supabase/supabaseClient";
+import { getUserId } from "../supabase/auth";
 import DecisionState from "../components/interfaces/DecisionState";
 
 interface CriteriaCategories {
   [key: string]: string[];
 }
 
+interface CustomCriteria {
+  name: string;
+}
+
 const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected }) => ({
   margin: theme.spacing(0.5),
-  backgroundColor: isSelected ? "#4caf50" : theme.palette.background.paper,
+  backgroundColor: isSelected ? "#337357" : theme.palette.background.paper,
   color: isSelected ? "#fff" : theme.palette.text.primary,
   "&:hover": {
-    backgroundColor: isSelected ? "#388e3c" : theme.palette.action.hover,
+    backgroundColor: isSelected ? "#2c6b4e" : theme.palette.action.hover,
   },
 }));
+
+const HighlightText: React.FC<{ text: string; highlight: string }> = ({ text, highlight }) => {
+  if (!highlight.trim()) return <>{text}</>;
+
+  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.toLowerCase() === highlight.toLowerCase() ? (
+          <span key={index} style={{ backgroundColor: "#ffeb3b" }}>
+            {part}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+};
 
 const NewCriteriaPage: React.FC = () => {
   const [formData, setFormData] = useState({ criteria: "" });
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
-  const [criteria, setCriteria] = useState<string[]>([]);
+  const [predefinedCriteria, setPredefinedCriteria] = useState<string[]>([]);
+  const [originalPredefinedCriteria, setOriginalPredefinedCriteria] = useState<string[]>([]);
   const [selectedCriteria, setSelectedCriteria] = useState<string[]>([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCategories, setFilteredCategories] = useState<CriteriaCategories>({});
+  const [originalCategories, setOriginalCategories] = useState<CriteriaCategories>({});
+  const [customCriteria, setCustomCriteria] = useState<CustomCriteria[]>([]);
+  const [originalCustomCriteria, setOriginalCustomCriteria] = useState<CustomCriteria[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCustomCriteriaLoading, setIsCustomCriteriaLoading] = useState(true);
+  const [currentTab, setCurrentTab] = useState("predefined");
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const { handleNavigation } = useBreadcrumbs();
 
@@ -79,7 +114,7 @@ const NewCriteriaPage: React.FC = () => {
     ]);
 
     console.log(`Selected criteria: ${criteria}`);
-    setSuccessMessageOpen(true); // Show success message
+    setSuccessMessageOpen(true);
   };
 
   const handleSubmit = () => {
@@ -88,71 +123,118 @@ const NewCriteriaPage: React.FC = () => {
   };
 
   const fetchCriteriaCategories = async () => {
+    setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from("criteria_categories")
         .select("*");
-  
+
       if (error) {
-        console.error("Error fetching criteria categories:", error);
+        console.error("Error fetching criteria categories:", error.message);
         return;
       }
-  
-      console.log("Fetched data:", data); // Log fetched data
-  
-      // Transform the data into the expected format
+
       const categories: CriteriaCategories = {};
       data?.forEach((item: any) => {
-        // Assuming item.criteria is already an array
-        categories[item.category_name] = item.criteria; 
+        categories[item.category_name] = item.criteria;
       });
-  
-      console.log("Formatted categories:", categories); // Log formatted categories
-  
+
+      const allPredefinedCriteria = Object.values(categories).flat();
+      setPredefinedCriteria(allPredefinedCriteria);
+      setOriginalPredefinedCriteria(allPredefinedCriteria);
+      setOriginalCategories(categories);
       setFilteredCategories(categories);
     } catch (error) {
       console.error("Error fetching criteria categories:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-  
-  
-  
+
+  const fetchCustomCriteria = async () => {
+    setIsCustomCriteriaLoading(true);
+    try {
+      const userId = await getUserId();
+      if (!userId) {
+        console.error("User not authenticated");
+        return;
+      }
+
+      const { data: criteriaData, error: criteriaError } = await supabase
+        .from("criteria")
+        .select("name")
+        .eq("user_id", userId);
+
+      if (criteriaError) {
+        console.error("Error fetching custom criteria:", criteriaError.message);
+        return;
+      }
+
+      setCustomCriteria(criteriaData || []);
+      setOriginalCustomCriteria(criteriaData || []);
+    } catch (error) {
+      console.error("Error fetching custom criteria:", error);
+    } finally {
+      setIsCustomCriteriaLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchCriteriaCategories();
+    const fetchData = async () => {
+      await fetchCriteriaCategories();
+      await fetchCustomCriteria();
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
     if (searchTerm === "") {
-      fetchCriteriaCategories(); // Refresh categories when search is cleared
+      setFilteredCategories(originalCategories);
+      setCustomCriteria(originalCustomCriteria);
+      setExpandedCategories([]);
       return;
     }
 
-    const filtered = Object.entries(filteredCategories).reduce(
-      (acc, [category, items]) => {
-        const filteredItems = items.filter((item) =>
-          item.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+    const filterCriteria = (criteria: string[]) =>
+      criteria.filter((item) =>
+        item.toLowerCase().includes(searchTerm.toLowerCase())
+      );
 
+    const filteredPredefined = Object.entries(originalCategories).reduce(
+      (acc, [category, items]) => {
+        const filteredItems = filterCriteria(items);
         if (
           category.toLowerCase().includes(searchTerm.toLowerCase()) ||
           filteredItems.length > 0
         ) {
-          acc[category] = filteredItems.length > 0 ? filteredItems : items;
+          acc[category] = filteredItems;
         }
         return acc;
       },
       {} as CriteriaCategories
     );
 
-    console.log("Filtered categories:", filtered); // Log filtered categories
+    const filteredCustom = filterCriteria(customCriteria.map((item) => item.name));
 
-    setFilteredCategories(filtered);
-  }, [searchTerm, filteredCategories]);
+    const expanded = Object.entries(filteredPredefined).reduce<string[]>((acc, [category, items]) => {
+      if (items.length > 0) {
+        acc.push(category);
+      }
+      return acc;
+    }, []);
+
+    setFilteredCategories(filteredPredefined);
+    setCustomCriteria(filteredCustom.map((name) => ({ name })));
+    setExpandedCategories(expanded);
+  }, [searchTerm, originalCategories, originalCustomCriteria]);
 
   const isEmpty = Object.keys(filteredCategories).every(
     (key) => filteredCategories[key].length === 0
   );
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setCurrentTab(newValue);
+  };
 
   return (
     <Layout>
@@ -193,7 +275,12 @@ const NewCriteriaPage: React.FC = () => {
                     <SearchIcon />
                     {searchTerm && (
                       <Button
-                        onClick={() => setSearchTerm("")}
+                        onClick={() => {
+                          setSearchTerm("");
+                          setFilteredCategories(originalCategories);
+                          setCustomCriteria(originalCustomCriteria);
+                          setExpandedCategories([]);
+                        }}
                         sx={{ marginLeft: 1 }}
                       >
                         <ClearIcon />
@@ -213,40 +300,120 @@ const NewCriteriaPage: React.FC = () => {
             </Button>
           </Stack>
 
-          <Box
-            sx={{
-              width: "100%",
-              maxHeight: "400px", // Limit the height for scrolling
-              overflowY: "auto",  // Enable vertical scrolling
-              marginTop: 2,
-            }}
-          >
-            {isEmpty ? (
-              <Typography variant="h6" color="error" align="center">
-                No criteria found for "{searchTerm}"
+          <Tabs value={currentTab} onChange={handleChangeTab} sx={{ marginTop: 2, marginBottom: 2 }}>
+            <Tab label="Predefined Criteria" value="predefined" />
+            <Tab label="Custom Criteria" value="custom" />
+          </Tabs>
+
+          {currentTab === "predefined" && (
+            <Box
+              sx={{
+                width: "100%",
+                maxHeight: "400px",
+                overflowY: "auto",
+              }}
+            >
+              <Typography variant="body1" align="center" sx={{ mb: 2 }}>
+                Can't find the criteria you are looking for? Create your own custom criteria!
               </Typography>
-            ) : (
-              Object.entries(filteredCategories).map(([category, items]) => (
-                <Accordion key={category} sx={{ width: "100%" }}>
+              {isLoading ? (
+                <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                  <LinearProgress />
+                </Stack>
+              ) : isEmpty ? (
+                <Typography variant="h6" color="error" align="center">
+                  No criteria found for "{searchTerm}"
+                </Typography>
+              ) : (
+                Object.entries(filteredCategories).map(([category, items]) => (
+                  <Accordion
+                    key={category}
+                    expanded={expandedCategories.includes(category)}
+                    onChange={() => setExpandedCategories(
+                      expandedCategories.includes(category)
+                        ? expandedCategories.filter(cat => cat !== category)
+                        : [...expandedCategories, category]
+                    )}
+                    sx={{ width: "100%" }}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={`${category}-content`}
+                      id={`${category}-header`}
+                    >
+                      <Typography variant="h6">
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <List>
+                        {items.map((crit, index) => (
+                          <ListItem
+                            key={index}
+                            button
+                            onClick={() => handleSelectCriteria(crit)}
+                            sx={{
+                              backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
+                              color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
+                            }}
+                          >
+                            <ListItemText
+                              primary={
+                                <HighlightText text={crit} highlight={searchTerm} />
+                              }
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </AccordionDetails>
+                  </Accordion>
+                ))
+              )}
+            </Box>
+          )}
+
+          {currentTab === "custom" && (
+            <Box
+              sx={{
+                width: "100%",
+                maxHeight: "400px",
+                overflowY: "auto",
+              }}
+            >
+              {isCustomCriteriaLoading ? (
+                <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                  <LinearProgress />
+                </Stack>
+              ) : customCriteria.length === 0 ? (
+                <Typography variant="h6" color="textSecondary" align="center">
+                  You haven't added any custom criteria yet. Start by creating your own criteria.
+                </Typography>
+              ) : (
+                <Accordion sx={{ width: "100%" }}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`${category}-content`}
-                    id={`${category}-header`}
+                    aria-controls="custom-criteria-content"
+                    id="custom-criteria-header"
                   >
                     <Typography variant="h6">
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                      Custom Criteria
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <List>
-                      {items.map((crit, index) => (
-                        <ListItem key={index} button onClick={() => handleSelectCriteria(crit)}>
+                      {customCriteria.map((crit, index) => (
+                        <ListItem
+                          key={index}
+                          button
+                          onClick={() => handleSelectCriteria(crit.name)}
+                          sx={{
+                            backgroundColor: selectedCriteria.includes(crit.name) ? "#337357" : "transparent",
+                            color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
+                          }}
+                        >
                           <ListItemText
                             primary={
-                              <StyledChip
-                                label={crit}
-                                isSelected={selectedCriteria.includes(crit)}
-                              />
+                              <HighlightText text={crit.name} highlight={searchTerm} />
                             }
                           />
                         </ListItem>
@@ -254,27 +421,25 @@ const NewCriteriaPage: React.FC = () => {
                     </List>
                   </AccordionDetails>
                 </Accordion>
-              ))
-            )}
-          </Box>
-
+              )}
+            </Box>
+          )}
           <Button
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            sx={{ position: "absolute", bottom: 16 }}
           >
             Submit Criteria
           </Button>
+
+          <Snackbar
+            open={successMessageOpen}
+            autoHideDuration={3000}
+            onClose={() => setSuccessMessageOpen(false)}
+            message="Criteria added successfully!"
+          />
         </Stack>
       </Container>
-
-      <Snackbar
-        open={successMessageOpen}
-        autoHideDuration={3000}
-        onClose={() => setSuccessMessageOpen(false)}
-        message="Criteria successfully selected!"
-      />
     </Layout>
   );
 };
