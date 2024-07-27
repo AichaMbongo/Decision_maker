@@ -45,8 +45,10 @@ const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected })
   color: isSelected ? "#fff" : theme.palette.text.primary,
   "&:hover": {
     backgroundColor: isSelected ? "#2c6b4e" : theme.palette.action.hover,
+    color: isSelected ? "#e0f7fa" : theme.palette.text.primary, // Ensure good contrast on hover
   },
 }));
+
 
 const HighlightText: React.FC<{ text: string; highlight: string }> = ({ text, highlight }) => {
   if (!highlight.trim()) return <>{text}</>;
@@ -349,20 +351,24 @@ const NewCriteriaPage: React.FC = () => {
                       <List>
                         {items.map((crit, index) => (
                           <ListItem
-                            key={index}
-                            button
-                            onClick={() => handleSelectCriteria(crit)}
-                            sx={{
-                              backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
-                              color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
-                            }}
-                          >
-                            <ListItemText
-                              primary={
-                                <HighlightText text={crit} highlight={searchTerm} />
-                              }
-                            />
-                          </ListItem>
+  key={index}
+  button
+  onClick={() => handleSelectCriteria(crit)}
+  sx={{
+    backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
+    color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
+    "&:hover": {
+      backgroundColor: selectedCriteria.includes(crit) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
+      color: selectedCriteria.includes(crit) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+    },
+  }}
+>
+  <ListItemText
+    primary={
+      <HighlightText text={crit} highlight={searchTerm} />
+    }
+  />
+</ListItem>
                         ))}
                       </List>
                     </AccordionDetails>
