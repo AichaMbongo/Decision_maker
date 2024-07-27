@@ -15,10 +15,10 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Layout from "../components/Layout";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
-
 import { supabase } from "../supabase/supabaseClient"; // Import supabase client
 import { getUserId } from "../supabase/auth"; // Import getUserId function
-        interface criterion {
+
+interface Criterion {
   name: string;
   weight: number;
   comparisons: object;
@@ -29,7 +29,6 @@ const defaultCriterion = {
   weight: 1,
   comparisons: {},
 };
-
 
 const NewCriteria = () => {
   const [criterion, setCriterion] = useState<string>("");
@@ -56,10 +55,7 @@ const NewCriteria = () => {
       console.log("User not authenticated. Criterion will not be saved to the database.");
     }
 
-
     // Update the local state with the new criterion
-    //const newCriterion = { name: criterion, weight: 0, comparisons: {} };
-   const addCriteria = () => {
     const newCriterion = { name: criterion, weight: 1, comparisons: {} };
 
     const updatedCriteria = [...decisionState.criteria, newCriterion];
