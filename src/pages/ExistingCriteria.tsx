@@ -104,7 +104,7 @@ const NewCriteriaPage: React.FC = () => {
       return;
     }
 
-    const newCriterion = { name: criteria, weight: 0, comparisons: {} };
+    const newCriterion = { name: criteria, weight: 1, comparisons: {} };
     const updatedCriteria = [...decisionState.criteria, newCriterion];
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
 

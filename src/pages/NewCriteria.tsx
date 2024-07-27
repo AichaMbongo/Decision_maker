@@ -18,6 +18,18 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { supabase } from "../supabase/supabaseClient"; // Import supabase client
 import { getUserId } from "../supabase/auth"; // Import getUserId function
 
+interface Criterion {
+  name: string;
+  weight: number;
+  comparisons: object;
+}
+
+const defaultCriterion = {
+  name: "",
+  weight: 1,
+  comparisons: {},
+};
+
 const NewCriteria = () => {
   const [criterion, setCriterion] = useState<string>("");
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
@@ -44,7 +56,8 @@ const NewCriteria = () => {
     }
 
     // Update the local state with the new criterion
-    const newCriterion = { name: criterion, weight: 0, comparisons: {} };
+    const newCriterion = { name: criterion, weight: 1, comparisons: {} };
+
     const updatedCriteria = [...decisionState.criteria, newCriterion];
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
 
