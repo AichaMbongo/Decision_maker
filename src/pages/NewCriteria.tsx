@@ -9,6 +9,8 @@ import {
   useMediaQuery,
   useTheme,
   Paper,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import BackButton from "../components/BackButton";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -18,20 +20,9 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { supabase } from "../supabase/supabaseClient"; // Import supabase client
 import { getUserId } from "../supabase/auth"; // Import getUserId function
 
-interface Criterion {
-  name: string;
-  weight: number;
-  comparisons: object;
-}
-
-const defaultCriterion = {
-  name: "",
-  weight: 1,
-  comparisons: {},
-};
-
 const NewCriteria = () => {
   const [criterion, setCriterion] = useState<string>("");
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,6 +30,11 @@ const NewCriteria = () => {
   const { handleNavigation } = useBreadcrumbs();
 
   const addCriteria = async () => {
+    if (criterion.trim() === "") {
+      setNotificationOpen(true); // Show notification if input is empty
+      return;
+    }
+
     const userId = await getUserId(); // Get the current user's ID
 
     if (userId) {
@@ -57,7 +53,6 @@ const NewCriteria = () => {
 
     // Update the local state with the new criterion
     const newCriterion = { name: criterion, weight: 1, comparisons: {} };
-
     const updatedCriteria = [...decisionState.criteria, newCriterion];
     setDecisionState({ ...decisionState, criteria: updatedCriteria });
 
@@ -109,7 +104,7 @@ const NewCriteria = () => {
               <TextField
                 id="filled-basic"
                 name="newCriteria"
-                label="ie. Cost, Comfort"
+                label="e.g., Cost, Comfort"
                 variant="filled"
                 value={criterion}
                 onChange={(e) => setCriterion(e.target.value)}
@@ -133,6 +128,17 @@ const NewCriteria = () => {
           </Stack>
         </Paper>
       </Stack>
+
+      {/* Notification Snackbar */}
+      <Snackbar
+        open={notificationOpen}
+        autoHideDuration={3000}
+        onClose={() => setNotificationOpen(false)}
+      >
+        <Alert onClose={() => setNotificationOpen(false)} severity="warning">
+          Please enter a criteria before proceeding.
+        </Alert>
+      </Snackbar>
     </Layout>
   );
 };

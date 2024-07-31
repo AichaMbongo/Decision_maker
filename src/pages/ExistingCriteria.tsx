@@ -14,7 +14,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  LinearProgress,
+  CircularProgress,
   Tabs,
   Tab,
 } from "@mui/material";
@@ -30,6 +30,7 @@ import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { supabase } from "../supabase/supabaseClient";
 import { getUserId } from "../supabase/auth";
 import DecisionState from "../components/interfaces/DecisionState";
+import {  useTheme, useMediaQuery } from "@mui/material";
 
 interface CriteriaCategories {
   [key: string]: string[];
@@ -38,6 +39,7 @@ interface CriteriaCategories {
 interface CustomCriteria {
   name: string;
 }
+
 
 const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected }) => ({
   margin: theme.spacing(0.5),
@@ -85,8 +87,12 @@ const NewCriteriaPage: React.FC = () => {
   const [isCustomCriteriaLoading, setIsCustomCriteriaLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState("predefined");
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [isCustomCriteriaExpanded, setIsCustomCriteriaExpanded] = useState(false); // New state for custom criteria dropdown
 
   const { handleNavigation } = useBreadcrumbs();
+  const theme = useTheme();
+const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
     setDecisionState((prevState) => ({
@@ -194,6 +200,7 @@ const NewCriteriaPage: React.FC = () => {
       setFilteredCategories(originalCategories);
       setCustomCriteria(originalCustomCriteria);
       setExpandedCategories([]);
+      setIsCustomCriteriaExpanded(false); // Collapse dropdown if search term is cleared
       return;
     }
 
@@ -228,6 +235,10 @@ const NewCriteriaPage: React.FC = () => {
     setFilteredCategories(filteredPredefined);
     setCustomCriteria(filteredCustom.map((name) => ({ name })));
     setExpandedCategories(expanded);
+
+    // Open dropdown if search term matches any custom criteria
+    setIsCustomCriteriaExpanded(filteredCustom.length > 0);
+
   }, [searchTerm, originalCategories, originalCustomCriteria]);
 
   const isEmpty = Object.keys(filteredCategories).every(
@@ -237,6 +248,7 @@ const NewCriteriaPage: React.FC = () => {
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };
+  
 
   return (
     <Layout>
@@ -253,42 +265,48 @@ const NewCriteriaPage: React.FC = () => {
           justifyContent="center"
           sx={{ minHeight: "calc(100vh - 64px)", position: "relative" }}
         >
-          <Typography variant="h4" align="center">
-            Select or Add Criteria
-          </Typography>
+         <Typography
+      variant="h4"
+      align="center"
+      sx={{ 
+        fontSize: isMobile ? "1.5rem" : "2rem",  // Responsive font size
+        lineHeight: isMobile ? "2rem" : "2.5rem", // Adjust line height for mobile
+      }}
+    >
+      Choose from Predefined Criteria or Add Your Own Custom Criteria
+    </Typography>
+
+    <Typography
+      variant="body1"
+      align="center"
+      sx={{ 
+        mb: 2,
+        fontSize: isMobile ? "0.875rem" : "1rem",  // Responsive font size
+      }}
+    >
+      What criteria would you consider when making the decision you are trying to make?
+    </Typography>
 
           <Stack
             direction="row"
             spacing={2}
             alignItems="center"
             justifyContent="center"
-            sx={{ width: "100%", position: "sticky", top: 0, backgroundColor: "background.paper", padding: 2, zIndex: 1 }}
+            sx={{ width: "100%", mb: 2 }}
           >
             <TextField
-              name="criteria"
-              label="Search Criteria"
               variant="outlined"
-              fullWidth
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
-                endAdornment: (
-                  <>
-                    <SearchIcon />
-                    {searchTerm && (
-                      <Button
-                        onClick={() => {
-                          setSearchTerm("");
-                          setFilteredCategories(originalCategories);
-                          setCustomCriteria(originalCustomCriteria);
-                          setExpandedCategories([]);
-                        }}
-                        sx={{ marginLeft: 1 }}
-                      >
-                        <ClearIcon />
-                      </Button>
-                    )}
-                  </>
+                startAdornment: (
+                  <SearchIcon />
+                ),
+                endAdornment: searchTerm && (
+                  <Button onClick={() => setSearchTerm("")} sx={{ marginLeft: 1 }}>
+                    <ClearIcon />
+                  </Button>
                 ),
               }}
             />
@@ -320,7 +338,7 @@ const NewCriteriaPage: React.FC = () => {
               </Typography>
               {isLoading ? (
                 <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
-                  <LinearProgress />
+                  <CircularProgress />
                 </Stack>
               ) : isEmpty ? (
                 <Typography variant="h6" color="error" align="center">
@@ -351,24 +369,24 @@ const NewCriteriaPage: React.FC = () => {
                       <List>
                         {items.map((crit, index) => (
                           <ListItem
-  key={index}
-  button
-  onClick={() => handleSelectCriteria(crit)}
-  sx={{
-    backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
-    color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
-    "&:hover": {
-      backgroundColor: selectedCriteria.includes(crit) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
-      color: selectedCriteria.includes(crit) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
-    },
-  }}
->
-  <ListItemText
-    primary={
-      <HighlightText text={crit} highlight={searchTerm} />
-    }
-  />
-</ListItem>
+                            key={index}
+                            button
+                            onClick={() => handleSelectCriteria(crit)}
+                            sx={{
+                              backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
+                              color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
+                              "&:hover": {
+                                backgroundColor: selectedCriteria.includes(crit) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
+                                color: selectedCriteria.includes(crit) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+                              },
+                            }}
+                          >
+                            <ListItemText
+                              primary={
+                                <HighlightText text={crit} highlight={searchTerm} />
+                              }
+                            />
+                          </ListItem>
                         ))}
                       </List>
                     </AccordionDetails>
@@ -388,14 +406,18 @@ const NewCriteriaPage: React.FC = () => {
             >
               {isCustomCriteriaLoading ? (
                 <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
-                  <LinearProgress />
+                  <CircularProgress />
                 </Stack>
               ) : customCriteria.length === 0 ? (
                 <Typography variant="h6" color="textSecondary" align="center">
                   You haven't added any custom criteria yet. Start by creating your own criteria.
                 </Typography>
               ) : (
-                <Accordion sx={{ width: "100%" }}>
+                <Accordion
+                  expanded={isCustomCriteriaExpanded} // Use state to control expansion
+                  onChange={() => setIsCustomCriteriaExpanded(prev => !prev)}
+                  sx={{ width: "100%" }}
+                >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="custom-criteria-content"
@@ -414,7 +436,12 @@ const NewCriteriaPage: React.FC = () => {
                           onClick={() => handleSelectCriteria(crit.name)}
                           sx={{
                             backgroundColor: selectedCriteria.includes(crit.name) ? "#337357" : "transparent",
-                            color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
+                              color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
+                              "&:hover": {
+                                backgroundColor: selectedCriteria.includes(crit.name) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
+                                color: selectedCriteria.includes(crit.name) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+                              },
+                            
                           }}
                         >
                           <ListItemText
@@ -430,6 +457,7 @@ const NewCriteriaPage: React.FC = () => {
               )}
             </Box>
           )}
+
           <Button
             variant="contained"
             color="primary"
