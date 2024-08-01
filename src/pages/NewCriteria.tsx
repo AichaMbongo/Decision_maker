@@ -123,7 +123,22 @@ const NewCriteria = () => {
               onClick={addCriteria}
               type="submit"
             >
-              Enter New Criteria
+              Submit New Criteria
+            </Button>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              or
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={() => navigate("/ExistingCriteria")}
+              sx={{
+                borderRadius: "16px",
+                paddingRight: 2,
+                paddingLeft: 2,
+                minWidth: "200px",
+              }}
+            >
+              View Existing Criteria
             </Button>
           </Stack>
         </Paper>

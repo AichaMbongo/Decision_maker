@@ -30,7 +30,7 @@ import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { supabase } from "../supabase/supabaseClient";
 import { getUserId } from "../supabase/auth";
 import DecisionState from "../components/interfaces/DecisionState";
-import {  useTheme, useMediaQuery } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 interface CriteriaCategories {
   [key: string]: string[];
@@ -39,7 +39,6 @@ interface CriteriaCategories {
 interface CustomCriteria {
   name: string;
 }
-
 
 const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected }) => ({
   margin: theme.spacing(0.5),
@@ -50,7 +49,6 @@ const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected })
     color: isSelected ? "#e0f7fa" : theme.palette.text.primary, // Ensure good contrast on hover
   },
 }));
-
 
 const HighlightText: React.FC<{ text: string; highlight: string }> = ({ text, highlight }) => {
   if (!highlight.trim()) return <>{text}</>;
@@ -78,6 +76,7 @@ const NewCriteriaPage: React.FC = () => {
   const [originalPredefinedCriteria, setOriginalPredefinedCriteria] = useState<string[]>([]);
   const [selectedCriteria, setSelectedCriteria] = useState<string[]>([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false); // New state for error message
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCategories, setFilteredCategories] = useState<CriteriaCategories>({});
   const [originalCategories, setOriginalCategories] = useState<CriteriaCategories>({});
@@ -91,8 +90,7 @@ const NewCriteriaPage: React.FC = () => {
 
   const { handleNavigation } = useBreadcrumbs();
   const theme = useTheme();
-const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const updateDecisionState = (updatedProperties: Partial<DecisionState>) => {
     setDecisionState((prevState) => ({
@@ -126,6 +124,11 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   };
 
   const handleSubmit = () => {
+    if (selectedCriteria.length === 0) {
+      setErrorMessageOpen(true); // Show error message if no criteria are selected
+      return;
+    }
+
     handleNavigation("/OtherNewCriteria", "Add Another Criteria");
     console.log("Submit criteria");
   };
@@ -248,7 +251,6 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };
-  
 
   return (
     <Layout>
@@ -265,27 +267,27 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
           justifyContent="center"
           sx={{ minHeight: "calc(100vh - 64px)", position: "relative" }}
         >
-         <Typography
-      variant="h4"
-      align="center"
-      sx={{ 
-        fontSize: isMobile ? "1.5rem" : "2rem",  // Responsive font size
-        lineHeight: isMobile ? "2rem" : "2.5rem", // Adjust line height for mobile
-      }}
-    >
-      Choose from Predefined Criteria or Add Your Own Custom Criteria
-    </Typography>
+          <Typography
+            variant="h4"
+            align="center"
+            sx={{
+              fontSize: isMobile ? "1.5rem" : "2rem",  // Responsive font size
+              lineHeight: isMobile ? "2rem" : "2.5rem", // Adjust line height for mobile
+            }}
+          >
+            Choose from Predefined Criteria or Add Your Own Custom Criteria
+          </Typography>
 
-    <Typography
-      variant="body1"
-      align="center"
-      sx={{ 
-        mb: 2,
-        fontSize: isMobile ? "0.875rem" : "1rem",  // Responsive font size
-      }}
-    >
-      What criteria would you consider when making the decision you are trying to make?
-    </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{
+              mb: 2,
+              fontSize: isMobile ? "0.875rem" : "1rem",  // Responsive font size
+            }}
+          >
+            What criteria would you consider when making the decision you are trying to make?
+          </Typography>
 
           <Stack
             direction="row"
@@ -436,12 +438,11 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
                           onClick={() => handleSelectCriteria(crit.name)}
                           sx={{
                             backgroundColor: selectedCriteria.includes(crit.name) ? "#337357" : "transparent",
-                              color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
-                              "&:hover": {
-                                backgroundColor: selectedCriteria.includes(crit.name) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
-                                color: selectedCriteria.includes(crit.name) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
-                              },
-                            
+                            color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
+                            "&:hover": {
+                              backgroundColor: selectedCriteria.includes(crit.name) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
+                              color: selectedCriteria.includes(crit.name) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+                            },
                           }}
                         >
                           <ListItemText
@@ -471,6 +472,13 @@ const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
             autoHideDuration={3000}
             onClose={() => setSuccessMessageOpen(false)}
             message="Criteria added successfully!"
+          />
+
+          <Snackbar
+            open={errorMessageOpen}
+            autoHideDuration={3000}
+            onClose={() => setErrorMessageOpen(false)}
+            message="You must select at least one criteria before submitting."
           />
         </Stack>
       </Container>
