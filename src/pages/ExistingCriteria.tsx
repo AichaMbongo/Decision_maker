@@ -106,21 +106,27 @@ const NewCriteriaPage: React.FC = () => {
 
   const handleSelectCriteria = (criteria: string) => {
     if (selectedCriteria.includes(criteria)) {
-      console.log(`Criteria "${criteria}" is already selected.`);
-      return;
+      // Remove the criteria if it is already selected
+      const updatedSelectedCriteria = selectedCriteria.filter(
+        (item) => item !== criteria
+      );
+      const updatedCriteria = decisionState.criteria.filter(
+        (item) => item.name !== criteria
+      );
+      setSelectedCriteria(updatedSelectedCriteria);
+      setDecisionState({ ...decisionState, criteria: updatedCriteria });
+    } else {
+      // Add the criteria if it is not selected
+      const newCriterion = { name: criteria, weight: 1, comparisons: {} };
+      const updatedCriteria = [...decisionState.criteria, newCriterion];
+      setDecisionState({ ...decisionState, criteria: updatedCriteria });
+      setSelectedCriteria((prevSelectedCriteria) => [
+        ...prevSelectedCriteria,
+        criteria,
+      ]);
+      setSuccessMessageOpen(true);
     }
-
-    const newCriterion = { name: criteria, weight: 1, comparisons: {} };
-    const updatedCriteria = [...decisionState.criteria, newCriterion];
-    setDecisionState({ ...decisionState, criteria: updatedCriteria });
-
-    setSelectedCriteria((prevSelectedCriteria) => [
-      ...prevSelectedCriteria,
-      criteria,
-    ]);
-
     console.log(`Selected criteria: ${criteria}`);
-    setSuccessMessageOpen(true);
   };
 
   const handleSubmit = () => {
