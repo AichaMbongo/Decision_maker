@@ -26,6 +26,7 @@ import { supabase } from "../supabase/supabaseClient";
 import { getUserId } from "../supabase/auth";
 import DecisionState from "../components/interfaces/DecisionState";
 import Confetti from "react-confetti";
+import { useAuth } from "../contexts/AuthContext"; // Import the authentication context
 
 interface TotalScores {
   [option: string]: number;
@@ -67,7 +68,8 @@ const ResultsPage = () => {
   const [showCompletionPopup, setShowCompletionPopup] =
     useState<boolean>(false);
 
-  console.log(decisionState);
+  const { isAuthenticated } = useAuth(); // Get authentication status from context
+
   useEffect(() => {
     const calculateTotalScores = () => {
       const scores: TotalScores = {};
@@ -357,10 +359,18 @@ const ResultsPage = () => {
             sx={{
               gridArea: "save",
               display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <CustomButton onClick={saveDecision}>Save Decision</CustomButton>
+            {isAuthenticated ? (
+              <CustomButton onClick={saveDecision}>Save Decision</CustomButton>
+            ) : (
+              <Typography variant="body2" sx={{ color: "gray", textAlign: "center" }}>
+                 If you wish to save decisions in the future, make sure to log in beforehand.
+              </Typography>
+            )}
           </Box>
         </Box>
       </Container>
