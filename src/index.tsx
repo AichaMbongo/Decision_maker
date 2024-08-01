@@ -78,6 +78,7 @@ const Main: React.FC = () => {
 root.render(
   <React.StrictMode>
     <Main />
+    <Main />
   </React.StrictMode>
 );
 
