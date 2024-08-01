@@ -20,7 +20,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -29,6 +29,7 @@ import theme from "../theme/theme";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { getUser, signOut } from "../supabase/auth";
 import { supabase } from "../supabase/supabaseClient";
+import { useAuth } from "../contexts/AuthContext";
 
 const navItems = [
   // { label: "DecisionMaker", path: "/" },
@@ -119,6 +120,8 @@ function Header({ auth, setAuth }: HeaderProps) {
     setAnchorEl(null);
   };
 
+  const { signOut } = useAuth();
+
   const handleSignOut = async () => {
     await signOut();
     setAuth(false);
@@ -126,6 +129,14 @@ function Header({ auth, setAuth }: HeaderProps) {
     setSnackbarMessage("Logout successful!");
     setSnackbarOpen(true);
     handleClose();
+    navigate("/", { state: { isAuthenticated: false } });
+
+  };
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/login", { state: { isAuthenticated: false } });
+    window.location.reload(); // Refresh the page
   };
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");

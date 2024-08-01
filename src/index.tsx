@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
+import { AuthProvider } from './contexts/AuthContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -57,15 +58,19 @@ const Main: React.FC = () => {
 
   return (
     <>
+   
       <BrowserRouter>
+      <AuthProvider>
         <App />
-        {/* Other components or routes */}
+        </AuthProvider>
+        
       </BrowserRouter>
       <ConfirmationModal
         open={openConfirmDialog}
         onClose={handleCancel}
         onConfirm={handleConfirmRefresh}
       />
+      
     </>
   );
 };

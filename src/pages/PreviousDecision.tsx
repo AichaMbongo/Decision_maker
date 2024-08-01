@@ -175,7 +175,7 @@ const PreviousDecisions: React.FC = () => {
     setPage(value);
   };
 
-  const noResultsMessage = "No decisions match your search criteria.";
+  const noResultsMessage = "No previous decisions found.";
 
   return (
     <Layout>
