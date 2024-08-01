@@ -95,12 +95,46 @@ const NewDecision: React.FC = () => {
             spacing={2}
             alignItems="center"
             justifyContent="center"
+            sx={{ p: 2 }}
           >
-            <Typography variant="h3">
-              Let us Begin With The End in Mind.
-            </Typography>
-            <Typography variant="h3">What Decision Are You Trying to Make?</Typography>
-            <GolfCourseIcon sx={{ fontSize: 40 }} />
+          <Typography
+        variant="h3"
+        align="center"
+        sx={{
+          fontSize: {
+            xs: '1.5rem', // Extra small screens (mobile)
+            sm: '2rem',   // Small screens (tablets)
+            md: '2rem', // Medium screens (small desktops)
+            lg: '2rem'    // Large screens (large desktops)
+          }
+        }}
+      >
+        Let us Begin With The End in Mind.
+      </Typography>
+      <Typography
+        variant="h3"
+        align="center"
+        sx={{
+          fontSize: {
+            xs: '1rem', // Extra small screens (mobile)
+            sm: '2rem',   // Small screens (tablets)
+            md: '2rem', // Medium screens (small desktops)
+            lg: '2rem'    // Large screens (large desktops)
+          }
+        }}
+      >
+        What Decision Are You Trying to Make?
+      </Typography>
+      <GolfCourseIcon
+        sx={{ 
+          fontSize: {
+            xs: 30, // Extra small screens (mobile)
+            sm: 35, // Small screens (tablets)
+            md: 40, // Medium screens (small desktops)
+            lg: 45  // Large screens (large desktops)
+          }
+        }}
+      />
             <TextField
               id="filled-basic"
               defaultValue=""

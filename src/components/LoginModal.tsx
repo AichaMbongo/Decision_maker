@@ -39,7 +39,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           You are not logged in
         </Typography>
         <Typography sx={{ mt: 2 }}>
-          To ensure your data is saved, please log in. If you choose not to log in, your data will not be saved.
+          To ensure your decisions are saved, please log in. If you choose not to log in, your decisions will not be saved.
         </Typography>
         <Box sx={{ marginTop: 2, display: "flex", gap: 2 }}>
           <Button variant="contained" color="primary" onClick={handleLogin}>
