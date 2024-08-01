@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, useMediaQuery, styled } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  useMediaQuery,
+  styled,
+  Button,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import CustomButton from "./Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
@@ -9,27 +18,47 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import theme from "../theme/theme";
 import Lottie from "react-lottie-player";
 import animationData from "../animations/success.json";
+import LoginModal from "./LoginModal";
+import { useAuth } from "../contexts/AuthContext";
 
 const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
   const StyledIcon = styled("span")({
     color: isSmallScreen ? theme.palette.primary.main : "#337357",
   });
 
+  const { isAuthenticated } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    console.log("User isAuthenticated:", isAuthenticated); // Log to check state
+    if (!isAuthenticated) {
+      setModalOpen(true);
+    } else {
+      navigate("/NewDecision"); // Redirect if the user is authenticated
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   return (
+    
     <Box sx={{ padding: isSmallScreen ? 2 : 3 }}>
       <Typography
         variant={isSmallScreen ? "subtitle3" : "subtitle2"}
         gutterBottom
-        color={isSmallScreen ? "white" : theme.typography.h1.color}
-        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
+        color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
+        align={isSmallScreen ? "center" : "left"}
       >
         DecisionMaker, The Ultimate Decision-Making Companion
       </Typography>{" "}
       <Typography
         variant={isSmallScreen ? "h1" : "subtitle1"}
         gutterBottom
-        color={isSmallScreen ? "white" : theme.typography.h2.color}
-        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
+        color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
+        align={isSmallScreen ? "center" : "left"}
         style={{ marginTop: isSmallScreen ? 8 : 0 }}
       >
         Simplify Complex Choices, Achieve Your Goals with Ease
@@ -37,9 +66,9 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
       <Typography
         variant="subtitle1"
         gutterBottom
-        color={isSmallScreen ? "white" : theme.palette.text.primary}
+        color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
         style={{ marginTop: 20 }}
-        align={isSmallScreen ? "center" : "left"} // Use the align prop to ensure left alignment
+        align={isSmallScreen ? "center" : "left"}
       >
         Key Features:
       </Typography>
@@ -50,8 +79,8 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
-            color={isSmallScreen ? "white" : theme.palette.text.primary}
-            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
+            color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }}
           >
             Intuitive Decision Wizard
           </Typography>
@@ -62,8 +91,8 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
-            color={isSmallScreen ? "white" : theme.palette.text.primary}
-            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
+            color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }}
           >
             Customizable Decision Criteria
           </Typography>
@@ -74,8 +103,8 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
           </StyledIcon>
           <Typography
             variant={isSmallScreen ? "body1" : "subtitle1"}
-            color={isSmallScreen ? "white" : theme.palette.text.primary}
-            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }} // Adjust spacing between icon and text on small screens
+            color={isSmallScreen ? "#ffffff" : "#ffffff"} // Use white for contrast
+            style={{ marginLeft: isSmallScreen ? "8px" : "16px" }}
           >
             Data Analysis
           </Typography>
@@ -88,18 +117,20 @@ const HeroContent: React.FC<any> = ({ isSmallScreen, goToNewDecision }) => {
           justifyContent={isSmallScreen ? "center" : "flex-start"}
         >
           <Grid item xs={12} sm={6} lg={4}>
-            <NavLink
-              to="/newDecision"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <CustomButton
-                onClick={goToNewDecision}
-                disabled={false}
-                width="100%"
-              >
-                Get Started
-              </CustomButton>
-            </NavLink>
+          <Button
+        onClick={handleButtonClick}
+        variant="contained"
+        sx={{
+          boxShadow: "0 0 10px rgba(255, 255, 255, 0.8)",  // Glow effect
+          transition: "box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            boxShadow: "0 0 15px rgba(255, 255, 255, 1)",  // Intense glow on hover
+          },
+        }}
+      >
+        Get Started
+      </Button>
+            <LoginModal open={modalOpen} onClose={handleCloseModal} />
           </Grid>
         </Grid>
       </Box>
@@ -120,9 +151,28 @@ const HeroSection: React.FC = () => {
     handleNavigation("/NewDecision", "New Decision");
   };
 
+  const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setMessage(location.state.message);
+      setOpen(true);
+    }
+  }, [location.state]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Box sx={{ height: "100vh", background: "linear-gradient(to bottom right, #669900 0%, #99cc00 100%)" }}>
-      
+    <Box
+      sx={{
+        height: "100vh",
+        background: "linear-gradient(to top, #2e8b57 0%, #3cb371 100%)",
+      }}
+    >
       <Grid container style={{ height: "100%" }}>
         {(isSmallScreen && !isLandscape) || isTabletScreen ? (
           // Stacked layout for small screens and tablets in portrait orientation
@@ -198,6 +248,11 @@ const HeroSection: React.FC = () => {
           </>
         )}
       </Grid>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

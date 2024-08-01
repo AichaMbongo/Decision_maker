@@ -1,3 +1,4 @@
+// Login.tsx
 import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,15 +12,18 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme/theme";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
-
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useAuth } from "../contexts/AuthContext"; // Import useAuth
 
-import { signIn, AuthError } from "../supabase/auth"; // Import the signIn function and AuthError
+interface LoginProps {
+  setAuth: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Login({ setAuth }: any) {
+const Login: React.FC<LoginProps> = ({ setAuth }) => {
   const navigate = useNavigate();
   const { handleNavigation } = useBreadcrumbs();
+  const { signIn } = useAuth();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [emailError, setEmailError] = React.useState("");
@@ -60,12 +64,7 @@ function Login({ setAuth }: any) {
         state: { isAuthenticated: true, message: "Login successful!" },
       });
     } catch (error: any) {
-      if (error instanceof AuthError && error.code === "invalid_credentials") {
-        setLoginError("Incorrect email or password");
-      } else {
-        setLoginError("Incorrect email or password");
-        //console.error('Sign in error:', error.message);
-      }
+      setLoginError("Incorrect email or password");
     }
   };
 
