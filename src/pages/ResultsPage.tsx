@@ -27,6 +27,7 @@ import { getUserId } from "../supabase/auth";
 import DecisionState from "../components/interfaces/DecisionState";
 import Confetti from "react-confetti";
 import { useAuth } from "../contexts/AuthContext"; // Import the authentication context
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 interface TotalScores {
   [option: string]: number;
@@ -36,6 +37,7 @@ interface Criterion {
   name: string;
   weight: number;
 }
+
 const defaultDecisionState: DecisionState = {
   model: "AHP",
   decision: "",
@@ -69,6 +71,7 @@ const ResultsPage = () => {
     useState<boolean>(false);
 
   const { isAuthenticated } = useAuth(); // Get authentication status from context
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const calculateTotalScores = () => {
@@ -198,6 +201,15 @@ const ResultsPage = () => {
     }
   };
 
+ 
+
+  const clearCacheAndRedirect = () => {
+    // Clear cache (local storage)
+    localStorage.clear();
+    // Redirect to home page and reload
+    window.location.href = "/";
+  };
+
   const getTotalMaxValue = () =>
     Object.values(totalScores).reduce((a, b) => a + b, 0);
   const convertScoreToOutOfTen = (score: number) =>
@@ -254,10 +266,32 @@ const ResultsPage = () => {
               animation: `${pulse} 2s infinite`,
             }}
           >
-            <Typography variant="h4" gutterBottom>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{
+                fontSize: {
+                  xs: '1.5rem',
+                  sm: '2rem',
+                  md: '2.5rem',
+                  lg: '3rem'
+                }
+              }}
+            >
               Best Choice
             </Typography>
-            <Typography variant="h5" gutterBottom>
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{
+                fontSize: {
+                  xs: '1.2rem',
+                  sm: '1.5rem',
+                  md: '1.8rem',
+                  lg: '2rem'
+                }
+              }}
+            >
               {bestChoice}
             </Typography>
             <EmojiEventsIcon
@@ -367,9 +401,19 @@ const ResultsPage = () => {
             {isAuthenticated ? (
               <CustomButton onClick={saveDecision}>Save Decision</CustomButton>
             ) : (
-              <Typography variant="body2" sx={{ color: "gray", textAlign: "center" }}>
-                 If you wish to save decisions in the future, make sure to log in beforehand.
-              </Typography>
+              <>
+                <Typography variant="body2" sx={{ color: "gray", textAlign: "center" }}>
+                  If you wish to save decisions in the future, make sure to log in beforehand.
+                </Typography>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ marginTop: 2 }} 
+                  onClick={clearCacheAndRedirect}
+                >
+                  Go to Homepage 
+                </Button>
+              </>
             )}
           </Box>
         </Box>
@@ -386,39 +430,76 @@ const ResultsPage = () => {
         }}
       >
         <Fade in={showCompletionPopup}>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              boxShadow: 3,
-              padding: 3,
-              borderRadius: 8,
-              width: "50%",
-              maxWidth: 400,
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              textAlign: "center",
-            }}
-          >
-            <Typography variant="h5" gutterBottom>
-              Decision Saved!
-            </Typography>
-            <Typography variant="body1" sx={{ marginBottom: 3 }}>
-              What would you like to do next?
-            </Typography>
-            <Stack direction="row" spacing={2} justifyContent="center">
-              <Button variant="outlined" onClick={() => handlePopupOption(1)}>
-                Make Another Decision
-              </Button>
-              <Button variant="outlined" onClick={() => handlePopupOption(2)}>
-                See Previous Decisions
-              </Button>
-              <Button variant="outlined" onClick={() => handlePopupOption(3)}>
-                Go Back to Homepage
-              </Button>
-            </Stack>
-          </Box>
+        <Box
+  sx={{
+    backgroundColor: "white",
+    boxShadow: 3,
+    padding: { xs: 2, sm: 3, md: 4 },
+    borderRadius: 8,
+    width: { xs: "90%", sm: "70%", md: "50%" },
+    maxWidth: 400,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    textAlign: "center",
+    margin: { xs: 2, sm: 3 } // Add margin to ensure it doesn't touch edges
+  }}
+>
+  <Typography 
+    variant="h5" 
+    gutterBottom
+    sx={{
+      fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' }
+    }}
+  >
+    Decision Saved!
+  </Typography>
+  <Typography 
+    variant="body1" 
+    sx={{ marginBottom: 3, fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' } }}
+  >
+    What would you like to do next?
+  </Typography>
+  <Stack 
+    direction="row" 
+    spacing={2} 
+    justifyContent="center" 
+    sx={{ flexWrap: 'wrap', gap: 2 }} // Add gap to ensure space between buttons
+  >
+    <Button 
+      variant="contained" 
+      onClick={() => handlePopupOption(1)}
+      sx={{
+        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+        padding: { xs: 1, sm: 1.5, md: 2 },
+      }}
+    >
+      Make Another Decision
+    </Button>
+    <Button 
+      variant="contained" 
+      onClick={() => handlePopupOption(2)}
+      sx={{
+        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+        padding: { xs: 1, sm: 1.5, md: 2 },
+      }}
+    >
+      See Previous Decisions
+    </Button>
+    <Button 
+      variant="contained" 
+      onClick={() => handlePopupOption(3)}
+      sx={{
+        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+        padding: { xs: 1, sm: 1.5, md: 2 },
+      }}
+    >
+      Go Back to Homepage
+    </Button>
+  </Stack>
+</Box>
+
         </Fade>
       </Modal>
     </Layout>
