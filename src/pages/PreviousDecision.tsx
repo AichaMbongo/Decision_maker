@@ -84,7 +84,7 @@ const PreviousDecisions: React.FC = () => {
           if (typeof decision.decision === 'object') {
             return {
               ...decision,
-              decision: decision.decision.decision || "No decision available"
+              decision: decision.decision || "No decision available"
             };
           }
           return decision;
@@ -142,28 +142,18 @@ const PreviousDecisions: React.FC = () => {
     );
   };
 
-  const handleSeeCriteria = async (decision: Decision) => {
-    if (typeof decision.decision === 'string') {
-      const { data, error } = await supabase
-        .from("decisions")
-        .select("id, decision")
-        .eq("id", decision.id)
-        .single();
+  // No need to fetch from the database again for the specific decision since it had already been fetched in the fetchDecisions functions
+  const handleSeeCriteria = (decision: Decision) => {
+    console.log("Current Decision",decision);
+    setCurrentDecision(decision);
+    setModalOpen(true)
+  }
 
-      if (error) {
-        console.error("Error fetching decision details:", error.message);
-        return;
-      }
+  useEffect(() => {
+    console.log("Updated Current Decision", currentDecision);
+  }, [currentDecision]);
 
-      if (data) {
-        setCurrentDecision(data);
-      }
-    } else {
-      setCurrentDecision(decision);
-    }
 
-    setModalOpen(true);
-  };
 
   const closeModal = () => {
     setCurrentDecision(null);
@@ -231,14 +221,42 @@ const PreviousDecisions: React.FC = () => {
                 <Accordion key={decision.id}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="subtitle1">
-                      {highlightText(typeof decision.decision === "string" ? decision.decision : decision.decision?.model || "No model available", searchQuery)}
+                      {highlightText(typeof decision.decision.decision === "string" ? decision.decision.decision : decision.decision?.model || "No model available", searchQuery)}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Stack direction="column" spacing={2}>
                       <Typography variant="body1">
-                        {highlightText(typeof decision.decision === "string" ? decision.decision : `Model: ${decision.decision?.model}`, searchQuery)}
+                        {highlightText(typeof decision.decision.decision === "string" ? decision.decision.decision : `Model: ${decision.decision?.model}`, searchQuery)}
                       </Typography>
+
+                      <Box sx={{ border: '1px solid #ddd', borderRadius: 1, padding: 1 }}>
+                                <Typography variant="body1" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
+                                  Decision Results:
+                                </Typography>
+                                <Typography>
+                                  Winning Option : {Object.keys(decision.decision.totalScores).at(-1)}
+                                </Typography>
+                                <BarChart
+                                  width={500}
+                                  height={300}
+
+                                  data={Object.keys(decision.decision.totalScores).map(
+                                    (option) => ({
+                                      name: option,
+                                      preferences: decision.decision.totalScores[option]
+                                    })
+                                  )}
+                                  margin={{ top: 20, right: 30, bottom: 20, left: 0 }}
+                                >
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis dataKey="name" />
+                                  <YAxis />
+                                  <Tooltip />
+                                  <Bar dataKey="preferences" fill="#8884d8" />
+                                </BarChart>
+                              </Box>
+
                       <Button
                         onClick={() => handleSeeCriteria(decision)}
                         variant="outlined"
@@ -311,6 +329,8 @@ const PreviousDecisions: React.FC = () => {
                             <Typography variant="body1" sx={{ marginBottom: 1 }}>
                               <strong>Comparisons:</strong>
                             </Typography>
+                           
+                           
                             {Object.entries(criterion.comparisons).length > 0 ? (
                               <Box sx={{ border: '1px solid #ddd', borderRadius: 1, padding: 1 }}>
                                 <Typography variant="body2" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
@@ -319,17 +339,20 @@ const PreviousDecisions: React.FC = () => {
                                 <BarChart
                                   width={500}
                                   height={300}
-                                  data={Object.entries(criterion.comparisons).map(([option, comparison]) => ({
-                                    name: option,
-                                    ...comparison,
-                                  }))}
+
+                                  data={Object.keys(currentDecision.decision.aggregatedPreferences[criterion.name]).map(
+                                    (option) => ({
+                                      name: option,
+                                      preferences: currentDecision.decision.aggregatedPreferences[criterion.name][option]
+                                    })
+                                  )}
                                   margin={{ top: 20, right: 30, bottom: 20, left: 0 }}
                                 >
                                   <CartesianGrid strokeDasharray="3 3" />
                                   <XAxis dataKey="name" />
                                   <YAxis />
                                   <Tooltip />
-                                  <Bar dataKey="value" fill="#8884d8" />
+                                  <Bar dataKey="preferences" fill="#8884d8" />
                                 </BarChart>
                               </Box>
                             ) : (
