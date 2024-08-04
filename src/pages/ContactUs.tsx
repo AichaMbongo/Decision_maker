@@ -1,4 +1,3 @@
-
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Stack, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import emailjs from 'emailjs-com';
@@ -21,7 +20,6 @@ const ContactUs: React.FC = () => {
     message: '',
   });
 
-
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
@@ -38,11 +36,14 @@ const ContactUs: React.FC = () => {
     }));
   };
 
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    emailjs.sendForm('service_z2h0kre', 'template_s8oxbyc', e.currentTarget, '4lAxf2SoQmDnKjzUl')
+    const form = e.currentTarget;
+    const formDataCopy = new FormData(form);
+    formDataCopy.append('to_email', 'recipient1@example.com, recipient2@example.com');
+
+    emailjs.sendForm('service_z2h0kre', 'template_s8oxbyc', form, '4lAxf2SoQmDnKjzUl')
       .then((result) => {
         console.log(result.text);
         alert('Message Sent Successfully');
@@ -78,10 +79,8 @@ const ContactUs: React.FC = () => {
           <Typography variant="h3" align="center">
             Contact Us
           </Typography>
-          <Box
-            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
-          >
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }} noValidate autoComplete="off">
               {fields.map((field) => (
                 <InputField
                   key={field.id}
@@ -97,14 +96,7 @@ const ContactUs: React.FC = () => {
                 value={formData.message}
                 onChange={handleChange}
               />
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 2, width: "60ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
+              <Box sx={{ "& > :not(style)": { m: 2, width: "60ch" } }}>
                 <Button
                   type="submit"
                   variant="contained"
