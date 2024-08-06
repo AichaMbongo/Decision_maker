@@ -151,6 +151,7 @@ const PreviousDecisions: React.FC = () => {
 
   useEffect(() => {
     console.log("Updated Current Decision", currentDecision);
+    // console.log(Object.keys(currentDecision?.decision.))
   }, [currentDecision]);
 
 
@@ -235,7 +236,7 @@ const PreviousDecisions: React.FC = () => {
                                   Decision Results:
                                 </Typography>
                                 <Typography>
-                                  Winning Option : {Object.keys(decision.decision.totalScores).at(-1)}
+                                  Winning Option : {Object.entries(decision.decision.totalScores).sort(([, a], [, b]) => (b as number) - (a as number))[0][0]}
                                 </Typography>
                                 <BarChart
                                   width={500}
