@@ -69,6 +69,7 @@ const ResultsPage = () => {
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [showCompletionPopup, setShowCompletionPopup] =
     useState<boolean>(false);
+    const [isDecisionSaved, setIsDecisionSaved] = useState<boolean>(false); // New state to track if decision is saved
 
   const { isAuthenticated } = useAuth(); // Get authentication status from context
   const navigate = useNavigate(); // Hook for navigation
@@ -164,15 +165,16 @@ const ResultsPage = () => {
         ])
         .select();
 
-      if (error) {
-        throw error;
+        if (error) {
+          throw error;
+        }
+  
+        setIsDecisionSaved(true); // Set the decision as saved
+        setShowCompletionPopup(true);
+      } catch (error) {
+        console.error("Error saving decision:", error);
       }
-
-      setShowCompletionPopup(true);
-    } catch (error) {
-      console.error("Error saving decision:");
-    }
-  };
+    };
 
   const closeModal = () => {
     setShowCompletionPopup(false);
@@ -203,11 +205,18 @@ const ResultsPage = () => {
 
  
 
+  // const clearCacheAndRedirect = () => {
+  //   // Clear cache (local storage)
+  //   localStorage.clear();
+  //   // Redirect to home page and reload
+  //   window.location.href = "/";
+  // };
+
   const clearCacheAndRedirect = () => {
-    // Clear cache (local storage)
-    localStorage.clear();
-    // Redirect to home page and reload
-    window.location.href = "/";
+    // Clear decision state
+    setDecisionState(defaultDecisionState);
+    // Redirect to home page
+    navigate("/");
   };
 
   const getTotalMaxValue = () =>

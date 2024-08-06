@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   AppBar,
   Box,
@@ -30,6 +30,8 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { getUser, signOut } from "../supabase/auth";
 import { supabase } from "../supabase/supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
+import { DecisionStateContext } from "../contexts/DecisionStateContext";
+
 
 const navItems = [
   // { label: "DecisionMaker", path: "/" },
@@ -121,6 +123,7 @@ function Header({ auth, setAuth }: HeaderProps) {
   };
 
   const { signOut } = useAuth();
+  const { setDecisionState } = useContext(DecisionStateContext); // Correct placement of useContext
 
   const handleSignOut = async () => {
     await signOut();
@@ -129,9 +132,21 @@ function Header({ auth, setAuth }: HeaderProps) {
     setSnackbarMessage("Logout successful!");
     setSnackbarOpen(true);
     handleClose();
+  
+    
+    // Reset decision state
+    setDecisionState({
+      model: "AHP",
+      decision: "",
+      criteria: [],
+      options: [],
+      aggregatedPreferences: {},
+      totalScores: {},
+    });
+  
     navigate("/", { state: { isAuthenticated: false } });
-
   };
+  
   const navigate = useNavigate();
   const handleLogout = async () => {
     await signOut();

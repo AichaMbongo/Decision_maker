@@ -15,6 +15,8 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useAuth } from "../contexts/AuthContext"; // Import useAuth
+import { DecisionStateContext } from "../contexts/DecisionStateContext";
+import { useContext } from "react";
 
 interface LoginProps {
   setAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +31,7 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
   const [emailError, setEmailError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
   const [loginError, setLoginError] = React.useState("");
+  const { setDecisionState } = useContext(DecisionStateContext); // Get context to reset state
 
   const validateForm = () => {
     let isValid = true;
@@ -60,6 +63,14 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
     try {
       await signIn(email, password);
       setAuth(true);
+      setDecisionState({
+        model: "AHP",
+        decision: "",
+        criteria: [],
+        options: [],
+        aggregatedPreferences: {},
+        totalScores: {},
+      }); // Reset the decision state on login
       navigate("/", {
         state: { isAuthenticated: true, message: "Login successful!" },
       });
