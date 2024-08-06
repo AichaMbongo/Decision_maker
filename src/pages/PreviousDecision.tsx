@@ -164,6 +164,7 @@ const PreviousDecisions: React.FC = () => {
 
   useEffect(() => {
     console.log("Updated Current Decision", currentDecision);
+    // console.log(Object.keys(currentDecision?.decision.))
   }, [currentDecision]);
 
   const closeModal = () => {
@@ -303,7 +304,7 @@ const useWindowSize = () => {
         Decision Results:
       </Typography>
       <Typography>
-        Winning Option : <EmojiEventsTwoToneIcon style={{ color: 'gold' }} /> {Object.keys(decision.decision.totalScores).at(-1)}
+        Winning Option : <EmojiEventsTwoToneIcon style={{ color: 'gold' }} /> {Object.entries(decision.decision.totalScores).sort(([,a], [,b]) => (b as number) - (a as number))[0][0]}
       </Typography>
       <BarChart
         width={500}
