@@ -40,17 +40,22 @@ interface CustomCriteria {
   name: string;
 }
 
-const StyledChip = styled(Chip)<{ isSelected: boolean }>(({ theme, isSelected }) => ({
-  margin: theme.spacing(0.5),
-  backgroundColor: isSelected ? "#337357" : theme.palette.background.paper,
-  color: isSelected ? "#fff" : theme.palette.text.primary,
-  "&:hover": {
-    backgroundColor: isSelected ? "#2c6b4e" : theme.palette.action.hover,
-    color: isSelected ? "#e0f7fa" : theme.palette.text.primary, // Ensure good contrast on hover
-  },
-}));
+const StyledChip = styled(Chip)<{ isSelected: boolean }>(
+  ({ theme, isSelected }) => ({
+    margin: theme.spacing(0.5),
+    backgroundColor: isSelected ? "#337357" : theme.palette.background.paper,
+    color: isSelected ? "#fff" : theme.palette.text.primary,
+    "&:hover": {
+      backgroundColor: isSelected ? "#2c6b4e" : theme.palette.action.hover,
+      color: isSelected ? "#e0f7fa" : theme.palette.text.primary, // Ensure good contrast on hover
+    },
+  })
+);
 
-const HighlightText: React.FC<{ text: string; highlight: string }> = ({ text, highlight }) => {
+const HighlightText: React.FC<{ text: string; highlight: string }> = ({
+  text,
+  highlight,
+}) => {
   if (!highlight.trim()) return <>{text}</>;
 
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
@@ -73,20 +78,27 @@ const NewCriteriaPage: React.FC = () => {
   const [formData, setFormData] = useState({ criteria: "" });
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [predefinedCriteria, setPredefinedCriteria] = useState<string[]>([]);
-  const [originalPredefinedCriteria, setOriginalPredefinedCriteria] = useState<string[]>([]);
+  const [originalPredefinedCriteria, setOriginalPredefinedCriteria] = useState<
+    string[]
+  >([]);
   const [selectedCriteria, setSelectedCriteria] = useState<string[]>([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
   const [errorMessageOpen, setErrorMessageOpen] = useState(false); // New state for error message
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredCategories, setFilteredCategories] = useState<CriteriaCategories>({});
-  const [originalCategories, setOriginalCategories] = useState<CriteriaCategories>({});
+  const [filteredCategories, setFilteredCategories] =
+    useState<CriteriaCategories>({});
+  const [originalCategories, setOriginalCategories] =
+    useState<CriteriaCategories>({});
   const [customCriteria, setCustomCriteria] = useState<CustomCriteria[]>([]);
-  const [originalCustomCriteria, setOriginalCustomCriteria] = useState<CustomCriteria[]>([]);
+  const [originalCustomCriteria, setOriginalCustomCriteria] = useState<
+    CustomCriteria[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCustomCriteriaLoading, setIsCustomCriteriaLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState("predefined");
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [isCustomCriteriaExpanded, setIsCustomCriteriaExpanded] = useState(false); // New state for custom criteria dropdown
+  const [isCustomCriteriaExpanded, setIsCustomCriteriaExpanded] =
+    useState(false); // New state for custom criteria dropdown
 
   const { handleNavigation } = useBreadcrumbs();
   const theme = useTheme();
@@ -103,30 +115,27 @@ const NewCriteriaPage: React.FC = () => {
     handleNavigation("/newCriteria", "Add Criteria");
     console.log("Add new criteria");
   };
+  const [deselectMessageOpen, setDeselectMessageOpen] = useState(false);
 
   const handleSelectCriteria = (criteria: string) => {
     if (selectedCriteria.includes(criteria)) {
-      // Remove the criteria if it is already selected
-      const updatedSelectedCriteria = selectedCriteria.filter(
-        (item) => item !== criteria
+      setSelectedCriteria((prevSelectedCriteria) =>
+        prevSelectedCriteria.filter((item) => item !== criteria)
       );
-      const updatedCriteria = decisionState.criteria.filter(
-        (item) => item.name !== criteria
-      );
-      setSelectedCriteria(updatedSelectedCriteria);
-      setDecisionState({ ...decisionState, criteria: updatedCriteria });
-    } else {
-      // Add the criteria if it is not selected
-      const newCriterion = { name: criteria, weight: 1, comparisons: {} };
-      const updatedCriteria = [...decisionState.criteria, newCriterion];
-      setDecisionState({ ...decisionState, criteria: updatedCriteria });
-      setSelectedCriteria((prevSelectedCriteria) => [
-        ...prevSelectedCriteria,
-        criteria,
-      ]);
-      setSuccessMessageOpen(true);
+      setDeselectMessageOpen(true); // Show deselection message
+      return;
     }
-    console.log(`Selected criteria: ${criteria}`);
+
+    const newCriterion = { name: criteria, weight: 1, comparisons: {} };
+    const updatedCriteria = [...decisionState.criteria, newCriterion];
+    setDecisionState({ ...decisionState, criteria: updatedCriteria });
+
+    setSelectedCriteria((prevSelectedCriteria) => [
+      ...prevSelectedCriteria,
+      criteria,
+    ]);
+
+    setSuccessMessageOpen(true);
   };
 
   const handleSubmit = () => {
@@ -232,14 +241,19 @@ const NewCriteriaPage: React.FC = () => {
       {} as CriteriaCategories
     );
 
-    const filteredCustom = filterCriteria(customCriteria.map((item) => item.name));
+    const filteredCustom = filterCriteria(
+      customCriteria.map((item) => item.name)
+    );
 
-    const expanded = Object.entries(filteredPredefined).reduce<string[]>((acc, [category, items]) => {
-      if (items.length > 0) {
-        acc.push(category);
-      }
-      return acc;
-    }, []);
+    const expanded = Object.entries(filteredPredefined).reduce<string[]>(
+      (acc, [category, items]) => {
+        if (items.length > 0) {
+          acc.push(category);
+        }
+        return acc;
+      },
+      []
+    );
 
     setFilteredCategories(filteredPredefined);
     setCustomCriteria(filteredCustom.map((name) => ({ name })));
@@ -247,7 +261,6 @@ const NewCriteriaPage: React.FC = () => {
 
     // Open dropdown if search term matches any custom criteria
     setIsCustomCriteriaExpanded(filteredCustom.length > 0);
-
   }, [searchTerm, originalCategories, originalCustomCriteria]);
 
   const isEmpty = Object.keys(filteredCategories).every(
@@ -277,7 +290,7 @@ const NewCriteriaPage: React.FC = () => {
             variant="h4"
             align="center"
             sx={{
-              fontSize: isMobile ? "1.5rem" : "2rem",  // Responsive font size
+              fontSize: isMobile ? "1.5rem" : "2rem", // Responsive font size
               lineHeight: isMobile ? "2rem" : "2.5rem", // Adjust line height for mobile
             }}
           >
@@ -289,10 +302,11 @@ const NewCriteriaPage: React.FC = () => {
             align="center"
             sx={{
               mb: 2,
-              fontSize: isMobile ? "0.875rem" : "1rem",  // Responsive font size
+              fontSize: isMobile ? "0.875rem" : "1rem", // Responsive font size
             }}
           >
-            What criteria would you consider when making the decision you are trying to make?
+            What criteria would you consider when making the decision you are
+            trying to make?
           </Typography>
 
           <Stack
@@ -308,11 +322,12 @@ const NewCriteriaPage: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
-                startAdornment: (
-                  <SearchIcon />
-                ),
+                startAdornment: <SearchIcon />,
                 endAdornment: searchTerm && (
-                  <Button onClick={() => setSearchTerm("")} sx={{ marginLeft: 1 }}>
+                  <Button
+                    onClick={() => setSearchTerm("")}
+                    sx={{ marginLeft: 1 }}
+                  >
                     <ClearIcon />
                   </Button>
                 ),
@@ -324,13 +339,17 @@ const NewCriteriaPage: React.FC = () => {
               onClick={handleAddCriteria}
               startIcon={<AddIcon />}
             >
-              Add Custom Criteria
+              Add My Criteria
             </Button>
           </Stack>
 
-          <Tabs value={currentTab} onChange={handleChangeTab} sx={{ marginTop: 2, marginBottom: 2 }}>
+          <Tabs
+            value={currentTab}
+            onChange={handleChangeTab}
+            sx={{ marginTop: 2, marginBottom: 2 }}
+          >
             <Tab label="Predefined Criteria" value="predefined" />
-            <Tab label="Custom Criteria" value="custom" />
+            <Tab label="My Criteria" value="custom" />
           </Tabs>
 
           {currentTab === "predefined" && (
@@ -341,11 +360,16 @@ const NewCriteriaPage: React.FC = () => {
                 overflowY: "auto",
               }}
             >
-              <Typography variant="body1" align="center" sx={{ mb: 2 }}>
-                Can't find the criteria you are looking for? Create your own custom criteria!
-              </Typography>
+              {/* <Typography variant="body1" align="center" sx={{ mb: 2 }}>
+                Can't find the criteria you are looking for? Create your own
+                custom criteria!
+              </Typography> */}
               {isLoading ? (
-                <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                <Stack
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{ height: "100%" }}
+                >
                   <CircularProgress />
                 </Stack>
               ) : isEmpty ? (
@@ -357,11 +381,13 @@ const NewCriteriaPage: React.FC = () => {
                   <Accordion
                     key={category}
                     expanded={expandedCategories.includes(category)}
-                    onChange={() => setExpandedCategories(
-                      expandedCategories.includes(category)
-                        ? expandedCategories.filter(cat => cat !== category)
-                        : [...expandedCategories, category]
-                    )}
+                    onChange={() =>
+                      setExpandedCategories(
+                        expandedCategories.includes(category)
+                          ? expandedCategories.filter((cat) => cat !== category)
+                          : [...expandedCategories, category]
+                      )
+                    }
                     sx={{ width: "100%" }}
                   >
                     <AccordionSummary
@@ -370,7 +396,7 @@ const NewCriteriaPage: React.FC = () => {
                       id={`${category}-header`}
                     >
                       <Typography variant="h6">
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                       {` ${category.charAt(0).toUpperCase() + category.slice(1)} related criteria`}
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -381,17 +407,29 @@ const NewCriteriaPage: React.FC = () => {
                             button
                             onClick={() => handleSelectCriteria(crit)}
                             sx={{
-                              backgroundColor: selectedCriteria.includes(crit) ? "#337357" : "transparent",
-                              color: selectedCriteria.includes(crit) ? "#fff" : "inherit",
+                              backgroundColor: selectedCriteria.includes(crit)
+                                ? "#337357"
+                                : "transparent",
+                              color: selectedCriteria.includes(crit)
+                                ? "#fff"
+                                : "inherit",
                               "&:hover": {
-                                backgroundColor: selectedCriteria.includes(crit) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
-                                color: selectedCriteria.includes(crit) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+                                backgroundColor: selectedCriteria.includes(crit)
+                                  ? "#2c6b4e"
+                                  : "rgba(0, 0, 0, 0.04)",
+                                color: selectedCriteria.includes(crit)
+                                  ? "#e0f7fa"
+                                  : "inherit", // Ensure good contrast on hover
                               },
                             }}
                           >
                             <ListItemText
                               primary={
-                                <HighlightText text={crit} highlight={searchTerm} />
+                                <HighlightText
+                                
+                                  text={crit} 
+                                  highlight={searchTerm}
+                                />
                               }
                             />
                           </ListItem>
@@ -413,17 +451,22 @@ const NewCriteriaPage: React.FC = () => {
               }}
             >
               {isCustomCriteriaLoading ? (
-                <Stack alignItems="center" justifyContent="center" sx={{ height: "100%" }}>
+                <Stack
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{ height: "100%" }}
+                >
                   <CircularProgress />
                 </Stack>
               ) : customCriteria.length === 0 ? (
                 <Typography variant="h6" color="textSecondary" align="center">
-                  You haven't added any custom criteria yet. Start by creating your own criteria.
+                  You haven't added any custom criteria yet. Start by creating
+                  your own criteria.
                 </Typography>
               ) : (
                 <Accordion
                   expanded={isCustomCriteriaExpanded} // Use state to control expansion
-                  onChange={() => setIsCustomCriteriaExpanded(prev => !prev)}
+                  onChange={() => setIsCustomCriteriaExpanded((prev) => !prev)}
                   sx={{ width: "100%" }}
                 >
                   <AccordionSummary
@@ -431,9 +474,7 @@ const NewCriteriaPage: React.FC = () => {
                     aria-controls="custom-criteria-content"
                     id="custom-criteria-header"
                   >
-                    <Typography variant="h6">
-                      Custom Criteria
-                    </Typography>
+                    <Typography variant="h6">Click to view your Criteria</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <List>
@@ -443,17 +484,32 @@ const NewCriteriaPage: React.FC = () => {
                           button
                           onClick={() => handleSelectCriteria(crit.name)}
                           sx={{
-                            backgroundColor: selectedCriteria.includes(crit.name) ? "#337357" : "transparent",
-                            color: selectedCriteria.includes(crit.name) ? "#fff" : "inherit",
+                            backgroundColor: selectedCriteria.includes(
+                              crit.name
+                            )
+                              ? "#337357"
+                              : "transparent",
+                            color: selectedCriteria.includes(crit.name)
+                              ? "#fff"
+                              : "inherit",
                             "&:hover": {
-                              backgroundColor: selectedCriteria.includes(crit.name) ? "#2c6b4e" : "rgba(0, 0, 0, 0.04)",
-                              color: selectedCriteria.includes(crit.name) ? "#e0f7fa" : "inherit", // Ensure good contrast on hover
+                              backgroundColor: selectedCriteria.includes(
+                                crit.name
+                              )
+                                ? "#2c6b4e"
+                                : "rgba(0, 0, 0, 0.04)",
+                              color: selectedCriteria.includes(crit.name)
+                                ? "#e0f7fa"
+                                : "inherit", // Ensure good contrast on hover
                             },
                           }}
                         >
                           <ListItemText
                             primary={
-                              <HighlightText text={crit.name} highlight={searchTerm} />
+                              <HighlightText
+                                text={crit.name}
+                                highlight={searchTerm}
+                              />
                             }
                           />
                         </ListItem>
@@ -465,11 +521,7 @@ const NewCriteriaPage: React.FC = () => {
             </Box>
           )}
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
             Submit Criteria
           </Button>
 
@@ -485,6 +537,13 @@ const NewCriteriaPage: React.FC = () => {
             autoHideDuration={3000}
             onClose={() => setErrorMessageOpen(false)}
             message="You must select at least one criteria before submitting."
+          />
+
+          <Snackbar
+            open={deselectMessageOpen}
+            autoHideDuration={3000}
+            onClose={() => setDeselectMessageOpen(false)}
+            message="Criteria deselected successfully!"
           />
         </Stack>
       </Container>
