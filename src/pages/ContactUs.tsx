@@ -8,24 +8,25 @@ import Layout from '../components/Layout';
 import theme from '../theme/theme';
 
 interface FormData {
-  name: string;
-  email: string;
-  message: string;
+  from_name: string;  // Updated to match EmailJS placeholder
+  from_email: string;  // Updated to match EmailJS placeholder
+  new_message: string;
 }
 
 const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
+    from_name: '',
+    from_email: '',
+    new_message: '',
   });
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const fields = [
-    { id: 'name', label: 'Name', variant: 'outlined' as const, defaultValue: '' },
-    { id: 'email', label: 'Email', variant: 'outlined' as const, defaultValue: '' },
+    { id: 'from_name', label: 'Name', variant: 'outlined' as const },  // Updated
+    { id: 'from_email', label: 'Email', variant: 'outlined' as const },  // Updated
+    { id: 'new_message', label: 'Message', variant: 'outlined' as const },  // Updated
   ];
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -39,23 +40,20 @@ const ContactUs: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const formDataCopy = new FormData(form);
-    formDataCopy.append('to_email', 'recipient1@example.com, recipient2@example.com');
-
-    emailjs.sendForm('service_z2h0kre', 'template_s8oxbyc', form, '4lAxf2SoQmDnKjzUl')
+    emailjs.sendForm('service_z2h0kre', 'template_s8oxbyc', e.currentTarget, '4lAxf2SoQmDnKjzUl')
       .then((result) => {
-        console.log(result.text);
+        console.log(e.currentTarget);
         alert('Message Sent Successfully');
       }, (error) => {
         console.log(error.text);
         alert('Message Failed to Send');
       });
 
+    // Clear the form
     setFormData({
-      name: '',
-      email: '',
-      message: '',
+      from_name: '',
+      from_email: '',
+      new_message: '',
     });
   };
 
@@ -85,17 +83,19 @@ const ContactUs: React.FC = () => {
                 <InputField
                   key={field.id}
                   id={field.id}
+                  name={field.id} // Ensure name matches EmailJS template
                   label={field.label}
                   variant={field.variant}
                   value={formData[field.id as keyof FormData]}
                   onChange={handleChange}
                 />
               ))}
-              <TextArea
-                name="message"
-                value={formData.message}
+              {/* <TextArea
+                name="new_message"  // This should match the placeholder in your EmailJS template
+                value={formData.new_message}
                 onChange={handleChange}
-              />
+              /> */}
+
               <Box sx={{ "& > :not(style)": { m: 2, width: "60ch" } }}>
                 <Button
                   type="submit"
