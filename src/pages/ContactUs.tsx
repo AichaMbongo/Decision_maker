@@ -6,6 +6,7 @@ import InputField from '../components/contact-input';
 import TextArea from '../components/TextArea';
 import Layout from '../components/Layout';
 import theme from '../theme/theme';
+import { Link } from 'react-router-dom';
 
 interface FormData {
   from_name: string;  // Updated to match EmailJS placeholder
@@ -74,9 +75,22 @@ const ContactUs: React.FC = () => {
         sx={{ marginBottom: "154px", padding: 3, marginTop: "10px" }}
       >
         <Box sx={{ width: "100%", maxWidth: "600px", padding: 2 }}>
-          <Typography variant="h3" align="center">
-            Contact Us
-          </Typography>
+        <Typography variant="h3" align="center">
+  Contact Us or{" "}
+  <Button
+    variant="contained"
+    color="primary"
+    href="https://forms.gle/e61tREbBSLFEW9AP6"
+    target="_blank"
+    rel="noopener noreferrer"
+    sx={{
+      marginLeft: 2,
+      textTransform: 'none',
+    }}
+  >
+    Click to Fill in Our Feedback Form
+  </Button>
+</Typography>
           <Typography variant="h6" align="center" sx={{ mt: 2, mb: 4, color: 'text.secondary' }}>
   We’d love to hear from you! Whether you have feedback, questions, or just want to say hello, feel free to reach out to us. 
 </Typography>
