@@ -61,6 +61,11 @@ const pulse = keyframes`
 `;
 
 const ResultsPage = () => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   const { decisionState, setDecisionState } = useContext(DecisionStateContext);
   const [totalScores, setTotalScores] = useState<TotalScores>({});
   const [bestChoice, setBestChoice] = useState<string>("");
@@ -196,12 +201,20 @@ const ResultsPage = () => {
         setDecisionState(defaultDecisionState);
         await handleNavigation("/", "Home");
         break;
+      case 4:
+        setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
+        await handleNavigation("/contactUs", "Contact Us");
+        break;
+      case 5:
+        setShowCompletionPopup(false);
+        setDecisionState(defaultDecisionState);
+        await handleNavigation("/aboutUs", "About Us");
+        break;
       default:
         break;
     }
   };
-
- 
 
   const clearCacheAndRedirect = () => {
     // Clear cache (local storage)
@@ -271,11 +284,11 @@ const ResultsPage = () => {
               gutterBottom
               sx={{
                 fontSize: {
-                  xs: '1.5rem',
-                  sm: '2rem',
-                  md: '2.5rem',
-                  lg: '3rem'
-                }
+                  xs: "1.5rem",
+                  sm: "2rem",
+                  md: "2.5rem",
+                  lg: "3rem",
+                },
               }}
             >
               Best Choice
@@ -285,11 +298,11 @@ const ResultsPage = () => {
               gutterBottom
               sx={{
                 fontSize: {
-                  xs: '1.2rem',
-                  sm: '1.5rem',
-                  md: '1.8rem',
-                  lg: '2rem'
-                }
+                  xs: "1.2rem",
+                  sm: "1.5rem",
+                  md: "1.8rem",
+                  lg: "2rem",
+                },
               }}
             >
               {bestChoice}
@@ -402,18 +415,56 @@ const ResultsPage = () => {
               <CustomButton onClick={saveDecision}>Save Decision</CustomButton>
             ) : (
               <>
-                <Typography variant="body2" sx={{ color: "gray", textAlign: "center" }}>
-                  If you wish to save decisions in the future, make sure to log in beforehand.
-                </Typography>
-                <Button 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ marginTop: 2 }} 
-                  onClick={clearCacheAndRedirect}
+              <Typography variant="body2" sx={{ color: 'gray', textAlign: 'center' }}>
+                If you wish to save decisions in the future, make sure to log in beforehand.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleOpenModal}
+              >
+                Proceed
+              </Button>
+        
+              <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                closeAfterTransition
+                // BackdropComponent="div"
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '80%',
+                    maxWidth: '400px',
+                    backgroundColor: 'white',
+                    padding: 4,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    textAlign: 'center',
+                  }}
                 >
-                  Go to Homepage 
-                </Button>
-              </>
+                  <Typography variant="h6" gutterBottom>
+                    What would you like to do next?
+                  </Typography>
+                  <Stack spacing={2}>
+                    <Button variant="contained" color="primary" onClick={() => handlePopupOption(3)}>
+                      Go to Home
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={() => handlePopupOption(4)}>
+                      Give Us Feedback
+                    </Button>
+                    <Button variant="contained" color="info" onClick={() => handlePopupOption(5)}>
+                      Read About Us
+                    </Button>
+                  </Stack>
+                </Box>
+              </Modal>
+            </>
             )}
           </Box>
         </Box>
@@ -430,76 +481,117 @@ const ResultsPage = () => {
         }}
       >
         <Fade in={showCompletionPopup}>
-        <Box
+          <Box
+            sx={{
+              backgroundColor: "white",
+              boxShadow: 3,
+              padding: { xs: 2, sm: 3, md: 4 },
+              borderRadius: 8,
+              width: { xs: "90%", sm: "70%", md: "50%" },
+              maxWidth: 400,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              margin: { xs: 2, sm: 3 }, // Add margin to ensure it doesn't touch edges
+            }}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{
+                fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.8rem" },
+              }}
+            >
+              Decision Saved!
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                marginBottom: 3,
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+              }}
+            >
+              What would you like to do next?
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+              sx={{ flexWrap: "wrap", gap: 2 }} // Add gap to ensure space between buttons
+            >
+              <Button
+                variant="contained"
+                onClick={() => handlePopupOption(1)}
+                sx={{
+                  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
+                  padding: { xs: 1, sm: 1.5, md: 2 },
+                }}
+              >
+                Make Another Decision
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => handlePopupOption(2)}
+                sx={{
+                  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
+                  padding: { xs: 1, sm: 1.5, md: 2 },
+                }}
+              >
+                See Previous Decisions
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => handlePopupOption(3)}
+                sx={{
+                  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
+                  padding: { xs: 1, sm: 1.5, md: 2 },
+                }}
+              >
+                Go Back to Homepage
+              </Button>
+              <Button
+  variant="contained"
+  color="primary"
+  onClick={() => handlePopupOption(4)} // Redirect to Contact Us page
   sx={{
-    backgroundColor: "white",
-    boxShadow: 3,
-    padding: { xs: 2, sm: 3, md: 4 },
-    borderRadius: 8,
-    width: { xs: "90%", sm: "70%", md: "50%" },
-    maxWidth: 400,
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-    margin: { xs: 2, sm: 3 } // Add margin to ensure it doesn't touch edges
+    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+    padding: { xs: 1.5, sm: 2, md: 2.5 },
+    borderRadius: "50px", // Rounded corners
+    boxShadow: `0 4px 6px 50`, // Light glow effect
+    textTransform: "uppercase", // Uppercase text
+    fontWeight: "bold", // Bold text
+    transition: "background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease", // Smooth transitions
+    display: "flex", // Flexbox to align emoji
+    alignItems: "center", // Center items vertically
+    justifyContent: "center", // Center items horizontally
+    gap: 1, // Space between emoji and text
+    "&:hover": {
+      transform: "scale(1.05)", // Slightly enlarge on hover
+      boxShadow: `0 6px 12px` , // Stronger glow on hover
+    },
+    "&:active": {
+      transform: "scale(0.95)", // Slightly shrink on click
+    },
   }}
 >
-  <Typography 
-    variant="h5" 
-    gutterBottom
-    sx={{
-      fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' }
-    }}
-  >
-    Decision Saved!
-  </Typography>
-  <Typography 
-    variant="body1" 
-    sx={{ marginBottom: 3, fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' } }}
-  >
-    What would you like to do next?
-  </Typography>
-  <Stack 
-    direction="row" 
-    spacing={2} 
-    justifyContent="center" 
-    sx={{ flexWrap: 'wrap', gap: 2 }} // Add gap to ensure space between buttons
-  >
-    <Button 
-      variant="contained" 
-      onClick={() => handlePopupOption(1)}
-      sx={{
-        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
-        padding: { xs: 1, sm: 1.5, md: 2 },
-      }}
-    >
-      Make Another Decision
-    </Button>
-    <Button 
-      variant="contained" 
-      onClick={() => handlePopupOption(2)}
-      sx={{
-        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
-        padding: { xs: 1, sm: 1.5, md: 2 },
-      }}
-    >
-      See Previous Decisions
-    </Button>
-    <Button 
-      variant="contained" 
-      onClick={() => handlePopupOption(3)}
-      sx={{
-        fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
-        padding: { xs: 1, sm: 1.5, md: 2 },
-      }}
-    >
-      Go Back to Homepage
-    </Button>
-  </Stack>
-</Box>
+  ✨ Give Feedback
+</Button>
 
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handlePopupOption(5)}// Redirect to Contact Us page
+                sx={{
+                  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
+                  padding: { xs: 1, sm: 1.5, md: 2 },
+                }}
+              >
+               Read About Us
+              </Button>
+            </Stack>
+          </Box>
         </Fade>
       </Modal>
     </Layout>

@@ -59,7 +59,7 @@ const EvaluateOptions = () => {
           <Box sx={{ marginBottom: 2 }}>
             <PairwiseComparison />
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
+          {/* <Box sx={{ display: "flex", justifyContent: "center" }}>
             <NavLink
               to="/ResultsPage"
               style={{ textDecoration: "none", color: "inherit" }}
@@ -68,7 +68,7 @@ const EvaluateOptions = () => {
                 Proceed
               </Button>
             </NavLink>
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </Layout>

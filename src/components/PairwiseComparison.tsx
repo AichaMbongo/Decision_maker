@@ -14,6 +14,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { DecisionStateContext } from "../contexts/DecisionStateContext";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
+import NotFound from "../pages/NotFound"; // Import your NotFound component
 
 interface Comparison {
   [option: string]: {
@@ -33,6 +34,20 @@ const PairwiseComparison: React.FC = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Calculate combinations and check if they are empty
+  const criteria = decisionState.criteria.map((c) => c.name);
+  const combinations = Object.keys(
+    decisionState.criteria[criterionIndex].comparisons
+  )
+    .map((option1) =>
+      Object.keys(
+        decisionState.criteria[criterionIndex].comparisons[option1]
+      ).map((option2) => [option1, option2])
+    )
+    .flat();
+
+  const isEmptyComparison = combinations.length === 0;
 
   useEffect(() => {
     const generateResults = () => {
@@ -69,17 +84,6 @@ const PairwiseComparison: React.FC = () => {
 
     generateResults();
   }, [decisionState.criteria, setDecisionState]);
-
-  const criteria = decisionState.criteria.map((c) => c.name);
-  const combinations = Object.keys(
-    decisionState.criteria[criterionIndex].comparisons
-  )
-    .map((option1) =>
-      Object.keys(
-        decisionState.criteria[criterionIndex].comparisons[option1]
-      ).map((option2) => [option1, option2])
-    )
-    .flat();
 
   useEffect(() => {
     // Notify user when criterion changes
@@ -140,29 +144,60 @@ const PairwiseComparison: React.FC = () => {
     handleNext();
   };
 
+  // Render NotFound if comparisons are empty
+  if (isEmptyComparison) {
+    return <NotFound />;
+  }
+
   return (
     <Container>
       <Box sx={{ p: { xs: 1, md: 1.5 }, textAlign: "center" }}>
         <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-          Please Set Your Preference on Options Based On This Criteria
-        </Typography>
-      </Box>
-      <Box sx={{ p: { xs: 1, md: 2 }, textAlign: "center" }}>
-        <Typography variant="body2">
-          You’re comparing options based on{" "}
+          Please Set Your Preference on Options Based On {" "}
           <Typography
             component="span"
             sx={{
               fontWeight: "bold",
               color: "primary.main",
-              bgcolor: "yellow",  // Change this to your preferred background color
-              px: 0.5,  // Adds horizontal padding around the text
-              borderRadius: 1,  // Adds slight rounding to the corners
+              bgcolor: "yellow", // Change this to your preferred background color
+              px: 0.5, // Adds horizontal padding around the text
+              borderRadius: 1, // Adds slight rounding to the corners
             }}
           >
             {criteria[criterionIndex]}
-          </Typography>
-          . This means you should focus on how well each option performs with regard to this particular criterion. Choose the option that best meets this criterion.
+          </Typography>{" "}
+        </Typography>
+        
+      </Box>
+      <Box sx={{ p: { xs: 1, md: 2 }, textAlign: "center" }}>
+        <Typography variant="body2">
+          what would you prefer between{" "}
+          <Typography
+            component="span"
+            sx={{
+              fontWeight: "bold",
+              color: "primary.main",
+              bgcolor: "yellow", // Change this to your preferred background color
+              px: 0.5, // Adds horizontal padding around the text
+              borderRadius: 1, // Adds slight rounding to the corners
+            }}
+          >
+            {combinations[combinationIndex][0]}
+          </Typography>{" "}
+          and{" "}
+          <Typography
+            component="span"
+            sx={{
+              fontWeight: "bold",
+              color: "primary.main",
+              bgcolor: "yellow", // Change this to your preferred background color
+              px: 0.5, // Adds horizontal padding around the text
+              borderRadius: 1, // Adds slight rounding to the corners
+            }}
+          >
+            {combinations[combinationIndex][1]}
+          </Typography>{" "}
+          based on {criteria[criterionIndex]}?
         </Typography>
       </Box>
       <Box
@@ -182,13 +217,19 @@ const PairwiseComparison: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <IconButton aria-label="arrowbackios" onClick={handlePreviousCriterion}>
+          <IconButton
+            aria-label="arrowbackios"
+            onClick={handlePreviousCriterion}
+          >
             <ArrowBackIosIcon />
           </IconButton>
           <Typography sx={{ fontWeight: "bold" }}>
             {criteria[criterionIndex]}
           </Typography>
-          <IconButton aria-label="arrowforwardios" onClick={handleNextCriterion}>
+          <IconButton
+            aria-label="arrowforwardios"
+            onClick={handleNextCriterion}
+          >
             <ArrowForwardIosIcon />
           </IconButton>
         </Box>
@@ -255,14 +296,14 @@ const PairwiseComparison: React.FC = () => {
         open={notificationOpen}
         autoHideDuration={3000}
         onClose={() => setNotificationOpen(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}  // Center horizontally at the top
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Center horizontally at the top
         sx={{
-          top: '50%',  // Center vertically
-          transform: 'translateY(-50%)',  // Offset to exactly center
+          top: "50%", // Center vertically
+          transform: "translateY(-50%)", // Offset to exactly center
         }}
       >
         <Alert onClose={() => setNotificationOpen(false)} severity="info">
-        Your comparison is now based on{" "}
+          Your comparison is now based on{" "}
           <strong>{criteria[criterionIndex]}</strong>.
         </Alert>
       </Snackbar>
