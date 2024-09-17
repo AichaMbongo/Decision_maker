@@ -55,17 +55,39 @@ const CriteriaPage = () => {
           </Typography>
           {decisionState.criteria.map((criterion, index) => (
             <Box key={index} mb={2}>
-              <Typography variant="h6">{`${criterion.name}: Set Weight`}</Typography>
+              <Typography variant="h6">
+                {`${criterion.name}: `}
+                <Typography
+                  variant="caption"
+                  color="textSecondary"
+                  component="span"
+                >
+                  Drag slider to set weight
+                </Typography>
+              </Typography>
               <Slider
-                value={criterion.weight}
+                value={criterion.weight || 0} // Default to 0 if no value is set
                 min={0}
                 max={1}
                 step={0.01}
-                onChange={
-                  (e, value) => handleWeightChange(index, value as number)
-                }
+                onChange={(e, value) => handleWeightChange(index, value as number)}
                 valueLabelDisplay="auto"
-                valueLabelFormat={(value) => `${value * 100}%`}
+                valueLabelFormat={(value) => `${(value * 100).toFixed(0)}%`}
+                sx={{
+                  // Style adjustments to make sliders more prominent
+                  '& .MuiSlider-thumb': {
+                    borderRadius: '50%',
+                    width: 24,
+                    height: 24,
+                    backgroundColor: 'primary.main',
+                  },
+                  '& .MuiSlider-track': {
+                    borderRadius: 4,
+                  },
+                  '& .MuiSlider-rail': {
+                    borderRadius: 4,
+                  },
+                }}
               />
             </Box>
           ))}

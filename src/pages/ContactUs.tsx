@@ -77,6 +77,9 @@ const ContactUs: React.FC = () => {
           <Typography variant="h3" align="center">
             Contact Us
           </Typography>
+          <Typography variant="h6" align="center" sx={{ mt: 2, mb: 4, color: 'text.secondary' }}>
+  We’d love to hear from you! Whether you have feedback, questions, or just want to say hello, feel free to reach out to us. 
+</Typography>
           <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
             <form onSubmit={handleSubmit} style={{ width: "100%" }} noValidate autoComplete="off">
               {fields.map((field) => (
@@ -102,7 +105,7 @@ const ContactUs: React.FC = () => {
                   variant="contained"
                   sx={{ width: isMobile || isTablet ? "100%" : "50vh" }}
                 >
-                  Contact Support
+                  Send
                 </Button>
               </Box>
             </form>

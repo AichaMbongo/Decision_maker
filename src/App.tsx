@@ -7,7 +7,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Theme } from "@mui/material";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import NewCriteria from "./pages/NewCriteria";
 import OtherNewCriteria from "./pages/OtherNewCriteria";
 import DecisionModel from "./pages/DecisionModel";
@@ -31,8 +31,7 @@ import ExistingCriteria from "./pages/ExistingCriteria";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import NotFound from "./pages/NotFound";
-
-
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const [decisionState, setDecisionState] = useState<DecisionState>({
@@ -64,26 +63,47 @@ function App() {
           value={{ decisionState, setDecisionState }}
         >
           <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            {/* Abi */}
-            <Route path="/login" element={<Login setAuth={setAuth} />} />
-            <Route path="/register" element={<Register setAuth={setAuth} />} />
-            <Route path="/NewOption" element={<NewOption />} />
-            <Route path="/newCriteria" element={<NewCriteria />} />
-            <Route path="/OtherNewCriteria" element={<OtherNewCriteria />} />
-            <Route path="/DecisionModel" element={<DecisionModel />} />
-            <Route path="/NewDecision" element={<NewDecision />} />
-            <Route path="/OtherNewOption" element={<OtherNewOption />} />
-            <Route path="/PreviousDecision" element={<PreviousDecisions />} />
-            <Route path="/contactUs" element={<ContactUs />} />
-            <Route path="/aboutUs" element={<AboutUs />} />
-            <Route path="/resultsPage" element={<ResultsPage />} />
-            <Route path="/EvaluateCriteriaPage" element={<CriteriaPage />} />
-            <Route path="/EvaluateOptionsPage" element={<EvaluateOptions />} />
-            <Route path="/ExistingCriteria" element={<ExistingCriteria />} />
-            <Route path="/NotFound" element={<NotFound />} />
-          </Routes>
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                {/* Abi */}
+                <Route path="/login" element={<Login setAuth={setAuth} />} />
+                <Route
+                  path="/register"
+                  element={<Register setAuth={setAuth} />}
+                />
+                <Route path="/NewOption" element={<NewOption />} />
+                <Route path="/newCriteria" element={<NewCriteria />} />
+                <Route
+                  path="/OtherNewCriteria"
+                  element={<OtherNewCriteria />}
+                />
+                <Route path="/DecisionModel" element={<DecisionModel />} />
+                <Route path="/NewDecision" element={<NewDecision />} />
+                <Route path="/OtherNewOption" element={<OtherNewOption />} />
+                <Route
+                  path="/PreviousDecision"
+                  element={<PreviousDecisions />}
+                />
+                <Route path="/contactUs" element={<ContactUs />} />
+                <Route path="/aboutUs" element={<AboutUs />} />
+                <Route path="/resultsPage" element={<ResultsPage />} />
+                <Route
+                  path="/EvaluateCriteriaPage"
+                  element={<CriteriaPage />}
+                />
+                <Route
+                  path="/EvaluateOptionsPage"
+                  element={<EvaluateOptions />}
+                />
+                <Route
+                  path="/ExistingCriteria"
+                  element={<ExistingCriteria />}
+                />
+                <Route path="/NotFound" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} /> {/* Fallback route */}
+              </Routes>
+            </ErrorBoundary>
           </AuthProvider>
         </DecisionStateContext.Provider>
       </BreadcrumbsProvider>
