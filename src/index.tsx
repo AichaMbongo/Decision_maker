@@ -6,6 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
 import { AuthProvider } from './contexts/AuthContext';
+import ReactGA from 'react-ga4';
+
+// Initialize Google Analytics with your tracking ID
+ReactGA.initialize('G-HLB68RQTTN');
+
+// Track page view on initial load
+ReactGA.send("pageview");
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
