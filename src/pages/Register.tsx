@@ -87,8 +87,8 @@ function Register({ setAuth }: RegisterProps) {
                 </IconButton>
               </Link>
             </Grid>
-            <Grid item xs={10}>
-              <Typography variant="h6">
+            <Grid item xs={10} >
+              <Typography variant="h6" >
                 <NavLink
                   to="/"
                   onClick={() => handleNavigation("/", "Home")}
@@ -99,7 +99,12 @@ function Register({ setAuth }: RegisterProps) {
               </Typography>
             </Grid>
           </Grid>
-          <Typography variant="body1">Sign up</Typography>
+          <Typography variant="body1">Create an Account</Typography>
+          <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Click here to Log in
+                </Link>
+              </Grid>
           <Box
             component="form"
             noValidate
@@ -156,14 +161,10 @@ function Register({ setAuth }: RegisterProps) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Create an Account
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
+              
             </Grid>
           </Box>
           {errorMessage && (

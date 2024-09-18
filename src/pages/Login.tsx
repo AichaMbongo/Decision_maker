@@ -100,7 +100,11 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
               </Typography>
             </Grid>
           </Grid>
-          <Typography variant="body1">Sign in</Typography>
+          <Typography variant="body1">Have you already created an account?</Typography>
+          <Typography variant="body1">If yes, then proceed to Log in</Typography>
+          <Typography variant="body1"><Link href="/register" variant="body2">If you are new here, click here to create an account
+
+                </Link></Typography>
 
           <Typography variant="body2" color="error">
             {loginError}
@@ -146,14 +150,14 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Log In
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              {/* <Grid item>
                 <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Box>
