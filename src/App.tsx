@@ -29,6 +29,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ExistingCriteria from "./pages/ExistingCriteria";
 import { ResetPassword } from "./pages/ResetPassword";
+import HealthCheck from "./pages/HealthCheck";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import NotFound from "./pages/NotFound";
@@ -102,6 +103,7 @@ function App() {
                   path="/ExistingCriteria"
                   element={<ExistingCriteria />}
                 />
+                <Route path="/health" element={<HealthCheck />} />
                 <Route path="/NotFound" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} /> {/* Fallback route */}
               </Routes>
