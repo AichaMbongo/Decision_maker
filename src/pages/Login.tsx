@@ -152,12 +152,12 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
             >
               Log In
             </Button>
-            <Grid container justifyContent="flex-end">
-              {/* <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+            <Grid container>
+              <Grid item xs>
+                <Link href="/reset-password" variant="body2">
+                  Forgot password?
                 </Link>
-              </Grid> */}
+              </Grid>
             </Grid>
           </Box>
         </Box>

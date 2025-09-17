@@ -174,8 +174,9 @@ const ResultsPage = () => {
       }
 
       setShowCompletionPopup(true);
-    } catch (error) {
-      console.error("Error saving decision:");
+    } catch (error: any) {
+      console.error("Error saving decision:", error?.message ?? error);
+      alert(`Failed to save decision: ${error?.message ?? 'Unknown error'}`);
     }
   };
 

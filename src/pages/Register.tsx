@@ -14,9 +14,8 @@ import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-
-import { signUp, signIn } from "../supabase/auth"; // Import signIn function as well
-
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Paper from "@mui/material/Paper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useAuth } from "../contexts/AuthContext";
@@ -30,14 +29,14 @@ interface RegisterProps {
 }
 
 function Register({ setAuth }: RegisterProps) {
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   const { handleNavigation } = useBreadcrumbs();
-  const [successMessageOpen, setSuccessMessageOpen] = React.useState(false);
+  const [registrationComplete, setRegistrationComplete] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [registeredEmail, setRegisteredEmail] = React.useState("");
 
   const handleCloseSnackbar = () => {
-    setSuccessMessageOpen(false);
     if (errorMessage) setErrorMessage("");
   };
 
@@ -49,23 +48,83 @@ function Register({ setAuth }: RegisterProps) {
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
 
-    const displayName = `${firstName}`;
     try {
       // Register the user
-      await signUp(email, password, displayName);
-
-      // Automatically sign in the user
-      await signIn(email, password);
-
-      // Update authentication state
-      setAuth(true);
-      navigate("/", { state: { isAuthenticated: true, message: "Registration successful!" } });
-      setSuccessMessageOpen(true);
+      const result = await signUp(email, password, firstName, lastName);
+      
+      // Store email and show success state
+      setRegisteredEmail(email);
+      setRegistrationComplete(true);
+      
+      // If we have a session, update auth state
+      if (result.session) {
+        setAuth(true);
+      }
     } catch (error: any) {
-      console.error("Registration or sign-in error:", error.message);
-      setErrorMessage("Registration or sign-in failed. Please try again.");
+      console.error("Registration error details:", {
+        error,
+        message: error.message,
+        name: error.name,
+        code: error.code,
+        details: error.details,
+        stack: error.stack
+      });
+      setErrorMessage(
+        error.message || error.details?.message || "Registration failed. Please try again."
+      );
     }
   };
+
+  if (registrationComplete) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2
+            }}
+          >
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2
+              }}
+            >
+              <CheckCircleOutlineIcon color="success" sx={{ fontSize: 60 }} />
+              <Typography variant="h5" component="h1">
+                Registration Successful!
+              </Typography>
+              <Typography align="center" color="text.secondary">
+                We've sent a confirmation email to:
+              </Typography>
+              <Typography variant="body1" fontWeight="bold">
+                {registeredEmail}
+              </Typography>
+              <Typography align="center" color="text.secondary">
+                Please check your inbox and click the verification link to activate your account.
+              </Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => navigate("/login")}
+                sx={{ mt: 2 }}
+              >
+                Go to Login
+              </Button>
+            </Paper>
+          </Box>
+        </Container>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -87,8 +146,8 @@ function Register({ setAuth }: RegisterProps) {
                 </IconButton>
               </Link>
             </Grid>
-            <Grid item xs={10} >
-              <Typography variant="h6" >
+            <Grid item xs={10}>
+              <Typography variant="h6">
                 <NavLink
                   to="/"
                   onClick={() => handleNavigation("/", "Home")}
@@ -101,10 +160,10 @@ function Register({ setAuth }: RegisterProps) {
           </Grid>
           <Typography variant="body1">Create an Account</Typography>
           <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Click here to Log in
-                </Link>
-              </Grid>
+            <Link href="/login" variant="body2">
+              Already have an account? Click here to Log in
+            </Link>
+          </Grid>
           <Box
             component="form"
             noValidate
@@ -163,26 +222,24 @@ function Register({ setAuth }: RegisterProps) {
             >
               Create an Account
             </Button>
-            <Grid container justifyContent="flex-end">
-              
-            </Grid>
+            <Grid container justifyContent="flex-end"></Grid>
           </Box>
           {errorMessage && (
-            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-              <Alert onClose={handleCloseSnackbar} severity="error">
+            <Snackbar
+              open={!!errorMessage}
+              autoHideDuration={6000}
+              onClose={handleCloseSnackbar}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              sx={{ position: "fixed" }}
+            >
+              <Alert
+                onClose={handleCloseSnackbar}
+                severity="error"
+              >
                 {errorMessage}
               </Alert>
             </Snackbar>
           )}
-          <Snackbar
-            open={successMessageOpen}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackbar}
-          >
-            <Alert onClose={handleCloseSnackbar} severity="success">
-              Registration successful!
-            </Alert>
-          </Snackbar>
         </Box>
       </Container>
     </ThemeProvider>

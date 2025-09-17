@@ -28,7 +28,6 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import theme from "../theme/theme";
 import { useBreadcrumbs } from "../contexts/BreadcrumbsProvider";
 import { getUser, signOut } from "../supabase/auth";
-import { supabase } from "../supabase/supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
 
 const navItems = [
@@ -39,16 +38,10 @@ const navItems = [
   { label: "Contact Us", path: "/contactUs" },
 ];
 
-interface HeaderProps {
-  auth: boolean;
-  setAuth: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Header({ auth, setAuth }: HeaderProps) {
+function Header() { // Main header component
+  const { isAuthenticated: auth, userProfile: authUserProfile } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [userProfile, setUserProfile] = useState<{
-    displayName: string;
-  } | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const { handleNavigation, resetBreadcrumbs } = useBreadcrumbs();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -56,57 +49,49 @@ function Header({ auth, setAuth }: HeaderProps) {
 
   const location = useLocation();
 
-  useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
-    if (storedAuth === "true") {
-      setAuth(true);
-    } else {
-      setAuth(false);
-    }
-  }, [setAuth]);
+  // Remove local storage effects as auth state is now managed by AuthContext
 
   useEffect(() => {
-    localStorage.setItem("auth", auth.toString());
-  }, [auth]);
+    const resolveDisplayName = () => {
+      if (auth && authUserProfile) {
+        const meta: any = authUserProfile.user_metadata ?? {};
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data, error } = await getUser();
-        if (error) {
-          console.error("Error fetching user:", error.message);
+        // Try several possible metadata keys
+        const fromMeta: string | undefined =
+          meta.display_name ||
+          meta.displayName ||
+          meta.full_name ||
+          meta.fullName ||
+          (meta.first_name && meta.last_name
+            ? `${meta.first_name} ${meta.last_name}`
+            : undefined) ||
+          (meta.given_name && meta.family_name
+            ? `${meta.given_name} ${meta.family_name}`
+            : undefined) ||
+          meta.nickname ||
+          meta.name;
+
+        if (fromMeta && fromMeta.trim().length > 0) {
+          setDisplayName(fromMeta.trim());
           return;
         }
-        if (data && data.user && data.user.id) {
-          const userId = data.user.id;
 
-          const { data: userProfileData, error: profileError } = await supabase
-            .from("user_profiles")
-            .select("display_name")
-            .eq("id", userId)
-            .single();
-
-          if (profileError) {
-            console.error("Error fetching user profile:", profileError.message);
+        // Fallback to email prefix
+        if (authUserProfile.email) {
+          const emailPrefix = authUserProfile.email.split("@")[0];
+          if (emailPrefix && emailPrefix.trim().length > 0) {
+            setDisplayName(emailPrefix.trim());
             return;
           }
-
-          if (userProfileData) {
-            setUserProfile({ displayName: userProfileData.display_name });
-            setAuth(true);
-          } else {
-            setAuth(false);
-          }
-        } else {
-          setAuth(false);
         }
-      } catch (error: any) {
-        console.error("Error fetching user:", error.message);
-        setAuth(false);
+
+        setDisplayName(null);
+      } else {
+        setDisplayName(null);
       }
     };
-    fetchUser();
-  }, [setAuth]);
+    resolveDisplayName();
+  }, [auth, authUserProfile]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -124,13 +109,11 @@ function Header({ auth, setAuth }: HeaderProps) {
 
   const handleSignOut = async () => {
     await signOut();
-    setAuth(false);
-    setUserProfile(null);
+    setDisplayName(null);
     setSnackbarMessage("Logout successful!");
     setSnackbarOpen(true);
     handleClose();
     navigate("/", { state: { isAuthenticated: false } });
-
   };
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -140,6 +123,26 @@ function Header({ auth, setAuth }: HeaderProps) {
   };
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const MAX_NAME_CHARS = 18;
+
+  const getShortName = (name: string | null, small: boolean): string => {
+    if (!name) return "User";
+    const trimmed = name.trim();
+    if (trimmed.length === 0) return "User";
+
+    if (small) {
+      const parts = trimmed.split(/\s+/);
+      if (parts.length >= 2) {
+        return `${parts[0]} ${parts[1].charAt(0).toUpperCase()}.`;
+      }
+      return parts[0];
+    }
+
+    if (trimmed.length > MAX_NAME_CHARS) {
+      return `${trimmed.slice(0, MAX_NAME_CHARS - 1)}…`;
+    }
+    return trimmed;
+  };
 
   const drawer = (
     <Box sx={{ width: 250 }} onClick={handleDrawerToggle}>
@@ -178,9 +181,7 @@ function Header({ auth, setAuth }: HeaderProps) {
             </ListItem>
             {isSmallScreen && (
               <ListItem>
-                <ListItemText
-                  primary={`Logged in as ${userProfile?.displayName}`}
-                />
+                <ListItemText primary={`Logged in as ${displayName ?? "User"}`} />
               </ListItem>
             )}
           </>
@@ -271,10 +272,10 @@ function Header({ auth, setAuth }: HeaderProps) {
                 <>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar sx={{ borderRadius: "10px" }}>
-                      {userProfile ? userProfile.displayName.charAt(0) : "U"}
+                      {displayName ? displayName.charAt(0).toUpperCase() : "U"}
                     </Avatar>
-                    <Box sx={{ marginLeft: "8px" }}>
-                      {userProfile ? userProfile.displayName : "User"}
+                    <Box sx={{ marginLeft: "8px" }} title={displayName ?? "User"}>
+                      {getShortName(displayName, isSmallScreen)}
                     </Box>
                     <IconButton
                       aria-controls="user-menu"
@@ -301,7 +302,9 @@ function Header({ auth, setAuth }: HeaderProps) {
                         marginTop: "0.5rem",
                       }}
                     >
-                      <Typography variant="body2">{`Logged in as ${userProfile?.displayName}`}</Typography>
+                      <Typography variant="body2" title={displayName ?? "User"}>
+                        {`Logged in as ${getShortName(displayName, true)}`}
+                      </Typography>
                     </Box>
                   )}
                 </>

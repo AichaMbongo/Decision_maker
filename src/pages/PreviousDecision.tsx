@@ -54,18 +54,69 @@ const PreviousDecisions: React.FC = () => {
 
   useEffect(() => {
     if (isDataLoaded) {
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase().trim();
+      
+      if (!query) {
+        setFilteredDecisions(decisions);
+        return;
+      }
+
       const filtered = decisions.filter((decision) => {
+        // Handle string decisions
         if (typeof decision.decision === "string") {
           return decision.decision.toLowerCase().includes(query);
         }
-        return (
-          decision.decision?.model.toLowerCase().includes(query) ||
-          decision.decision?.criteria.some((criterion: Criterion) =>
-            criterion.name.toLowerCase().includes(query)
-          )
-        );
+
+        // Handle object decisions
+        if (decision.decision && typeof decision.decision === "object") {
+          const decisionObj = decision.decision;
+          
+          // Search in decision title/name
+          if (decisionObj.decision && 
+              typeof decisionObj.decision === "string" && 
+              decisionObj.decision.toLowerCase().includes(query)) {
+            return true;
+          }
+
+          // Search in model
+          if (decisionObj.model && 
+              typeof decisionObj.model === "string" && 
+              decisionObj.model.toLowerCase().includes(query)) {
+            return true;
+          }
+
+          // Search in criteria
+          if (decisionObj.criteria && Array.isArray(decisionObj.criteria)) {
+            const hasMatchingCriteria = decisionObj.criteria.some((criterion: any) => {
+              if (typeof criterion === "string") {
+                return criterion.toLowerCase().includes(query);
+              }
+              if (criterion && typeof criterion === "object" && criterion.name) {
+                return criterion.name.toLowerCase().includes(query);
+              }
+              return false;
+            });
+            if (hasMatchingCriteria) return true;
+          }
+
+          // Search in options
+          if (decisionObj.options && Array.isArray(decisionObj.options)) {
+            const hasMatchingOptions = decisionObj.options.some((option: any) => {
+              if (typeof option === "string") {
+                return option.toLowerCase().includes(query);
+              }
+              if (option && typeof option === "object" && option.name) {
+                return option.name.toLowerCase().includes(query);
+              }
+              return false;
+            });
+            if (hasMatchingOptions) return true;
+          }
+        }
+
+        return false;
       });
+      
       setFilteredDecisions(filtered);
     }
   }, [searchQuery, decisions, isDataLoaded]);

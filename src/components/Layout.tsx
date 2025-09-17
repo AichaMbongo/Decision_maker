@@ -14,21 +14,13 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    if (location.state && location.state.isAuthenticated) {
-      setAuth(true);
-    }
-  }, [location.state]);
-
   // Determine if the current path is /login or /registration
   const hideHeaderAndBreadcrumbs =
     location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <ThemeProvider theme={theme}>
-      {!hideHeaderAndBreadcrumbs && <Header auth={auth} setAuth={setAuth} />}
+      {!hideHeaderAndBreadcrumbs && <Header />}
       <div className="layout">
         {!isLandingPage && !hideHeaderAndBreadcrumbs && (
           <Container maxWidth="xl" className="bread-container">
