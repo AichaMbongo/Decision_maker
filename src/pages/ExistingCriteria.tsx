@@ -152,8 +152,28 @@ const NewCriteriaPage: React.FC = () => {
       }
 
       const categories: CriteriaCategories = {};
+      const normalizeCriteria = (raw: any): string[] => {
+        if (!raw) return [];
+        if (Array.isArray(raw)) {
+          return raw
+            .map((entry) =>
+              typeof entry === "string"
+                ? entry
+                : typeof entry === "object" && entry !== null
+                ? (entry.name as string)
+                : null
+            )
+            .filter((v): v is string => Boolean(v));
+        }
+        return [];
+      };
+
       data?.forEach((item: any) => {
-        categories[item.category_name] = item.criteria;
+        const categoryName: string = item.category_name ?? "Other";
+        const normalized = normalizeCriteria(item.criteria);
+        if (normalized.length > 0) {
+          categories[categoryName] = normalized;
+        }
       });
 
       const allPredefinedCriteria = Object.values(categories).flat();

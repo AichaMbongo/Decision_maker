@@ -1,17 +1,13 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  useEffect,
-} from "react";
-import {
-  signIn as signInSupabase,
-  signOut as signOutSupabase,
-  signUp as signUpSupabase,
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { 
+  signIn as signInSupabase, 
+  signOut as signOutSupabase, 
+  signUp as signUpSupabase, 
   getUser,
-} from "../supabase/auth";
-import { User, Session } from "@supabase/supabase-js"; // Import Supabase types
+  resetPassword as resetPasswordSupabase,
+  updatePassword as updatePasswordSupabase
+} from '../supabase/auth';
+import { User, Session } from '@supabase/supabase-js'; // Import Supabase types
 
 interface SignUpResponse {
   user: User | null;
@@ -24,26 +20,20 @@ interface AuthContextType {
   userProfile: User | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  signUp: (
-    email: string,
-    password: string,
-    displayName: string
-  ) => Promise<SignUpResponse>;
+  signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<SignUpResponse>;
+  resetPassword: (email: string) => Promise<boolean>;
+  updatePassword: (newPassword: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<User | null>(null);
 
   const checkAuth = async () => {
     try {
-      const {
-        data: { user },
-      } = await getUser();
+      const { data: { user } } = await getUser();
       if (user) {
         setIsAuthenticated(true);
         setUserProfile(user);
@@ -71,13 +61,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     await checkAuth(); // Re-fetch user data after signing out
   };
 
-  const signUp = async (
-    email: string,
-    password: string,
-    displayName: string
-  ) => {
+  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
-      const data = await signUpSupabase(email, password, displayName);
+      const data = await signUpSupabase(email, password, firstName, lastName);
       await checkAuth(); // Update auth state after signup
       return data;
     } catch (error) {
@@ -86,10 +72,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const resetPassword = async (email: string) => {
+    return await resetPasswordSupabase(email);
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    return await updatePasswordSupabase(newPassword);
+  };
+
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, userProfile, signIn, signOut, signUp }}
-    >
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      userProfile, 
+      signIn, 
+      signOut, 
+      signUp,
+      resetPassword,
+      updatePassword
+    }}>
       {children}
     </AuthContext.Provider>
   );
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

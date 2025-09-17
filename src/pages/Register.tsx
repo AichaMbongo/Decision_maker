@@ -48,10 +48,9 @@ function Register({ setAuth }: RegisterProps) {
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
 
-    const displayName = `${firstName}`;
     try {
       // Register the user
-      const result = await signUp(email, password, displayName);
+      const result = await signUp(email, password, firstName, lastName);
       
       // Store email and show success state
       setRegisteredEmail(email);

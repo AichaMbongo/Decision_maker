@@ -28,6 +28,7 @@ import EvaluateOptions from "./pages/EvaluateOptionsPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ExistingCriteria from "./pages/ExistingCriteria";
+import { ResetPassword } from "./pages/ResetPassword";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import NotFound from "./pages/NotFound";
@@ -72,6 +73,7 @@ function App() {
                   path="/register"
                   element={<Register setAuth={setAuth} />}
                 />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/NewOption" element={<NewOption />} />
                 <Route path="/newCriteria" element={<NewCriteria />} />
                 <Route
