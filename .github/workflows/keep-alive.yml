@@ -22,50 +22,14 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-        env:
-          REACT_APP_SUPABASE_URL: ${{ secrets.REACT_APP_SUPABASE_URL }}
-          REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}
-
-      - name: Start application
+      - name: Install minimal dependencies for Supabase client
         run: |
-          npm install -g serve
-          serve -s build -l 3000 &
-          sleep 10  # Wait for app to start
+          npm init -y >/dev/null 2>&1 || true
+          npm install @supabase/supabase-js@2.x
 
-      - name: Health Check
+      - name: Keep-alive: direct Supabase ping
         run: |
-          echo "Performing health check..."
-          
-          # Try the health endpoint
-          HEALTH_RESPONSE=$(curl -s -w "\n%{http_code}" "http://localhost:3000/health" || echo "000")
-          HTTP_CODE=$(echo "$HEALTH_RESPONSE" | tail -n1)
-          RESPONSE_BODY=$(echo "$HEALTH_RESPONSE" | head -n -1)
-          
-          echo "HTTP Status: $HTTP_CODE"
-          echo "Response: $RESPONSE_BODY"
-          
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ Health check passed!"
-            
-            # Check if response contains healthy status
-            if echo "$RESPONSE_BODY" | grep -q '"status":"healthy"'; then
-              echo "✅ Database connection verified!"
-            else
-              echo "⚠️  Health endpoint responded but database may have issues"
-            fi
-          else
-            echo "❌ Health check failed with status: $HTTP_CODE"
-            exit 1
-          fi
-
-      - name: Test Database Connection
-        run: |
-          echo "Testing direct database connection..."
+          echo "Pinging Supabase to keep project active..."
           
           # Create a simple test script
           cat > test-db.js << 'EOF'
@@ -106,6 +70,9 @@ jobs:
           
           # Run the test
           node test-db.js
+        env:
+          REACT_APP_SUPABASE_URL: ${{ secrets.REACT_APP_SUPABASE_URL }}
+          REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}
 
       - name: Notify Success
         if: success()
